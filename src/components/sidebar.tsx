@@ -1,5 +1,5 @@
 import { Clipboard, Dumbbell, GraduationCap, Power, Users, } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from '@/components/ui/button';
@@ -51,7 +51,7 @@ export function Sidebar() {
           {
             tabs.map((tab) => {
               const active = window.location.pathname === tab.href
- 
+
               return (
                 <NavLink to={tab.href} className={`flex items-center space-x-3 p-2 rounded-lg  cursor-pointer ${active ? "!bg-white text-indigo-600 font-semibold" : "hover:bg-indigo-500"}`}>
                   {<tab.icon />}
@@ -63,10 +63,12 @@ export function Sidebar() {
         </div>
         <div>
 
-          <Button variant="destructive" onClick={()=>console.log("clicou")} type="button" className="w-[10rem] flex place-items-center space-x-2">
-            <Power />
-            Sair
-          </Button>
+          <Link rel="stylesheet" to="/">
+            <Button variant="destructive" type="button" className="w-[10rem] flex place-items-center space-x-2 hover:cursor-pointer">
+              <Power />
+              Sair
+            </Button>
+          </Link>
         </div>
       </nav>
     </div>
