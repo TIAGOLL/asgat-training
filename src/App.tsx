@@ -9,21 +9,21 @@ import RoutesApp from '@/routes'
 
 function App() {
 	return (
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
-					<RoutesApp />
-					<ToastContainer
-						transition={Flip}
-						autoClose={3000}
-						draggable
-						closeButton
-						position='bottom-right'
-						stacked
-						theme={localStorage.getItem('vite-ui-theme') || 'light'}
-						limit={3}
-					/>
-				</ThemeProvider>
-			</QueryClientProvider>
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+				<RoutesApp />
+				<ToastContainer
+					transition={Flip}
+					autoClose={3000}
+					draggable
+					closeButton
+					position='bottom-right'
+					stacked
+					theme={localStorage.getItem('vite-ui-theme') || 'light'}
+					limit={3}
+				/>
+			</ThemeProvider>
+		</QueryClientProvider>
 	)
 }
 
