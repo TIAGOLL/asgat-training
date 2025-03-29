@@ -19,7 +19,7 @@ export function Classes() {
               month: "space-y-4",
               caption: "flex justify-center pt-1 relative items-center",
               caption_label: "text-xl font-medium mb-5",
-              nav: "space-x-1 flex items-center ",
+              nav: "space-x-1 flex items-center",
               nav_button: cn(
                 buttonVariants({ variant: "outline" }),
                 "size-12 bg-transparent p-0 opacity-50 hover:opacity-100"
@@ -27,10 +27,10 @@ export function Classes() {
               nav_button_previous: "absolute left-1",
               nav_button_next: "absolute right-1",
               table: "w-full border-collapse space-y-1 max-w-none flex flex-col justify-center items-center",
-              head_row: "flex mb-15",
+              head: "flex w-full mt-2",
               head_cell:
                 "text-muted-foreground rounded-md w-[calc(14.29vw-3rem)] font-normal text-xl",
-              row: "flex w-full mt-2",
+              row: "flex w-full mt-2 gap-2",
               cell: cn(
                 "[&:has([aria-selected])]:rounded-md w-[calc(14.29vw-3rem)] h-[calc(10vh)] relative p-0 text-center text-xl focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
               ),
@@ -38,6 +38,7 @@ export function Classes() {
                 buttonVariants({ variant: "ghost" }),
                 "h-20 w-20 p-4 flex items-start justify-center font-normal aria-selected:opacity-100 m-auto"
               ),
+
               day_range_start: "day-range-start",
               day_range_end: "day-range-end",
               day_selected:
@@ -82,9 +83,30 @@ export function Classes() {
                       "flex justify-center items-center font-normal w-full h-full hover:bg-accent hover:text-accent-foreground rounded-3xl border-1",
                     )}
                   >
-                    {props.date.getDate()}
+                    <div className="flex w-full h-full">
+                      <div className="flex w-[20%] h-full items-start justify-start pl-4 pt-4">
+                        {props.date.getDate()}
+                      </div>
+                      <div className="flex w-[80%] h-full items-center justify-center">
+                        {/* LISTAR ATIVIDADES */}
+                      </div>
+                    </div>
                   </button>
                 );
+              },
+              HeadRow() {
+                const weekDays = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
+                return (
+                  <thead className="rdp-head">
+                    {
+                      weekDays.map((day) => (
+                        <th scope="col" key={day} className="text-muted-foreground rounded-md w-[calc(14.29vw-3rem)] font-normal text-xl" aria-label="Sunday">
+                          {day}
+                        </th>
+                      ))
+                    }
+                  </thead>
+                )
               },
             }}
             mode="single"
