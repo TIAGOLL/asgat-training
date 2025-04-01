@@ -4,6 +4,7 @@ import { CreateClassroom } from '@/pages/classrooms/create-classrooom'
 import { SignIn } from '@/pages/sign-in'
 import { Students } from '@/pages/students'
 import { Trainings } from '@/pages/trainings'
+import { CreateTraining } from '@/pages/trainings/create-trainings'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 
@@ -15,6 +16,7 @@ function RoutesApp() {
 				<Route path='/classes' element={<Classes />} />
 				<Route path='/classrooms' element={<Classrooms />} />
 				<Route path='/classrooms/register' element={<CreateClassroom />} />
+				<Route path='/trainings/register' element={<CreateTraining />} />
 				<Route path='/students' element={<Students />} />
 				<Route path='/trainings' element={<Trainings />} />
 			</Routes>

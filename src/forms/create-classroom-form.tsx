@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -35,7 +34,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronsUpDown, Save } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import { studentSchema } from './validations/students';
@@ -46,9 +45,6 @@ type CreateClasroomSchema = z.infer<
 type StudentSchema = z.infer<
   typeof studentSchema
 >
-
-
-
 
 export function CreateClassroomForm() {
   const [studentsList] = useState(
@@ -80,7 +76,70 @@ export function CreateClassroomForm() {
         age: 32,
         contact: "(11) 99999-9999",
         belt: "Blue belt",
-      }
+      },
+      {
+        id: "5",
+        name: "Maria",
+        age: 25,
+        contact: "(11) 99999-9999",
+        belt: "Yellow belt",
+      },
+      {
+        id: "6",
+        name: "Ana",
+        age: 28,
+        contact: "(11) 99999-9999",
+        belt: "Green belt",
+      },
+      {
+        id: "7",
+        name: "Carlos",
+        age: 30,
+        contact: "(11) 99999-9999",
+        belt: "Brown belt",
+      },
+      {
+        id: "8",
+        name: "Fernanda",
+        age: 27,
+        contact: "(11) 99999-9999",
+        belt: "Purple belt",
+      },
+      {
+        id: "9",
+        name: "Roberto",
+        age: 29,
+        contact: "(11) 99999-9999",
+        belt: "Orange belt",
+      },
+      {
+        id: "10",
+        name: "Patrícia",
+        age: 31,
+        contact: "(11) 99999-9999",
+        belt: "Gray belt",
+      },
+      {
+        id: "11",
+        name: "Juliana",
+        age: 26,
+        contact: "(11) 99999-9999",
+        belt: "Pink belt",
+      },
+      {
+        id: "12",
+        name: "Ricardo",
+        age: 33,
+        contact: "(11) 99999-9999",
+        belt: "Black belt",
+      },
+      {
+        id: "13",
+        name: "Tatiane",
+        age: 24,
+        contact: "(11) 99999-9999",
+        belt: "Red belt",
+      },
     ]
   )
   const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([])
@@ -100,7 +159,7 @@ export function CreateClassroomForm() {
   return (
     <form onSubmit={handleSubmit(createClassroom)} className="grid grid-cols-6 w-auto items-center justify-center gap-4">
       <div className="col-span-2 flex flex-col items-start justify-start gap-2">
-        <Label htmlFor="name" className="text-sm font-semibold">
+        <Label htmlFor="name">
           Nome da turma
         </Label>
         <Input
@@ -108,7 +167,7 @@ export function CreateClassroomForm() {
           id="name"
           placeholder="Nome da turma"
           {...register("name")}
-          className={`w-full h-10 rounded-md border-2 border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : ""}`}
+          className={`w-full h-10 rounded-md px-2 ${errors.name ? "border-red-500" : ""}`}
         />
         {errors.name && (
           <span className="text-red-500 text-sm">{errors.name.message}</span>
@@ -116,7 +175,7 @@ export function CreateClassroomForm() {
       </div>
 
       <div className="col-span-2 flex flex-col items-start justify-start gap-2">
-        <Label htmlFor="local" className="text-sm font-semibold">
+        <Label htmlFor="local">
           Local
         </Label>
         <Input
@@ -124,7 +183,7 @@ export function CreateClassroomForm() {
           id="local"
           placeholder="Local"
           {...register("local")}
-          className={`w-full h-10 rounded-md border-2 border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.local ? "border-red-500" : ""
+          className={`w-full h-10 rounded-md px-2 ${errors.local ? "border-red-500" : ""
             }`}
         />
         {errors.local && (
@@ -133,14 +192,14 @@ export function CreateClassroomForm() {
       </div>
 
       <div className="col-span-1 flex flex-col items-start justify-start gap-2">
-        <Label htmlFor="day" className="text-sm font-semibold">
+        <Label htmlFor="day">
           Dia
         </Label>
         <Input
           type="date"
           id="day"
           {...register("day")}
-          className={`w-full h-10 rounded-md border-2 border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.day ? "border-red-500" : ""
+          className={`w-full h-10 rounded-md px-2 ${errors.day ? "border-red-500" : ""
             }`}
         />
         {errors.day && (
@@ -149,14 +208,14 @@ export function CreateClassroomForm() {
       </div>
 
       <div className="col-span-1 flex flex-col items-start justify-start gap-2">
-        <Label htmlFor="time" className="text-sm font-semibold">
+        <Label htmlFor="time">
           Horário
         </Label>
         <Input
           type="time"
           id="time"
           {...register("time")}
-          className={`w-full h-10 rounded-md border-2 border-gray-300 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.time ? "border-red-500" : ""
+          className={`w-full h-10 rounded-md px-2 ${errors.time ? "border-red-500" : ""
             }`}
         />
         {errors.time && (
@@ -201,7 +260,6 @@ export function CreateClassroomForm() {
                               } else {
                                 return [...prev, student]
                               }
-                              setOpen(false)
                             })
                           }}
                         >
@@ -250,9 +308,10 @@ export function CreateClassroomForm() {
           </div>
         </CardContent>
       </Card>
-      <div className="col-span-6 grid justify-center items-center gap-4 mt-6">
-        <Button type="submit" className="w-[10rem]">
-          Criar turma
+      <div className="col-span-6 grid place-items-center gap-4 mt-6">
+        <Button type="submit" className="w-[10rem] gap-2">
+          <Save className="size-4"/>
+          Salvar
         </Button>
       </div>
     </form>
