@@ -30,11 +30,7 @@ type CreateTrainingSchema = z.infer<
 >
 
 export function CreateTrainingForm() {
-  const [exercisesList, setExercisesList] = useState(
-    [
-      ""
-    ]
-  )
+  const [exercisesList, setExercisesList] = useState<string[]>([])
 
   const [trainingTypes] = useState([
     {
@@ -62,6 +58,8 @@ export function CreateTrainingForm() {
     formState: { errors },
     register,
     setValue,
+    setError,
+    clearErrors
   } = useForm<CreateTrainingSchema>({
     resolver: zodResolver(createTrainingSchema),
   })
@@ -81,7 +79,7 @@ export function CreateTrainingForm() {
             <Label>Tipo de treino</Label>
             <Select onValueChange={(value) => setValue("type", value)} defaultValue="">
               <SelectTrigger {...register("type")}>
-                <SelectValue placeholder="Tipo de treino" />
+                <SelectValue placeholder="Selecione..." />
               </SelectTrigger>
               <SelectContent>
                 {
@@ -102,11 +100,21 @@ export function CreateTrainingForm() {
             <div className="flex flex-row gap-2 col-span-2">
               <Input id="training" placeholder="Flexões - 10 repetições" className="w-1/2" onChange={(e) => setExercise(e.target.value)} value={exercise} />
               <Button type="button" className="w-4/12" onClick={() => {
-                setExercisesList((prev) => {
-                  return [...prev, exercise]
-                })
-                setValue("exercises", exercisesList)
-                setExercise("")
+                if (exercise.length < 3) {
+                  return setError("exercises", {
+                    message: "O treino não pode ter menos que 3 caracteres",
+                    type: "minLength",
+                  })
+                }
+                
+                if (exercise.length >= 3) {
+                  clearErrors("exercises")
+                  setExercisesList((prev) => {
+                    return [...prev, exercise]
+                  })
+                  setValue("exercises", exercisesList)
+                  setExercise("")
+                }
               }}>
                 <PlusCircle />
                 Adicionar

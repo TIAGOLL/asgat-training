@@ -23,7 +23,7 @@ export function Sidebar() {
       icon: GraduationCap,
       links: [
         { name: "Ver aulas", to: "/classes" },
-        { name: "Cadastrar alunos", to: "/classes/register" }
+        { name: "Cadastrar aulas", to: "/classes/register" }
       ]
     },
     {
