@@ -1,42 +1,42 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export function DataTableTrainings() {
 	const [trainings] = useState([
 		{
-			name: "Treino 1",
-			type: "Resistência",
+			name: 'Treino 1',
+			type: 'Resistência'
 		},
 		{
-			name: "Treino 2",
-			type: "Força",
+			name: 'Treino 2',
+			type: 'Força'
 		},
 		{
-			name: "Treino 3",
-			type: "HIIT",
+			name: 'Treino 3',
+			type: 'HIIT'
 		},
 		{
-			name: "Treino 4",
-			type: "Flexibilidade",
+			name: 'Treino 4',
+			type: 'Flexibilidade'
 		},
 		{
-			name: "Treino 5",
-			type: "Resistência",
+			name: 'Treino 5',
+			type: 'Resistência'
 		},
 		{
-			name: "Treino 6",
-			type: "Força",
+			name: 'Treino 6',
+			type: 'Força'
 		},
 		{
-			name: "Treino 7",
-			type: "HIIT",
+			name: 'Treino 7',
+			type: 'HIIT'
 		},
 		{
-			name: "Treino 8",
-			type: "Flexibilidade",
-		},
-	]);
+			name: 'Treino 8',
+			type: 'Flexibilidade'
+		}
+	])
 
 	return (
 		<div className='w-full !rounded-lg border'>
@@ -57,5 +57,5 @@ export function DataTableTrainings() {
 				</TableBody>
 			</Table>
 		</div>
-	);
+	)
 }

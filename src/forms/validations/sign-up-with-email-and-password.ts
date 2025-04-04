@@ -6,5 +6,5 @@ export const signUpWithEmailAndPasswordSchema = z.object({
 	password: z
 		.string()
 		.min(6, 'A senha deve possuir ao menos 6 caracteres.')
-		.trim(),
+		.trim()
 })

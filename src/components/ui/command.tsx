@@ -1,25 +1,25 @@
-"use client";
+'use client'
 
-import { Command as CommandPrimitive } from "cmdk";
-import { SearchIcon } from "lucide-react";
-import * as React from "react";
+import { Command as CommandPrimitive } from 'cmdk'
+import { SearchIcon } from 'lucide-react'
+import * as React from 'react'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
 	return (
 		<CommandPrimitive
 			data-slot='command'
-			className={cn("bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md", className)}
+			className={cn('bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md', className)}
 			{...props}
 		/>
-	);
+	)
 }
 
 function CommandDialog({
-	title = "Command Palette",
-	description = "Search for a command to run...",
+	title = 'Command Palette',
+	description = 'Search for a command to run...',
 	children,
 	...props
 }: React.ComponentProps<typeof Dialog> & {
@@ -38,7 +38,7 @@ function CommandDialog({
 				</Command>
 			</DialogContent>
 		</Dialog>
-	);
+	)
 }
 
 function CommandInput({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) {
@@ -48,27 +48,27 @@ function CommandInput({ className, ...props }: React.ComponentProps<typeof Comma
 			<CommandPrimitive.Input
 				data-slot='command-input'
 				className={cn(
-					"placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+					'placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
 					className
 				)}
 				{...props}
 			/>
 		</div>
-	);
+	)
 }
 
 function CommandList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
 	return (
 		<CommandPrimitive.List
 			data-slot='command-list'
-			className={cn("max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto", className)}
+			className={cn('max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto', className)}
 			{...props}
 		/>
-	);
+	)
 }
 
 function CommandEmpty({ ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
-	return <CommandPrimitive.Empty data-slot='command-empty' className='py-6 text-center text-sm' {...props} />;
+	return <CommandPrimitive.Empty data-slot='command-empty' className='py-6 text-center text-sm' {...props} />
 }
 
 function CommandGroup({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Group>) {
@@ -76,16 +76,16 @@ function CommandGroup({ className, ...props }: React.ComponentProps<typeof Comma
 		<CommandPrimitive.Group
 			data-slot='command-group'
 			className={cn(
-				"text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium",
+				'text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
 				className
 			)}
 			{...props}
 		/>
-	);
+	)
 }
 
 function CommandSeparator({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
-	return <CommandPrimitive.Separator data-slot='command-separator' className={cn("bg-border -mx-1 h-px", className)} {...props} />;
+	return <CommandPrimitive.Separator data-slot='command-separator' className={cn('bg-border -mx-1 h-px', className)} {...props} />
 }
 
 function CommandItem({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Item>) {
@@ -98,11 +98,11 @@ function CommandItem({ className, ...props }: React.ComponentProps<typeof Comman
 			)}
 			{...props}
 		/>
-	);
+	)
 }
 
-function CommandShortcut({ className, ...props }: React.ComponentProps<"span">) {
-	return <span data-slot='command-shortcut' className={cn("text-muted-foreground ml-auto text-xs tracking-widest", className)} {...props} />;
+function CommandShortcut({ className, ...props }: React.ComponentProps<'span'>) {
+	return <span data-slot='command-shortcut' className={cn('text-muted-foreground ml-auto text-xs tracking-widest', className)} {...props} />
 }
 
-export { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut };
+export { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut }

@@ -6,7 +6,7 @@ export const api = ky.create({
 	prefixUrl: process.env.API_URL,
 	hooks: {
 		beforeRequest: [
-			async (request) => {
+			async(request) => {
 				const cookies = nookies.get()
 				const token = cookies.token
 
@@ -15,7 +15,7 @@ export const api = ky.create({
 				}
 
 				request.headers.set('Authorization', `Bearer ${token}`)
-			},
+			}
 		],
 		afterResponse: [
 			(_request, _options, response) => {
@@ -23,7 +23,7 @@ export const api = ky.create({
 					nookies.destroy(null, 'token')
 					window.location.href = '/auth/sign-in'
 				}
-			},
-		],
-	},
+			}
+		]
+	}
 })

@@ -5,5 +5,5 @@ export const studentSchema = z.object({
 	name: z.string({ required_error: 'Nome é obrigatório' }),
 	age: z.number({ required_error: 'Idade é obrigatória' }),
 	contact: z.string({ required_error: 'Contato é obrigatório' }),
-	belt: z.string({ required_error: 'Faixa é obrigatória' }),
+	belt: z.string({ required_error: 'Faixa é obrigatória' })
 })

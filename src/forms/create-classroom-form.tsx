@@ -1,20 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Save } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Check, ChevronsUpDown, Save } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod'
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { cn } from '@/lib/utils'
 
-import { createClasroomSchema } from "./validations/create-classroom-schema";
-import { studentSchema } from "./validations/students";
+import { createClasroomSchema } from './validations/create-classroom-schema'
+import { studentSchema } from './validations/students'
 
 type CreateClasroomSchema = z.infer<typeof createClasroomSchema>;
 type StudentSchema = z.infer<typeof studentSchema>;
@@ -22,107 +22,107 @@ type StudentSchema = z.infer<typeof studentSchema>;
 export function CreateClassroomForm() {
 	const [studentsList] = useState([
 		{
-			id: "1",
-			name: "James Lucas",
+			id: '1',
+			name: 'James Lucas',
 			age: 34,
-			contact: "(11) 99999-9999",
-			belt: "black belt",
+			contact: '(11) 99999-9999',
+			belt: 'black belt'
 		},
 		{
-			id: "2",
-			name: "Lucas",
+			id: '2',
+			name: 'Lucas',
 			age: 22,
-			contact: "(11) 99999-9999",
-			belt: "Red belt",
+			contact: '(11) 99999-9999',
+			belt: 'Red belt'
 		},
 		{
-			id: "3",
-			name: "Jonas",
+			id: '3',
+			name: 'Jonas',
 			age: 18,
-			contact: "(11) 99999-9999",
-			belt: "White belt",
+			contact: '(11) 99999-9999',
+			belt: 'White belt'
 		},
 		{
-			id: "4",
-			name: "João",
+			id: '4',
+			name: 'João',
 			age: 32,
-			contact: "(11) 99999-9999",
-			belt: "Blue belt",
+			contact: '(11) 99999-9999',
+			belt: 'Blue belt'
 		},
 		{
-			id: "5",
-			name: "Maria",
+			id: '5',
+			name: 'Maria',
 			age: 25,
-			contact: "(11) 99999-9999",
-			belt: "Yellow belt",
+			contact: '(11) 99999-9999',
+			belt: 'Yellow belt'
 		},
 		{
-			id: "6",
-			name: "Ana",
+			id: '6',
+			name: 'Ana',
 			age: 28,
-			contact: "(11) 99999-9999",
-			belt: "Green belt",
+			contact: '(11) 99999-9999',
+			belt: 'Green belt'
 		},
 		{
-			id: "7",
-			name: "Carlos",
+			id: '7',
+			name: 'Carlos',
 			age: 30,
-			contact: "(11) 99999-9999",
-			belt: "Brown belt",
+			contact: '(11) 99999-9999',
+			belt: 'Brown belt'
 		},
 		{
-			id: "8",
-			name: "Fernanda",
+			id: '8',
+			name: 'Fernanda',
 			age: 27,
-			contact: "(11) 99999-9999",
-			belt: "Purple belt",
+			contact: '(11) 99999-9999',
+			belt: 'Purple belt'
 		},
 		{
-			id: "9",
-			name: "Roberto",
+			id: '9',
+			name: 'Roberto',
 			age: 29,
-			contact: "(11) 99999-9999",
-			belt: "Orange belt",
+			contact: '(11) 99999-9999',
+			belt: 'Orange belt'
 		},
 		{
-			id: "10",
-			name: "Patrícia",
+			id: '10',
+			name: 'Patrícia',
 			age: 31,
-			contact: "(11) 99999-9999",
-			belt: "Gray belt",
+			contact: '(11) 99999-9999',
+			belt: 'Gray belt'
 		},
 		{
-			id: "11",
-			name: "Juliana",
+			id: '11',
+			name: 'Juliana',
 			age: 26,
-			contact: "(11) 99999-9999",
-			belt: "Pink belt",
+			contact: '(11) 99999-9999',
+			belt: 'Pink belt'
 		},
 		{
-			id: "12",
-			name: "Ricardo",
+			id: '12',
+			name: 'Ricardo',
 			age: 33,
-			contact: "(11) 99999-9999",
-			belt: "Black belt",
+			contact: '(11) 99999-9999',
+			belt: 'Black belt'
 		},
 		{
-			id: "13",
-			name: "Tatiane",
+			id: '13',
+			name: 'Tatiane',
 			age: 24,
-			contact: "(11) 99999-9999",
-			belt: "Red belt",
-		},
-	]);
-	const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([]);
-	const [open, setOpen] = useState<boolean>(false);
+			contact: '(11) 99999-9999',
+			belt: 'Red belt'
+		}
+	])
+	const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([])
+	const [open, setOpen] = useState<boolean>(false)
 
 	const {
 		handleSubmit,
 		formState: { errors },
-		register,
+		register
 	} = useForm<CreateClasroomSchema>({
-		resolver: zodResolver(createClasroomSchema),
-	});
+		resolver: zodResolver(createClasroomSchema)
+	})
 
 	async function createClassroom({ day, local, name, time, students }: CreateClasroomSchema) {}
 
@@ -134,8 +134,8 @@ export function CreateClassroomForm() {
 					type='text'
 					id='name'
 					placeholder='Nome da turma'
-					{...register("name")}
-					className={`h-10 w-full rounded-md px-2 ${errors.name ? "border-red-500" : ""}`}
+					{...register('name')}
+					className={`h-10 w-full rounded-md px-2 ${errors.name ? 'border-red-500' : ''}`}
 				/>
 				{errors.name && <span className='text-sm text-red-500'>{errors.name.message}</span>}
 			</div>
@@ -146,8 +146,8 @@ export function CreateClassroomForm() {
 					type='text'
 					id='local'
 					placeholder='Local'
-					{...register("local")}
-					className={`h-10 w-full rounded-md px-2 ${errors.local ? "border-red-500" : ""}`}
+					{...register('local')}
+					className={`h-10 w-full rounded-md px-2 ${errors.local ? 'border-red-500' : ''}`}
 				/>
 				{errors.local && <span className='text-sm text-red-500'>{errors.local.message}</span>}
 			</div>
@@ -157,8 +157,8 @@ export function CreateClassroomForm() {
 				<Input
 					type='date'
 					id='day'
-					{...register("day")}
-					className={`h-10 w-full rounded-md px-2 ${errors.day ? "border-red-500" : ""}`}
+					{...register('day')}
+					className={`h-10 w-full rounded-md px-2 ${errors.day ? 'border-red-500' : ''}`}
 				/>
 				{errors.day && <span className='text-sm text-red-500'>{errors.day.message}</span>}
 			</div>
@@ -168,8 +168,8 @@ export function CreateClassroomForm() {
 				<Input
 					type='time'
 					id='time'
-					{...register("time")}
-					className={`h-10 w-full rounded-md px-2 ${errors.time ? "border-red-500" : ""}`}
+					{...register('time')}
+					className={`h-10 w-full rounded-md px-2 ${errors.time ? 'border-red-500' : ''}`}
 				/>
 				{errors.time && <span className='text-sm text-red-500'>{errors.time.message}</span>}
 			</div>
@@ -207,22 +207,22 @@ export function CreateClassroomForm() {
 														setSelectedStudents((prev) => {
 															const alreadySelected = prev.find(
 																(s) => s.id === student.id
-															);
+															)
 															if (alreadySelected) {
-																return prev.filter((s) => s.id !== student.id);
+																return prev.filter((s) => s.id !== student.id)
 															} else {
-																return [...prev, student];
+																return [...prev, student]
 															}
-														});
+														})
 													}}
 												>
 													{student.name}
 													<Check
 														className={cn(
-															"ml-auto",
+															'ml-auto',
 															selectedStudents.find((s) => s.id === student.id)
-																? "opacity-100"
-																: "opacity-0"
+																? 'opacity-100'
+																: 'opacity-0'
 														)}
 													/>
 												</CommandItem>
@@ -270,5 +270,5 @@ export function CreateClassroomForm() {
 				</Button>
 			</div>
 		</form>
-	);
+	)
 }

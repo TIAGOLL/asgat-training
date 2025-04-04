@@ -1,43 +1,43 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusCircle, Save } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { PlusCircle, Save } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod'
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
-import { createTrainingSchema } from "./validations/create-classroom-schema copy";
+import { createTrainingSchema } from './validations/create-classroom-schema copy'
 
 type CreateTrainingSchema = z.infer<typeof createTrainingSchema>;
 
 export function CreateTrainingForm() {
-	const [exercisesList, setExercisesList] = useState<string[]>([]);
+	const [exercisesList, setExercisesList] = useState<string[]>([])
 
 	const [trainingTypes] = useState([
 		{
 			id: 1,
-			name: "Treino de força",
+			name: 'Treino de força'
 		},
 		{
 			id: 2,
-			name: "Treino de resistência",
+			name: 'Treino de resistência'
 		},
 		{
 			id: 3,
-			name: "Treino de flexibilidade",
+			name: 'Treino de flexibilidade'
 		},
 		{
 			id: 4,
-			name: "Treino de velocidade",
-		},
-	]);
+			name: 'Treino de velocidade'
+		}
+	])
 
-	const [exercise, setExercise] = useState("");
+	const [exercise, setExercise] = useState('')
 
 	const {
 		handleSubmit,
@@ -45,10 +45,10 @@ export function CreateTrainingForm() {
 		register,
 		setValue,
 		setError,
-		clearErrors,
+		clearErrors
 	} = useForm<CreateTrainingSchema>({
-		resolver: zodResolver(createTrainingSchema),
-	});
+		resolver: zodResolver(createTrainingSchema)
+	})
 
 	async function createTraining({ type, exercises }: CreateTrainingSchema) {}
 
@@ -62,8 +62,8 @@ export function CreateTrainingForm() {
 				<CardContent className='mt-10 grid grid-cols-6 space-y-7'>
 					<div className='col-span-6 grid gap-2'>
 						<Label>Tipo de treino</Label>
-						<Select onValueChange={(value) => setValue("type", value)} defaultValue=''>
-							<SelectTrigger {...register("type")}>
+						<Select onValueChange={(value) => setValue('type', value)} defaultValue=''>
+							<SelectTrigger {...register('type')}>
 								<SelectValue placeholder='Selecione...' />
 							</SelectTrigger>
 							<SelectContent>
@@ -93,19 +93,19 @@ export function CreateTrainingForm() {
 								className='w-4/12'
 								onClick={() => {
 									if (exercise.length < 3) {
-										return setError("exercises", {
-											message: "O treino não pode ter menos que 3 caracteres",
-											type: "minLength",
-										});
+										return setError('exercises', {
+											message: 'O treino não pode ter menos que 3 caracteres',
+											type: 'minLength'
+										})
 									}
 
 									if (exercise.length >= 3) {
-										clearErrors("exercises");
+										clearErrors('exercises')
 										setExercisesList((prev) => {
-											return [...prev, exercise];
-										});
-										setValue("exercises", exercisesList);
-										setExercise("");
+											return [...prev, exercise]
+										})
+										setValue('exercises', exercisesList)
+										setExercise('')
 									}
 								}}
 							>
@@ -146,5 +146,5 @@ export function CreateTrainingForm() {
 				</Button>
 			</div>
 		</form>
-	);
+	)
 }

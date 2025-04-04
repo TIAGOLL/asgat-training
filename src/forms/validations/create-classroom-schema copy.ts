@@ -7,10 +7,10 @@ export const createTrainingSchema = z.object({
 			return true
 		},
 		{
-			message: 'Tipo é obrigatório',
-		},
+			message: 'Tipo é obrigatório'
+		}
 	),
 	exercises: z.array(z.string(), {
-		required_error: 'Exercícios são obrigatórios',
-	}),
+		required_error: 'Exercícios são obrigatórios'
+	})
 })

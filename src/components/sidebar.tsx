@@ -1,10 +1,10 @@
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Circle, Clipboard, Dumbbell, GraduationCap, Power, Users } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { Circle, Clipboard, Dumbbell, GraduationCap, Power, Users } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Avatar } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 
 export function Sidebar() {
 	type Tab = {
@@ -18,38 +18,38 @@ export function Sidebar() {
 
 	const tabs: Tab[] = [
 		{
-			name: "Aulas",
+			name: 'Aulas',
 			icon: GraduationCap,
 			links: [
-				{ name: "Ver aulas", to: "/classes" },
-				{ name: "Cadastrar aulas", to: "/classes/register" },
-			],
+				{ name: 'Ver aulas', to: '/classes' },
+				{ name: 'Cadastrar aulas', to: '/classes/register' }
+			]
 		},
 		{
-			name: "Alunos",
+			name: 'Alunos',
 			icon: Users,
 			links: [
-				{ name: "Ver alunos", to: "/students" },
-				{ name: "Cadastrar alunos", to: "/students/register" },
-			],
+				{ name: 'Ver alunos', to: '/students' },
+				{ name: 'Cadastrar alunos', to: '/students/register' }
+			]
 		},
 		{
-			name: "Turmas",
+			name: 'Turmas',
 			icon: Clipboard,
 			links: [
-				{ name: "Ver turmas", to: "/classrooms" },
-				{ name: "Cadastrar turma", to: "/classrooms/register" },
-			],
+				{ name: 'Ver turmas', to: '/classrooms' },
+				{ name: 'Cadastrar turma', to: '/classrooms/register' }
+			]
 		},
 		{
-			name: "Treinos",
+			name: 'Treinos',
 			icon: Dumbbell,
 			links: [
-				{ name: "Ver treinos", to: "/trainings" },
-				{ name: "Cadastrar treino", to: "/trainings/register" },
-			],
-		},
-	];
+				{ name: 'Ver treinos', to: '/trainings' },
+				{ name: 'Cadastrar treino', to: '/trainings/register' }
+			]
+		}
+	]
 
 	return (
 		<div className='flex h-screen w-[17rem] flex-col bg-indigo-600 p-4 text-white'>
@@ -63,12 +63,12 @@ export function Sidebar() {
 			<nav className='flex flex-1 flex-col justify-between'>
 				<Accordion type='single' collapsible className='mt-10 flex w-full flex-col gap-3'>
 					{tabs.map((tab) => {
-						const active = window.location.pathname === tab.links[0].to || window.location.pathname === tab.links[1].to;
+						const active = window.location.pathname === tab.links[0].to || window.location.pathname === tab.links[1].to
 
 						return (
 							<AccordionItem value={tab.name} className='flex flex-col gap-2 border-0' key={tab.name}>
 								<AccordionTrigger
-									className={`flex cursor-pointer items-center space-x-3 rounded-lg p-2 !no-underline duration-400 ${active ? "!bg-white font-semibold text-indigo-600" : "hover:bg-indigo-500"}`}
+									className={`flex cursor-pointer items-center space-x-3 rounded-lg p-2 !no-underline duration-400 ${active ? '!bg-white font-semibold text-indigo-600' : 'hover:bg-indigo-500'}`}
 								>
 									<tab.icon className='size-6 !rotate-none animate-none' />
 									<span className='text-lg'>{tab.name}</span>
@@ -84,11 +84,11 @@ export function Sidebar() {
 												<Circle className='size-2' />
 												{link.name}
 											</NavLink>
-										);
+										)
 									})}
 								</AccordionContent>
 							</AccordionItem>
-						);
+						)
 					})}
 				</Accordion>
 				<Link rel='stylesheet' to='/'>
@@ -103,5 +103,5 @@ export function Sidebar() {
 				</Link>
 			</nav>
 		</div>
-	);
+	)
 }

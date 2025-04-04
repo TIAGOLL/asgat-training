@@ -1,5 +1,5 @@
-import { Sidebar } from "@/components/sidebar";
-import { CreateClassroomForm } from "@/forms/create-classroom-form";
+import { Sidebar } from '@/components/sidebar'
+import { CreateClassroomForm } from '@/forms/create-classroom-form'
 
 export function CreateClassroom() {
 	return (
@@ -12,5 +12,5 @@ export function CreateClassroom() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

@@ -12,14 +12,14 @@ interface SignInWithEmailAndPasswordResponse {
 
 export async function SignInWithEmailAndPasswordService({
 	email,
-	password,
+	password
 }: SignInWithEmailAndPasswordRequest) {
 	const result = await api
 		.post('sessions/password', {
 			json: {
 				email,
-				password,
-			},
+				password
+			}
 		})
 		.json<SignInWithEmailAndPasswordResponse>()
 

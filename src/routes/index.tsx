@@ -1,12 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { Classes } from "@/pages/classes";
-import { Classrooms } from "@/pages/classrooms";
-import { CreateClassroom } from "@/pages/classrooms/create-classrooom";
-import { SignIn } from "@/pages/sign-in";
-import { Students } from "@/pages/students";
-import { Trainings } from "@/pages/trainings";
-import { CreateTraining } from "@/pages/trainings/create-trainings";
+import { Classes } from '@/pages/classes'
+import { Classrooms } from '@/pages/classrooms'
+import { CreateClassroom } from '@/pages/classrooms/create-classrooom'
+import { SignIn } from '@/pages/sign-in'
+import { Students } from '@/pages/students'
+import { Trainings } from '@/pages/trainings'
+import { CreateTraining } from '@/pages/trainings/create-trainings'
 
 function RoutesApp() {
 	return (
@@ -21,7 +21,7 @@ function RoutesApp() {
 				<Route path='/trainings' element={<Trainings />} />
 			</Routes>
 		</BrowserRouter>
-	);
+	)
 }
 
-export default RoutesApp;
+export default RoutesApp

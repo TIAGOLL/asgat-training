@@ -1,5 +1,5 @@
-import { Sidebar } from "@/components/sidebar";
-import { DataTableTrainings } from "@/components/tables/trainings-table";
+import { Sidebar } from '@/components/sidebar'
+import { DataTableTrainings } from '@/components/tables/trainings-table'
 
 export function Trainings() {
 	return (
@@ -12,5 +12,5 @@ export function Trainings() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }
