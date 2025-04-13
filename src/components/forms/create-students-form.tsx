@@ -41,7 +41,9 @@ export function CreateStudentsForm() {
     resolver: zodResolver(studentSchema),
   });
 
-  async function createTraining({ type, exercises }: StudentsSchema) {}
+  async function createTraining({ belt, contact, dateOfBirth, entryDate, id, name }: StudentsSchema) {
+    console.log('createTraining', { belt, contact, dateOfBirth, entryDate, id, name });
+  }
 
   return (
     <form onSubmit={handleSubmit(createTraining)} className='grid w-full grid-cols-6 place-items-center gap-4'>
