@@ -1,13 +1,13 @@
-import { Sidebar } from '@/components/sidebar'
-import { CreateTrainingForm } from '@/forms/create-training-form'
+import { CreateTrainingForm } from '@/components/forms/create-training-form';
+import { Sidebar } from '@/components/sidebar';
 
 export function CreateTraining() {
-	return (
-		<div className='flex flex-row'>
-			<Sidebar />
-			<div className='flex w-[calc(80vw)] flex-col items-center justify-center'>
-				<CreateTrainingForm />
-			</div>
-		</div>
-	)
+  return (
+    <div className='flex flex-row'>
+      <Sidebar />
+      <div className='mt-10 flex w-full flex-col items-center justify-start'>
+        <CreateTrainingForm />
+      </div>
+    </div>
+  );
 }

@@ -1,12 +1,12 @@
-import { CreateClassroomForm } from '@/components/forms/create-classroom-form';
+import { CreateStudentsForm } from '@/components/forms/create-students-form';
 import { Sidebar } from '@/components/sidebar';
 
-export function CreateClassroom() {
+export function CreateStudents() {
   return (
     <div className='flex flex-row'>
       <Sidebar />
       <div className='mt-10 flex w-full flex-col items-center justify-start'>
-        <CreateClassroomForm />
+        <CreateStudentsForm />
       </div>
     </div>
   );

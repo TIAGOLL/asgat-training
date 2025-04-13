@@ -1,14 +1,14 @@
 import { Sidebar } from '@/components/sidebar';
-import { DataTableClassrooms } from '@/components/tables/classrooms-table';
+import { DataTableStudents } from '@/components/tables/students-table';
 
-export function Classrooms() {
+export function Students() {
   return (
     <div className='flex flex-row'>
       <Sidebar />
       <div className='flex w-full flex-col items-center justify-start'>
-        <h1>Turmas</h1>
+        <h1>Alunos</h1>
         <div className='flex w-[calc(80vw)] flex-col items-center justify-start'>
-          <DataTableClassrooms />
+          <DataTableStudents />
         </div>
       </div>
     </div>
