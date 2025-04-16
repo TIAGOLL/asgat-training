@@ -52,7 +52,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className='flex h-screen w-[17rem] flex-col bg-indigo-600 p-4 text-white'>
+    <div className='flex h-screen w-[17rem] flex-col bg-[#020817] p-4 text-white dark:bg-[#334155]'>
       <div className='flex flex-col items-center space-y-3'>
         <Avatar className='h-15 w-15'>
           <AvatarImage src='logo.png' />
@@ -68,7 +68,7 @@ export function Sidebar() {
             return (
               <AccordionItem value={tab.name} className='flex flex-col gap-2 border-0' key={tab.name}>
                 <AccordionTrigger
-                  className={`flex cursor-pointer items-center space-x-3 rounded-lg p-2 !no-underline duration-400 ${active ? '!bg-white font-semibold text-indigo-600' : 'hover:bg-indigo-500'}`}>
+                  className={`flex cursor-pointer items-center space-x-3 rounded-lg p-2 text-white !no-underline duration-400 ${active ? '!bg-white font-semibold text-[#334155]' : 'hover:bg-slate-800'}`}>
                   <tab.icon className='size-6 !rotate-none animate-none' />
                   <span className='text-lg'>{tab.name}</span>
                 </AccordionTrigger>
