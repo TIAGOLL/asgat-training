@@ -6,23 +6,23 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
-export function Sidebar() {
-  type Tab = {
+type Tab = {
+  name: string;
+  icon: React.ElementType;
+  links: {
     name: string;
-    icon: React.ElementType;
-    links: {
-      name: string;
-      to: string;
-    }[];
-  };
+    to: string;
+  }[];
+};
 
+export function Sidebar() {
   const tabs: Tab[] = [
     {
       name: 'Aulas',
       icon: GraduationCap,
       links: [
         { name: 'Ver aulas', to: '/classes' },
-        { name: 'Cadastrar aulas', to: '/classes/register' },
+        { name: 'Cadastrar aulas', to: '/classes/create' },
       ],
     },
     {
@@ -30,7 +30,7 @@ export function Sidebar() {
       icon: Users,
       links: [
         { name: 'Ver alunos', to: '/students' },
-        { name: 'Cadastrar alunos', to: '/students/register' },
+        { name: 'Cadastrar alunos', to: '/students/create' },
       ],
     },
     {
@@ -38,7 +38,7 @@ export function Sidebar() {
       icon: Clipboard,
       links: [
         { name: 'Ver turmas', to: '/classrooms' },
-        { name: 'Cadastrar turma', to: '/classrooms/register' },
+        { name: 'Cadastrar turma', to: '/classrooms/create' },
       ],
     },
     {
@@ -46,16 +46,16 @@ export function Sidebar() {
       icon: Dumbbell,
       links: [
         { name: 'Ver treinos', to: '/trainings' },
-        { name: 'Cadastrar treino', to: '/trainings/register' },
+        { name: 'Cadastrar treino', to: '/trainings/create' },
       ],
     },
   ];
 
   return (
-    <div className='flex h-screen w-[17rem] flex-col bg-[#020817] p-4 text-white dark:bg-[#334155]'>
+    <div className='flex h-screen w-[17rem] flex-col bg-[#213046] p-4 text-white dark:bg-[#334155]'>
       <div className='flex flex-col items-center space-y-3'>
         <Avatar className='h-15 w-15'>
-          <AvatarImage src='logo.png' />
+          <AvatarImage src='/logo.png' />
           <AvatarFallback>ASGAT</AvatarFallback>
         </Avatar>
         <h2 className='font-serif text-xl font-semibold'>ASGAT</h2>
@@ -63,7 +63,10 @@ export function Sidebar() {
       <nav className='flex flex-1 flex-col justify-between'>
         <Accordion type='single' collapsible className='mt-10 flex w-full flex-col gap-3'>
           {tabs.map((tab) => {
-            const active = window.location.pathname === tab.links[0].to || window.location.pathname === tab.links[1].to;
+            const active = tab.links.some((link) => {
+              const currentPath = window.location.pathname;
+              return currentPath.includes(link.to);
+            });
 
             return (
               <AccordionItem value={tab.name} className='flex flex-col gap-2 border-0' key={tab.name}>

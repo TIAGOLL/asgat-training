@@ -9,9 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import { FormMessageError } from '../form-message-error';
-import { Input } from '../ui/input';
-import { studentSchema } from './validations/entities/students';
+import { FormMessageError } from '../../../components/form-message-error';
+import { studentSchema } from '../../../components/forms/validations/entities/students';
+import { Input } from '../../../components/ui/input';
 
 type StudentsSchema = z.infer<typeof studentSchema>;
 
@@ -49,7 +49,7 @@ export function CreateStudentsForm() {
     <form onSubmit={handleSubmit(createTraining)} className='grid w-full grid-cols-6 place-items-center gap-4'>
       <Card className='col-span-6 w-8/12 gap-2'>
         <CardHeader className='col-span-6 place-items-center'>
-          <CardTitle>Criar alunos</CardTitle>
+          <CardTitle>Cadastrar alunos</CardTitle>
         </CardHeader>
         <CardContent className='col-span-6 mt-10 grid grid-cols-6 space-y-7 space-x-2'>
           <div className='col-span-3 grid gap-2'>

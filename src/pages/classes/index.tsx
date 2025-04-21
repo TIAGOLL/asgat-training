@@ -1,82 +1,199 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import { Link } from 'react-router-dom';
 
 import { Sidebar } from '@/components/sidebar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export function Classes() {
+  const [activities] = useState([
+    {
+      id: '3',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T03:00:00.000Z'),
+    },
+    {
+      id: '4',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T04:00:00.000Z'),
+    },
+    {
+      id: '5',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T05:00:00.000Z'),
+    },
+    {
+      id: '6',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T06:00:00.000Z'),
+    },
+    {
+      id: '7',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T07:00:00.000Z'),
+    },
+    {
+      id: '8',
+      classe: 'Turma A',
+      trainingType: 'Cardio',
+      date: new Date('2025-04-01T08:00:00.000Z'),
+    },
+    {
+      id: '4',
+      classe: 'Turma X',
+      trainingType: 'Musculação',
+      date: new Date('2025-04-01T09:00:00.000Z'),
+    },
+    {
+      id: '5',
+      classe: 'Turma Z',
+      trainingType: 'Alongamento',
+      date: new Date('2025-04-01T24:00:00.000Z'),
+    },
+    {
+      id: '9',
+      classe: 'Turma B',
+      trainingType: 'Yoga',
+      date: new Date('2025-04-02T10:00:00.000Z'),
+    },
+    {
+      id: '10',
+      classe: 'Turma C',
+      trainingType: 'Pilates',
+      date: new Date('2025-04-03T11:00:00.000Z'),
+    },
+    {
+      id: '11',
+      classe: 'Turma D',
+      trainingType: 'Zumba',
+      date: new Date('2025-04-04T12:00:00.000Z'),
+    },
+    {
+      id: '12',
+      classe: 'Turma E',
+      trainingType: 'Crossfit',
+      date: new Date('2025-04-05T13:00:00.000Z'),
+    },
+    {
+      id: '13',
+      classe: 'Turma F',
+      trainingType: 'HIIT',
+      date: new Date('2025-04-06T14:00:00.000Z'),
+    },
+    {
+      id: '14',
+      classe: 'Turma G',
+      trainingType: 'Boxe',
+      date: new Date('2025-04-07T15:00:00.000Z'),
+    },
+    {
+      id: '15',
+      classe: 'Turma H',
+      trainingType: 'Dança',
+      date: new Date('2025-04-08T16:00:00.000Z'),
+    },
+  ]);
+
   return (
     <div className='flex flex-row'>
       <Sidebar />
       <div className='flex w-full flex-col items-center justify-start'>
-        <h1>Aulas</h1>
         <div className='flex flex-row items-center justify-center space-x-4'>
           <DayPicker
             className={cn('flex items-center justify-center p-3')}
             classNames={{
-              months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
               month: 'space-y-4',
               caption: 'flex justify-center pt-1 relative items-center',
               caption_label: 'text-xl font-medium mb-5',
               nav: 'space-x-1 flex items-center',
-              nav_button: cn(buttonVariants({ variant: 'outline' }), 'size-12 bg-transparent p-0 opacity-50 hover:opacity-100'),
+              nav_button: cn(
+                buttonVariants({ variant: 'outline' }),
+                'size-12 bg-transparent p-0 opacity-50 hover:opacity-100',
+              ),
               nav_button_previous: 'absolute left-1',
               nav_button_next: 'absolute right-1',
-              table: 'w-full border-collapse space-y-1 max-w-none flex flex-col justify-center items-center',
               head: 'flex w-full mt-2',
-              head_cell: 'text-muted-foreground rounded-md w-[calc(14.29vw-3rem)] font-normal text-xl',
               row: 'flex w-full mt-2 gap-2',
               cell: cn(
-                '[&:has([aria-selected])]:rounded-md w-[calc(14.29vw-3rem)] h-[calc(10vh)] relative p-0 text-center text-xl focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md',
+                '[&:has([aria-selected])]:rounded-md w-[calc(14.29vw-3rem)] h-[calc(14vh)] relative p-0 text-center text-xl focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md',
               ),
-              day: cn(
-                buttonVariants({ variant: 'ghost' }),
-                'h-20 w-20 p-4 flex items-start justify-center font-normal aria-selected:opacity-100 m-auto',
-              ),
-
-              day_range_start: 'day-range-start',
-              day_range_end: 'day-range-end',
-              day_selected:
-                'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-              day_today: 'bg-accent text-accent-foreground',
-              day_outside: 'day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground',
-              day_disabled: 'text-muted-foreground opacity-50',
-              day_range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
-              day_hidden: 'invisible',
             }}
             components={{
               IconLeft(props) {
                 return (
-                  <Button variant='ghost' {...props} className={cn('flex size-10 items-center justify-center', props.className)}>
+                  <Button
+                    variant='ghost'
+                    {...props}
+                    className={cn('flex size-10 items-center justify-center', props.className)}>
                     <ChevronLeft aria-label='Mês anterior' className='size-6' />
                   </Button>
                 );
               },
               IconRight(props) {
                 return (
-                  <Button variant='ghost' {...props} className={cn('flex size-10 items-center justify-center', props.className)}>
+                  <Button
+                    variant='ghost'
+                    {...props}
+                    className={cn('flex size-10 items-center justify-center', props.className)}>
                     <ChevronRight aria-label='Próximo mês' className='size-6' />
                   </Button>
                 );
               },
               Day(props) {
                 return (
-                  <button
-                    type='button'
-                    {...props}
-                    className={cn(
-                      'hover:bg-accent hover:text-accent-foreground flex h-full w-full items-center justify-center rounded-3xl border-1 font-normal',
-                    )}>
-                    <div className='flex h-full w-full'>
-                      <div className='flex h-full w-[20%] items-start justify-start pt-4 pl-4'>{props.date.getDate()}</div>
-                      <div className='flex h-full w-[80%] items-center justify-center'>{/* LISTAR ATIVIDADES */}</div>
+                  <div className='hover:bg-accent hover:text-accent-foreground flex h-full w-full items-center justify-end rounded-3xl border-1 font-normal'>
+                    {/* Verifica se o dia no calendário é hoje, se for aplica um background no dia */}
+                    {props.date.getDate() === new Date().getDate() &&
+                    props.date.getMonth() === new Date().getMonth() ? (
+                      <div className='absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-200 text-[#213046]'>
+                        {props.date.getDate()}
+                      </div>
+                    ) : (
+                      <div className='flex h-full w-[20%] items-start justify-start pt-4 pl-4'>
+                        {props.date.getDate()}
+                      </div>
+                    )}
+                    <div className='flex h-full w-[80%] flex-col items-center justify-start space-y-1 overflow-y-auto pt-2 pb-2'>
+                      {activities.map(({ date, id, classe }) => {
+                        if (
+                          date.getDate() === props.date.getDate() &&
+                          date.getMonth() === props.date.getMonth()
+                        ) {
+                          return (
+                            <Link
+                              to={`/classes/${id}`}
+                              key={id}
+                              className='dark:!bg-primary rounded-lg px-2 py-0.5 text-sm'>
+                              {classe} -{' '}
+                              {date.getUTCHours() +
+                                ':' +
+                                String(date.getUTCMinutes()).padStart(2, '0')}
+                            </Link>
+                          );
+                        }
+                        return null;
+                      })}
                     </div>
-                  </button>
+                  </div>
                 );
               },
               HeadRow() {
-                const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+                const weekDays = [
+                  'Segunda',
+                  'Terça',
+                  'Quarta',
+                  'Quinta',
+                  'Sexta',
+                  'Sábado',
+                  'Domingo',
+                ];
                 return (
                   <thead className='rdp-head'>
                     {weekDays.map((day) => (

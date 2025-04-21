@@ -45,7 +45,7 @@ module.exports = {
         singleQuote: true,
         trailingComma: 'all',
         semi: true,
-        printWidth: 150,
+        printWidth: 100,
         plugins: ['prettier-plugin-tailwindcss'],
         tabWidth: 2,
         quoteProps: 'as-needed',

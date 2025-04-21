@@ -1,4 +1,4 @@
-import { CreateStudentsForm } from '@/components/forms/create-students-form';
+import { CreateStudentsForm } from '@/pages/students/components/create-students-form';
 import { Sidebar } from '@/components/sidebar';
 
 export function CreateStudents() {

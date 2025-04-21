@@ -14,9 +14,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
-import { FormMessageError } from '../form-message-error';
-import { createClasroomSchema } from './validations/create-classroom-schema';
-import { studentSchema } from './validations/entities/students';
+import { FormMessageError } from '../../../components/form-message-error';
+import { createClasroomSchema } from '../../../components/forms/validations/create-classroom-schema';
+import { studentSchema } from '../../../components/forms/validations/entities/students';
 
 type CreateClasroomSchema = z.infer<typeof createClasroomSchema>;
 type StudentSchema = z.infer<typeof studentSchema>;

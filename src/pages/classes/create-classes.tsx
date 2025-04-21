@@ -1,5 +1,5 @@
-import { CreateClassesForm } from '@/components/forms/create-classes-form';
 import { Sidebar } from '@/components/sidebar';
+import { CreateClassesForm } from '@/pages/classes/components/create-classes-form';
 
 export function CreateClasses() {
   return (

@@ -1,12 +1,12 @@
-import { CreateTrainingForm } from '@/pages/trainings/components/create-training-form';
 import { Sidebar } from '@/components/sidebar';
+import { UpdateClassesForm } from '@/pages/classes/components/update-classes-form';
 
-export function CreateTraining() {
+export function UpdateClasses() {
   return (
     <div className='flex flex-row'>
       <Sidebar />
       <div className='mt-10 flex w-full flex-col items-center justify-start'>
-        <CreateTrainingForm />
+        <UpdateClassesForm />
       </div>
     </div>
   );

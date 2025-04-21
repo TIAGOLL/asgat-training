@@ -11,8 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-import { FormMessageError } from '../form-message-error';
-import { createTrainingSchema } from './validations/create-training-schema';
+import { FormMessageError } from '../../../components/form-message-error';
+import { createTrainingSchema } from '../../../components/forms/validations/create-training-schema';
 
 type CreateTrainingSchema = z.infer<typeof createTrainingSchema>;
 

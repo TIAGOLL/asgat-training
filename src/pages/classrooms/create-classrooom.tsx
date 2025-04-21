@@ -1,4 +1,4 @@
-import { CreateClassroomForm } from '@/components/forms/create-classroom-form';
+import { CreateClassroomForm } from '@/pages/classrooms/components/create-classroom-form';
 import { Sidebar } from '@/components/sidebar';
 
 export function CreateClassroom() {
