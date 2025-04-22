@@ -18,12 +18,20 @@ const formMessageErrorVariants = cva('', {
   },
 });
 
-export interface FormMessageErrorSchema extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof formMessageErrorVariants> {
+export interface FormMessageErrorSchema
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof formMessageErrorVariants> {
   error?: string | FieldError | Merge<FieldError, FieldErrorsImpl>;
 }
 
-export function FormMessageError({ variant = 'error', error, className, ...props }: FormMessageErrorSchema) {
-  const errorMessage = error && (typeof error === 'string' ? error : (error as FieldError)?.message);
+export function FormMessageError({
+  variant = 'error',
+  error,
+  className,
+  ...props
+}: FormMessageErrorSchema) {
+  const errorMessage =
+    error && (typeof error === 'string' ? error : (error as FieldError)?.message);
 
   return (
     error && (

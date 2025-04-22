@@ -2,7 +2,12 @@ import { AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { Circle, Clipboard, Dumbbell, GraduationCap, Power, Users } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
@@ -69,7 +74,10 @@ export function Sidebar() {
             });
 
             return (
-              <AccordionItem value={tab.name} className='flex flex-col gap-2 border-0' key={tab.name}>
+              <AccordionItem
+                value={tab.name}
+                className='flex flex-col gap-2 border-0'
+                key={tab.name}>
                 <AccordionTrigger
                   className={`flex cursor-pointer items-center space-x-3 rounded-lg p-2 text-white !no-underline duration-400 ${active ? '!bg-white font-semibold text-[#334155]' : 'hover:bg-slate-800'}`}>
                   <tab.icon className='size-6 !rotate-none animate-none' />
@@ -78,7 +86,10 @@ export function Sidebar() {
                 <AccordionContent className='animate-in fade-in-50 slide-in-from-top-10 data-[state=open]:animate-out data-[state=closed]:fade-out-50 data-[state=closed]:slide-out-to-bottom-10 m-0 flex flex-col space-y-1 border-0 py-0.5'>
                   {tab.links.map((link) => {
                     return (
-                      <NavLink to={link.to} className='flex flex-row items-center gap-2 text-lg hover:underline' key={link.name}>
+                      <NavLink
+                        to={link.to}
+                        className='flex flex-row items-center gap-2 text-lg hover:underline'
+                        key={link.name}>
                         <Circle className='size-2' />
                         {link.name}
                       </NavLink>
@@ -90,7 +101,10 @@ export function Sidebar() {
           })}
         </Accordion>
         <Link rel='stylesheet' to='/'>
-          <Button variant='destructive' type='button' className='flex w-[10rem] place-items-center space-x-2 hover:cursor-pointer'>
+          <Button
+            variant='destructive'
+            type='button'
+            className='flex w-[10rem] place-items-center space-x-2 hover:cursor-pointer'>
             <Power />
             Sair
           </Button>

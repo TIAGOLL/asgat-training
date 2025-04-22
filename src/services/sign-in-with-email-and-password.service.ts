@@ -10,7 +10,10 @@ interface SignInWithEmailAndPasswordResponse {
   message: string;
 }
 
-export async function SignInWithEmailAndPasswordService({ email, password }: SignInWithEmailAndPasswordRequest) {
+export async function SignInWithEmailAndPasswordService({
+  email,
+  password,
+}: SignInWithEmailAndPasswordRequest) {
   const result = await api
     .post('sessions/password', {
       json: {

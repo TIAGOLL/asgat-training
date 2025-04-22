@@ -8,8 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { createTrainingSchema } from '../../../components/forms/validations/create-training-schema';
@@ -54,7 +68,9 @@ export function CreateTrainingForm() {
   async function createTraining({ type, exercises }: CreateTrainingSchema) {}
 
   return (
-    <form onSubmit={handleSubmit(createTraining)} className='grid w-full grid-cols-6 place-items-center gap-4'>
+    <form
+      onSubmit={handleSubmit(createTraining)}
+      className='grid w-full grid-cols-6 place-items-center gap-4'>
       <Card className='col-span-6 w-8/12 gap-2'>
         <CardHeader className='flex flex-col items-center justify-center'>
           <CardTitle>Cadastrar treino</CardTitle>

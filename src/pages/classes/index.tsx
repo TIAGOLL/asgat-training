@@ -170,7 +170,7 @@ export function Classes() {
                             <Link
                               to={`/classes/${id}`}
                               key={id}
-                              className='dark:!bg-primary rounded-lg px-2 py-0.5 text-sm'>
+                              className='dark:!bg-primary rounded-lg !bg-zinc-200 px-2 py-0.5 text-sm'>
                               {classe} -{' '}
                               {date.getUTCHours() +
                                 ':' +

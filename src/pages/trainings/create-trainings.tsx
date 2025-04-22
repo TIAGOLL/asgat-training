@@ -1,5 +1,5 @@
-import { CreateTrainingForm } from '@/pages/trainings/components/create-training-form';
 import { Sidebar } from '@/components/sidebar';
+import { CreateTrainingForm } from '@/pages/trainings/components/create-training-form';
 
 export function CreateTraining() {
   return (

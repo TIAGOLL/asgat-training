@@ -18,7 +18,9 @@ export function SignIn() {
             <KeyRound />
             Autenticação
           </CardTitle>
-          <CardDescription>Insira seu e-mail e senha abaixo para fazer login em sua conta!</CardDescription>
+          <CardDescription>
+            Insira seu e-mail e senha abaixo para fazer login em sua conta!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <SignInWithEmailAndPasswordForm />

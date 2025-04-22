@@ -7,8 +7,21 @@ module.exports = {
     jest: true,
   },
   parser: '@typescript-eslint/parser',
-  extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'standard', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  plugins: ['simple-import-sort', 'unused-imports', 'react', 'jsx-a11y', '@typescript-eslint', 'prettier'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'standard',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  plugins: [
+    'simple-import-sort',
+    'unused-imports',
+    'react',
+    'jsx-a11y',
+    '@typescript-eslint',
+    'prettier',
+  ],
   rules: {
     'no-tabs': 'off',
     '@typescript-eslint/no-unused-vars': 'off',

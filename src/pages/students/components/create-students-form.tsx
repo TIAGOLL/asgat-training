@@ -7,7 +7,13 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { studentSchema } from '../../../components/forms/validations/entities/students';
@@ -41,12 +47,21 @@ export function CreateStudentsForm() {
     resolver: zodResolver(studentSchema),
   });
 
-  async function createTraining({ belt, contact, dateOfBirth, entryDate, id, name }: StudentsSchema) {
+  async function createTraining({
+    belt,
+    contact,
+    dateOfBirth,
+    entryDate,
+    id,
+    name,
+  }: StudentsSchema) {
     console.log('createTraining', { belt, contact, dateOfBirth, entryDate, id, name });
   }
 
   return (
-    <form onSubmit={handleSubmit(createTraining)} className='grid w-full grid-cols-6 place-items-center gap-4'>
+    <form
+      onSubmit={handleSubmit(createTraining)}
+      className='grid w-full grid-cols-6 place-items-center gap-4'>
       <Card className='col-span-6 w-8/12 gap-2'>
         <CardHeader className='col-span-6 place-items-center'>
           <CardTitle>Cadastrar alunos</CardTitle>
@@ -65,7 +80,11 @@ export function CreateStudentsForm() {
               <Calendar className='size-4' />
               Data de nascimento
             </Label>
-            <Input id='dateOfBirth' {...register('dateOfBirth', { valueAsDate: true })} type='date' />
+            <Input
+              id='dateOfBirth'
+              {...register('dateOfBirth', { valueAsDate: true })}
+              type='date'
+            />
             <FormMessageError error={errors.dateOfBirth?.message} />
           </div>
           <div className='col-span-3 grid gap-2'>
@@ -103,7 +122,10 @@ export function CreateStudentsForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
-        <Button type='submit' className='w-[10rem] gap-2' onClick={() => console.log(errors.entryDate)}>
+        <Button
+          type='submit'
+          className='w-[10rem] gap-2'
+          onClick={() => console.log(errors.entryDate)}>
           <Save className='size-4' />
           Salvar
         </Button>
