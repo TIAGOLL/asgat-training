@@ -52,11 +52,11 @@ export function FinalNotes() {
   ]);
 
   const students = [
-    { id: '1', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '2', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '3', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '4', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '5', name: 'Leonardo dos Santos Veque', grade: 1 },
+    { id: '1', name: 'Carlos Silva', grade: 1 },
+    { id: '2', name: 'Ana Oliveira', grade: 1 },
+    { id: '3', name: 'Mariana Costa', grade: 1 },
+    { id: '4', name: 'João Pereira', grade: 1 },
+    { id: '5', name: 'Fernanda Souza', grade: 1 },
   ];
 
   async function finishClass(data: FinishClassSchema) {
@@ -70,26 +70,26 @@ export function FinalNotes() {
         <form
           onSubmit={handleSubmit(finishClass)}
           className='grid w-full grid-cols-6 place-items-center gap-4'>
-          <Card className='col-span-6 w-8/12 gap-2'>
+          <Card className='col-span-6 w-11/12 gap-2'>
             <CardHeader className='col-span-6 place-items-center'>
               <CardTitle>Finalizar Aula</CardTitle>
             </CardHeader>
             <CardContent className='col-span-6 mt-10 grid grid-cols-6 place-items-center gap-2'>
               <div className='col-span-6 grid w-full grid-cols-6 gap-4'>
-                <div className='col-span-2 grid w-full gap-2'>
+                <div className='col-span-6 grid w-full gap-2'>
                   <Label>Turma:</Label>
                   <Input defaultValue='Time de Competicao - segunda' />
                 </div>
 
-                <div className='col-span-2 grid gap-2'>
+                <div className='col-span-6 grid w-full gap-2'>
                   <Label>Data e hora:</Label>
-                  <div className='flex flex-1 gap-2'>
-                    <Input type='date' defaultValue='2025-03-03' />
-                    <Input type='time' defaultValue='19:30' />
+                  <div className='grid grid-cols-3 gap-2'>
+                    <Input type='date' defaultValue='2025-03-03' className='col-span-2' />
+                    <Input type='time' defaultValue='19:30' className='col-span-1' />
                   </div>
                 </div>
 
-                <div className='col-span-2 grid gap-2'>
+                <div className='col-span-6 grid gap-2'>
                   <Label>Exercício</Label>
                   <Select>
                     <SelectTrigger className='w-[15rem]'>
@@ -106,11 +106,11 @@ export function FinalNotes() {
                 </div>
               </div>
 
-              <Separator className='col-span-6 h-[2px] w-10/12' />
+              <Separator className='col-span-6 h-[2px] w-11/12' />
 
               {/* Tabela */}
-              <div className='col-span-6 mt-4 flex justify-center'>
-                <Table className='w-[400px] rounded-md border'>
+              <div className='col-span-6 mt-4 w-full overflow-x-auto'>
+                <Table className='min-w-[500px] rounded-md border'>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Aluno</TableHead>
@@ -131,7 +131,7 @@ export function FinalNotes() {
               </div>
             </CardContent>
           </Card>
-          <div className='col-span-6 flex w-4/12 flex-row place-content-between gap-4'>
+          <div className='flex w-4/12 flex-row place-content-between gap-4'>
             <Link to={`/classes/notes/${id}`} className='flex items-center gap-2'>
               <Button variant='destructive' className='w-[10rem] justify-between'>
                 <ChevronLeft className='size-4' />

@@ -1,6 +1,6 @@
 import { Circle, Clipboard, Dumbbell, GraduationCap, Menu, Power, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import {
   Accordion,
@@ -76,14 +76,17 @@ export function Sidebar() {
         </Avatar>
         <h2 className='font-serif text-xl font-semibold'>ASGAT</h2>
       </div>
-      <nav className='flex flex-1 flex-col justify-between'>
+      <nav className='flex flex-1 flex-col space-y-96'>
         <Accordion type='single' collapsible className='mt-6 flex w-full flex-col gap-3'>
           {tabs.map((tab) => {
             const currentPath = window.location.pathname;
             const active = tab.links.some((link) => currentPath.includes(link.to));
 
             return (
-              <AccordionItem key={tab.name} value={tab.name} className='border-0'>
+              <AccordionItem
+                value={tab.name}
+                className='flex flex-col gap-2 border-0'
+                key={tab.name}>
                 <AccordionTrigger
                   className={`flex items-center space-x-3 rounded-lg p-2 text-white duration-400 ${
                     active ? '!bg-white font-semibold text-[#334155]' : 'hover:bg-slate-800'
@@ -91,31 +94,32 @@ export function Sidebar() {
                   <tab.icon className='size-6 !rotate-none animate-none' />
                   <span className='text-lg'>{tab.name}</span>
                 </AccordionTrigger>
-                <AccordionContent className='ml-4 flex flex-col space-y-1 py-1'>
-                  {tab.links.map((link) => (
-                    <NavLink
-                      key={link.name}
-                      to={link.to}
-                      onClick={() => setDrawerOpen(false)}
-                      className='flex items-center gap-2 text-lg hover:underline'>
-                      <Circle className='size-2' />
-                      {link.name}
-                    </NavLink>
-                  ))}
+                <AccordionContent className='animate-in fade-in-50 slide-in-from-top-10 data-[state=open]:animate-out data-[state=closed]:fade-out-50 data-[state=closed]:slide-out-to-bottom-10 m-0 flex flex-col space-y-1 border-0 py-0.5'>
+                  {tab.links.map((link) => {
+                    return (
+                      <NavLink
+                        to={link.to}
+                        className='flex flex-row items-center gap-2 text-lg hover:underline'
+                        key={link.name}>
+                        <Circle className='size-2' />
+                        {link.name}
+                      </NavLink>
+                    );
+                  })}
                 </AccordionContent>
               </AccordionItem>
             );
           })}
         </Accordion>
-
-        <div className='mt-6'>
-          <NavLink to='/' onClick={() => setDrawerOpen(false)}>
-            <Button variant='destructive' className='flex w-full items-center justify-center gap-2'>
-              <Power />
-              Sair
-            </Button>
-          </NavLink>
-        </div>
+        <Link rel='stylesheet' to='/'>
+          <Button
+            variant='destructive'
+            type='button'
+            className='flex w-[10rem] place-items-center space-x-2 hover:cursor-pointer'>
+            <Power />
+            Sair
+          </Button>
+        </Link>
       </nav>
     </div>
   );
@@ -124,7 +128,7 @@ export function Sidebar() {
     <>
       {isMobile ? (
         <div className='md:hidden'>
-          <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+          <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} direction='left'>
             <DrawerTrigger asChild className='size-10'>
               <Button variant='ghost' className='m-2'>
                 <Menu className='size-10' />

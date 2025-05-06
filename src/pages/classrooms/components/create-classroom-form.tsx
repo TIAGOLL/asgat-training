@@ -6,12 +6,33 @@ import type { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
 import { FormMessageError } from '../../../components/form-message-error';
@@ -146,26 +167,28 @@ export function CreateClassroomForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(createClassroom)} className='grid w-full grid-cols-6 place-items-center gap-4'>
-      <Card className='col-span-6 w-8/12 gap-2'>
+    <form
+      onSubmit={handleSubmit(createClassroom)}
+      className='grid w-full grid-cols-6 place-items-center gap-4'>
+      <Card className='col-span-6 w-11/12 gap-2'>
         <CardHeader className='flex flex-col items-center justify-center'>
           <CardTitle>Cadastrar turmas</CardTitle>
           <CardDescription>Escolha os alunos que irão fazer parte da turma</CardDescription>
         </CardHeader>
         <CardContent className='mt-10 grid grid-cols-6 space-y-7 space-x-4'>
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label htmlFor='name'>Nome da turma</Label>
             <Input id='name' {...register('name')} />
             <FormMessageError error={errors.name?.message} />
           </div>
 
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label htmlFor='local'>Local</Label>
             <Input type='text' id='local' placeholder='Local' {...register('local')} />
             <FormMessageError error={errors.local?.message} />
           </div>
 
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label>Dia da semana</Label>
             <Select onValueChange={(value) => setValue('day', value)}>
               <SelectTrigger {...register('day')} className='w-full'>
@@ -182,7 +205,7 @@ export function CreateClassroomForm() {
             <FormMessageError error={errors.day?.message} />
           </div>
 
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label htmlFor='time'>Horário</Label>
             <Input type='time' id='time' {...register('time')} />
             <FormMessageError error={errors.time?.message} />
@@ -190,7 +213,10 @@ export function CreateClassroomForm() {
           <div className='col-span-6 grid justify-center gap-2'>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant='outline' role='combobox' className='flex w-[15rem] justify-between'>
+                <Button
+                  variant='outline'
+                  role='combobox'
+                  className='flex w-[15rem] justify-between'>
                   Selecione os alunos...
                   <ChevronsUpDown className='opacity-50' />
                 </Button>
@@ -216,7 +242,14 @@ export function CreateClassroomForm() {
                             });
                           }}>
                           {student.name}
-                          <Check className={cn('ml-auto', selectedStudents.find((s) => s.id === student.id) ? 'opacity-100' : 'opacity-0')} />
+                          <Check
+                            className={cn(
+                              'ml-auto',
+                              selectedStudents.find((s) => s.id === student.id)
+                                ? 'opacity-100'
+                                : 'opacity-0',
+                            )}
+                          />
                         </CommandItem>
                       ))}
                     </CommandGroup>

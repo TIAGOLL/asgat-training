@@ -63,12 +63,12 @@ export function CreateClassesForm() {
     <form
       onSubmit={handleSubmit(createClasses)}
       className='grid w-full grid-cols-6 place-items-center gap-4'>
-      <Card className='col-span-6 w-8/12 gap-2'>
+      <Card className='col-span-6 w-11/12 gap-2'>
         <CardHeader className='col-span-6 place-items-center'>
           <CardTitle>Cadastrar aulas</CardTitle>
         </CardHeader>
         <CardContent className='col-span-6 mt-10 grid grid-cols-6 gap-2'>
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label>Turma</Label>
             <Select onValueChange={(value) => setValue('classroom', value)}>
               <SelectTrigger {...register('classroom')} className='w-full'>
@@ -84,7 +84,7 @@ export function CreateClassesForm() {
             </Select>
             <FormMessageError error={errors.classroom?.message} />
           </div>
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label>Treino</Label>
             <Select onValueChange={(value) => setValue('training', value)}>
               <SelectTrigger {...register('training')} className='w-full'>
@@ -100,19 +100,19 @@ export function CreateClassesForm() {
             </Select>
             <FormMessageError error={errors.training?.message} />
           </div>
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label htmlFor='date'>Data</Label>
             <Input id='date' type='date' {...register('date')} />
             <FormMessageError error={errors.date?.message} />
           </div>
-          <div className='col-span-3 grid gap-2'>
+          <div className='col-span-6 grid gap-2'>
             <Label htmlFor='time'>Horário</Label>
             <Input id='time' {...register('time')} type='time' />
             <FormMessageError error={errors.time?.message} />
           </div>
         </CardContent>
       </Card>
-      <div className='col-span-6 mt-6 grid place-items-center gap-4'>
+      <div className='mt-6 grid place-items-center gap-4'>
         <Button type='submit' className='w-[10rem] gap-2'>
           <Save className='size-4' />
           Salvar

@@ -1,5 +1,5 @@
-import { CreateStudentsForm } from '@/pages/students/components/create-students-form';
 import { Sidebar } from '@/components/sidebar';
+import { CreateStudentsForm } from '@/pages/students/components/create-students-form';
 
 export function CreateStudents() {
   return (

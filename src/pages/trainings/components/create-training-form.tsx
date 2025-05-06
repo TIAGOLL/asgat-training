@@ -8,8 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { createTrainingSchema } from '../../../components/forms/validations/create-training-schema';
@@ -54,8 +68,10 @@ export function CreateTrainingForm() {
   async function createTraining({ type, exercises }: CreateTrainingSchema) {}
 
   return (
-    <form onSubmit={handleSubmit(createTraining)} className='grid w-full grid-cols-6 place-items-center gap-4'>
-      <Card className='col-span-6 w-8/12 gap-2'>
+    <form
+      onSubmit={handleSubmit(createTraining)}
+      className='grid w-full grid-cols-6 place-items-center gap-4'>
+      <Card className='col-span-6 w-11/12 gap-2'>
         <CardHeader className='flex flex-col items-center justify-center'>
           <CardTitle>Cadastrar treino</CardTitle>
           <CardDescription>Crie treinos para aplicar aos alunos</CardDescription>
@@ -64,7 +80,7 @@ export function CreateTrainingForm() {
           <div className='col-span-6 grid gap-2'>
             <Label>Tipo de treino</Label>
             <Select onValueChange={(value) => setValue('type', value)}>
-              <SelectTrigger {...register('type')} className='w-5/12'>
+              <SelectTrigger {...register('type')} className='w-full'>
                 <SelectValue placeholder='Selecione...' />
               </SelectTrigger>
               <SelectContent>
@@ -77,43 +93,42 @@ export function CreateTrainingForm() {
             </Select>
             <FormMessageError error={errors.type?.message} />
           </div>
-          <div className='col-span-6 grid grid-cols-4 gap-2'>
-            <Label htmlFor='training' className='col-span-4'>
-              Treino
-            </Label>
-            <div className='col-span-2 flex flex-row gap-2'>
-              <Input
-                id='training'
-                placeholder='Flexões - 10 repetições'
-                className='w-1/2'
-                onChange={(e) => setExercise(e.target.value)}
-                value={exercise}
-              />
-              <Button
-                type='button'
-                className='w-4/12'
-                onClick={() => {
-                  if (exercise.length < 3) {
-                    return setError('exercises', {
-                      message: 'O treino não pode ter menos que 3 caracteres',
-                      type: 'minLength',
-                    });
-                  }
-
-                  if (exercise.length >= 3) {
-                    clearErrors('exercises');
-                    setExercisesList((prev) => {
-                      return [...prev, exercise];
-                    });
-                    setValue('exercises', exercisesList);
-                    setExercise('');
-                  }
-                }}>
-                <PlusCircle />
-                Adicionar
-              </Button>
-            </div>
+          <div className='col-span-6 grid gap-2'>
+            <Label htmlFor='training'>Exercícios</Label>
+            <Input
+              id='training'
+              placeholder='Flexões - 10 repetições'
+              onChange={(e) => setExercise(e.target.value)}
+              value={exercise}
+            />
+          </div>
+          <div className='col-span-6 grid gap-2'>
             <FormMessageError error={errors.exercises?.message} />
+          </div>
+          <div className='col-span-6 grid gap-2'>
+            <Button
+              type='button'
+              className='w-full'
+              onClick={() => {
+                if (exercise.length < 3) {
+                  return setError('exercises', {
+                    message: 'O treino não pode ter menos que 3 caracteres',
+                    type: 'minLength',
+                  });
+                }
+
+                if (exercise.length >= 3) {
+                  clearErrors('exercises');
+                  setExercisesList((prev) => {
+                    return [...prev, exercise];
+                  });
+                  setValue('exercises', exercisesList);
+                  setExercise('');
+                }
+              }}>
+              <PlusCircle />
+              Adicionar
+            </Button>
           </div>
           <div className='col-span-6 gap-2'>
             <Table className='col-span-6'>

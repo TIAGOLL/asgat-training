@@ -55,7 +55,7 @@ export function AttendanceListForm() {
     <form
       onSubmit={handleSubmit(handleAttendance)}
       className='grid w-full grid-cols-6 place-items-center gap-4'>
-      <Card className='col-span-6 w-8/12 gap-2'>
+      <Card className='col-span-6 w-11/12 gap-2'>
         <CardHeader className='col-span-6 place-items-center'>
           <CardTitle>Lista de Presença</CardTitle>
         </CardHeader>
@@ -108,7 +108,7 @@ export function AttendanceListForm() {
           </div>
         </CardContent>
       </Card>
-      <div className='col-span-6 flex w-4/12 flex-row place-content-between gap-4'>
+      <div className='flex w-4/12 flex-row place-content-between gap-4'>
         <Link to={`/classes/${id}`} className='flex items-center gap-2'>
           <Button variant='destructive' className='w-[10rem] justify-between'>
             <ChevronLeft className='size-4' />
