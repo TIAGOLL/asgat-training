@@ -65,7 +65,13 @@ export function SignInWithEmailAndPasswordForm() {
           <Mail className='size-4' />
           E-mail
         </Label>
-        <Input autoFocus id='email' {...register('email')} autoComplete='off' defaultValue='john.doe@acme.com' />
+        <Input
+          autoFocus
+          id='email'
+          {...register('email')}
+          autoComplete='off'
+          defaultValue='john.doe@acme.com'
+        />
         <FormMessageError error={errors.email?.message} />
       </div>
       <div className='grid gap-2'>
@@ -75,7 +81,13 @@ export function SignInWithEmailAndPasswordForm() {
             Senha
           </Label>
         </div>
-        <Input id='password' type='password' autoComplete='off' placeholder='123456' {...register('password')} />
+        <Input
+          id='password'
+          type='password'
+          autoComplete='off'
+          placeholder='123456'
+          {...register('password')}
+        />
         <FormMessageError error={errors.password?.message} />
       </div>
       <Button className='w-full' disabled={loading}>

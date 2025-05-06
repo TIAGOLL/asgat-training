@@ -8,7 +8,7 @@ import { ThemeSwitcher } from '@/components/ui/theme-switcher';
 export function SignIn() {
   return (
     <div className='flex h-screen w-full flex-col items-center justify-center bg-gradient-to-br from-slate-400 to-slate-900 px-4 dark:to-black'>
-      <div className='absolute bottom-32 left-32'>
+      <div className='absolute bottom-5 left-5'>
         <ThemeSwitcher />
       </div>
       <img src='logo.png' alt='Logo Asgat' width={150} className='mb-10' />
@@ -18,7 +18,9 @@ export function SignIn() {
             <KeyRound />
             Autenticação
           </CardTitle>
-          <CardDescription>Insira seu e-mail e senha abaixo para fazer login em sua conta!</CardDescription>
+          <CardDescription>
+            Insira seu e-mail e senha abaixo para fazer login em sua conta!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <SignInWithEmailAndPasswordForm />

@@ -107,7 +107,7 @@ export function Classes() {
       <div className='flex w-full flex-col items-center justify-start'>
         <div className='flex flex-row items-center justify-center space-x-4'>
           <DayPicker
-            className={cn('flex items-center justify-center p-3')}
+            className={cn('mt-10 flex items-center justify-center p-3')}
             classNames={{
               month: 'space-y-4',
               caption: 'flex justify-center pt-1 relative items-center',
