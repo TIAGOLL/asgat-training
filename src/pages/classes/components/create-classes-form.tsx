@@ -112,7 +112,7 @@ export function CreateClassesForm() {
           </div>
         </CardContent>
       </Card>
-      <div className='mt-6 grid place-items-center gap-4'>
+      <div className='col-span-6 mt-6 place-items-center gap-4'>
         <Button type='submit' className='w-[10rem] gap-2'>
           <Save className='size-4' />
           Salvar
