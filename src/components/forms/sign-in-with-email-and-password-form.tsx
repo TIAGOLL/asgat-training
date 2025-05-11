@@ -16,6 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SignInWithEmailAndPasswordService } from '@/services/sign-in-with-email-and-password.service';
 
+import { login,getUsuario } from '@/services/login';
+
 type SignInWithEmailAndPasswordSchema = z.infer<typeof signInWithEmailAndPasswordSchema>;
 
 export function SignInWithEmailAndPasswordForm() {
@@ -33,10 +35,13 @@ export function SignInWithEmailAndPasswordForm() {
   async function signInWithEmailAndPassword({ email, password }: SignInWithEmailAndPasswordSchema) {
     setLoading(true);
     try {
-      const { token, message } = await SignInWithEmailAndPasswordService({
+      /*const { token, message } = await SignInWithEmailAndPasswordService({
         email,
         password,
-      });
+      });*/
+
+      var token = await login({email,password});
+      var message = '';
 
       if (token) {
         nookies.set(null, 'token', token, { maxAge: 60 * 60 * 24, path: '/' });
@@ -44,6 +49,11 @@ export function SignInWithEmailAndPasswordForm() {
           icon: ShieldCheck,
         });
         navigate('/classes');
+      }
+      else{
+        return toast.error('login ou senha incorretos', {
+          icon: ShieldX,
+        });
       }
     } catch (error) {
       if (error instanceof HTTPError) {
