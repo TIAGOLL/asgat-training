@@ -130,7 +130,7 @@ export function Sidebar() {
         <div className='md:hidden'>
           <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} direction='left'>
             <DrawerTrigger asChild className='size-10'>
-              <Button variant='ghost' className='m-2'>
+              <Button variant='ghost' className='fixed m-2'>
                 <Menu className='size-10' />
               </Button>
             </DrawerTrigger>

@@ -50,11 +50,11 @@ export function NotesByStudentForm() {
   ]);
 
   const students = [
-    { id: '1', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '2', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '3', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '4', name: 'Leonardo dos Santos Veque', grade: 1 },
-    { id: '5', name: 'Leonardo dos Santos Veque', grade: 1 },
+    { id: '1', name: 'Ana Clara Oliveira', grade: 1 },
+    { id: '2', name: 'Bruno Henrique Silva', grade: 1 },
+    { id: '3', name: 'Carla Maria Santos', grade: 1 },
+    { id: '4', name: 'Diego Ferreira Lima', grade: 1 },
+    { id: '5', name: 'Eduarda Souza Costa', grade: 1 },
   ];
 
   async function applyNotesToStudents(data: NotesByStudentSchema) {

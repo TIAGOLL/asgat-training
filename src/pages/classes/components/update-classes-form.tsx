@@ -56,6 +56,7 @@ export function UpdateClassesForm() {
     { id: '9', name: 'Sala 9' },
     { id: '10', name: 'Sala 10' },
   ]);
+
   const [trainings] = useState([
     { id: '1', name: 'Treino 1' },
     { id: '2', name: 'Treino 2' },
