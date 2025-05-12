@@ -18,6 +18,7 @@ import {
 import { FormMessageError } from '../../../components/form-message-error';
 import { studentSchema } from '../../../components/forms/validations/entities/students';
 import { Input } from '../../../components/ui/input';
+import { criarAluno } from '@/services/alunos';
 
 type StudentsSchema = z.infer<typeof studentSchema>;
 
@@ -42,25 +43,29 @@ export function CreateStudentsForm() {
     setValue,
   } = useForm<StudentsSchema>({
     defaultValues: {
-      entryDate: new Date().toISOString().split('T')[0],
+      data_ingresso: new Date().toISOString().split('T')[0],
     },
     resolver: zodResolver(studentSchema),
   });
 
-  async function createTraining({
-    belt,
-    contact,
-    dateOfBirth,
-    entryDate,
-    id,
-    name,
+  async function criar({
+    faixa,
+    contato,
+    idade,
+    data_ingresso,
+    //id,
+    nome,
+
+
+    
   }: StudentsSchema) {
-    console.log('createTraining', { belt, contact, dateOfBirth, entryDate, id, name });
+    console.log('criarAluno', { faixa, contato, idade, data_ingresso,  nome});
+    await criarAluno({faixa, contato, idade, data_ingresso, nome});
   }
 
   return (
     <form
-      onSubmit={handleSubmit(createTraining)}
+      onSubmit={handleSubmit(criar)}
       className='grid w-full grid-cols-6 place-items-center gap-4'>
       <Card className='col-span-6 w-11/12 gap-2'>
         <CardHeader className='col-span-6 place-items-center'>
@@ -72,33 +77,33 @@ export function CreateStudentsForm() {
               <User className='size-4' />
               Nome completo
             </Label>
-            <Input id='name' {...register('name')} />
-            <FormMessageError error={errors.name?.message} />
+            <Input id='name' {...register('nome')} />
+            <FormMessageError error={errors.nome?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
-            <Label htmlFor='dateOfBirth' className='flex place-items-center gap-2'>
+            <Label htmlFor='idade' className='flex place-items-center gap-2'>
               <Calendar className='size-4' />
               Data de nascimento
             </Label>
             <Input
-              id='dateOfBirth'
-              {...register('dateOfBirth', { valueAsDate: true })}
+              id='idade'
+              {...register('idade', { valueAsDate: true })}
               type='date'
             />
-            <FormMessageError error={errors.dateOfBirth?.message} />
+            <FormMessageError error={errors.idade?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
-            <Label htmlFor='contact' className='flex place-items-center gap-2'>
+            <Label htmlFor='contato' className='flex place-items-center gap-2'>
               <Contact className='size-4' />
               Contato
             </Label>
-            <Input id='contact' {...register('contact', { valueAsNumber: true })} />
-            <FormMessageError error={errors.contact?.message} />
+            <Input id='contato' {...register('contato', { valueAsNumber: true })} />
+            <FormMessageError error={errors.contato?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
             <Label>Faixa</Label>
-            <Select onValueChange={(value) => setValue('belt', value)}>
-              <SelectTrigger {...register('belt')} className='w-full'>
+            <Select onValueChange={(value) => setValue('faixa', value)}>
+              <SelectTrigger {...register('faixa')} className='w-full'>
                 <SelectValue placeholder='Selecione...' />
               </SelectTrigger>
               <SelectContent>
@@ -109,15 +114,15 @@ export function CreateStudentsForm() {
                 ))}
               </SelectContent>
             </Select>
-            <FormMessageError error={errors.belt?.message} />
+            <FormMessageError error={errors.faixa?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
             <Label htmlFor='entryDate' className='flex place-items-center gap-2'>
               <DoorOpen className='size-4' />
               Data de entrada
             </Label>
-            <Input id='entryDate' {...register('entryDate')} type='date' />
-            <FormMessageError error={errors.entryDate?.message} />
+            <Input id='entryDate' {...register('data_ingresso')} type='date' />
+            <FormMessageError error={errors.data_ingresso?.message} />
           </div>
         </CardContent>
       </Card>
@@ -125,7 +130,7 @@ export function CreateStudentsForm() {
         <Button
           type='submit'
           className='w-[10rem] gap-2'
-          onClick={() => console.log(errors.entryDate)}>
+          onClick={() => console.log(errors.idade?.message)}>
           <Save className='size-4' />
           Salvar
         </Button>
