@@ -76,7 +76,7 @@ export function Sidebar() {
         </Avatar>
         <h2 className='font-serif text-xl font-semibold'>ASGAT</h2>
       </div>
-      <nav className='flex flex-1 flex-col space-y-96'>
+      <nav className='flex flex-1 flex-col justify-between'>
         <Accordion type='single' collapsible className='mt-6 flex w-full flex-col gap-3'>
           {tabs.map((tab) => {
             const currentPath = window.location.pathname;
