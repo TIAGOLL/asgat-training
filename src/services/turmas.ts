@@ -17,9 +17,3 @@ export const buscarTurma = async (turmaId) => {
     console.log(response.data);
     return response.data;
 }
-
-/*
-Route::post('criarTurma',[TurmaController::class,'CriarTurma']);
-    Route::get('c',[TurmaController::class,'BuscarTurmas']);
-    Route::get('buscarTurma',[TurmaController::class,'BuscarTurma']);
-*/

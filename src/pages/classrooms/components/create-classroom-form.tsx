@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, ChevronsUpDown, Save } from 'lucide-react';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
@@ -38,117 +38,27 @@ import { cn } from '@/lib/utils';
 import { FormMessageError } from '../../../components/form-message-error';
 import { createClasroomSchema } from '../../../components/forms/validations/create-classroom-schema';
 import { studentSchema } from '../../../components/forms/validations/entities/students';
+import { buscarAlunos } from '@/services/alunos';
+import { criarTurma } from '@/services/turmas'
 
 type CreateClasroomSchema = z.infer<typeof createClasroomSchema>;
 type StudentSchema = z.infer<typeof studentSchema>;
 
 export function CreateClassroomForm() {
-  const [studentsList] = useState<StudentSchema[]>([
-    {
-      id: '1',
-      name: 'James Lucas',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'black belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '2',
-      name: 'Lucas',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Red belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '3',
-      name: 'Jonas',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'White belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '4',
-      name: 'João',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Blue belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '5',
-      name: 'Maria',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Yellow belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '6',
-      name: 'Ana',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Green belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '7',
-      name: 'Carlos',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Brown belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '8',
-      name: 'Fernanda',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Purple belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '9',
-      name: 'Roberto',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Orange belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '10',
-      name: 'Patrícia',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Gray belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '11',
-      name: 'Juliana',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Pink belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '12',
-      name: 'Ricardo',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Black belt',
-      entryDate: '2020-01-01',
-    },
-    {
-      id: '13',
-      name: 'Tatiane',
-      dateOfBirth: new Date('2000-01-01'),
-      contact: 42999658574,
-      belt: 'Red belt',
-      entryDate: '2020-01-01',
-    },
-  ]);
+
+  const [studentsList, setStudents] = useState<StudentSchema[]>([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const result = await buscarAlunos()
+      setStudents(result)
+    }
+
+
+    fetchStudents()
+    console.log(studentsList)
+  }, [])
+
   const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([]);
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
@@ -164,6 +74,7 @@ export function CreateClassroomForm() {
   async function createClassroom({ day, local, name, time, students }: CreateClasroomSchema) {
     console.log(day, local, name, time, students);
     console.log(errors);
+    await criarTurma({'dia': day, local,'nome': name,'horario': time,'alunos': studentsList });
   }
 
   return (
@@ -230,7 +141,7 @@ export function CreateClassroomForm() {
                       {studentsList.map((student) => (
                         <CommandItem
                           key={student.id}
-                          value={student.name}
+                          value={student.nome}
                           onSelect={() => {
                             setSelectedStudents((prev) => {
                               const alreadySelected = prev.find((s) => s.id === student.id);
@@ -241,7 +152,7 @@ export function CreateClassroomForm() {
                               }
                             });
                           }}>
-                          {student.name}
+                          {student.nome}
                           <Check
                             className={cn(
                               'ml-auto',
@@ -263,7 +174,6 @@ export function CreateClassroomForm() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Nome</TableHead>
-                  <TableHead>Data de nascimento</TableHead>
                   <TableHead>Contato</TableHead>
                   <TableHead>Faixa</TableHead>
                 </TableRow>
@@ -271,16 +181,9 @@ export function CreateClassroomForm() {
               <TableBody>
                 {selectedStudents.map((selectedStudent) => (
                   <TableRow key={selectedStudent.id}>
-                    <TableCell>{selectedStudent.name}</TableCell>
-                    <TableCell>
-                      {selectedStudent.dateOfBirth.getDay() +
-                        '/' +
-                        selectedStudent.dateOfBirth.getMonth() +
-                        '/' +
-                        selectedStudent.dateOfBirth.getFullYear()}
-                    </TableCell>
-                    <TableCell>{selectedStudent.contact}</TableCell>
-                    <TableCell>{selectedStudent.belt}</TableCell>
+                    <TableCell>{selectedStudent.nome}</TableCell>
+                    <TableCell>{selectedStudent.contato}</TableCell>
+                    <TableCell>{selectedStudent.faixa}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
