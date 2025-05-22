@@ -55,8 +55,6 @@ export function CreateStudentsForm() {
     data_ingresso,
     //id,
     nome,
-
-
     
   }: StudentsSchema) {
     console.log('criarAluno', { faixa, contato, idade, data_ingresso,  nome});

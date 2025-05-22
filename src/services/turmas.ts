@@ -12,8 +12,8 @@ export const buscarTurmas = async () => {
     return response.data;
 }
 
-export const buscarTurma = async (turmaID) => {
-    const response = await api.get('/buscarTurma',turmaID);
+export const buscarTurma = async (turmaId) => {
+    const response = await api.get('/buscarTurma',turmaId);
     console.log(response.data);
     return response.data;
 }

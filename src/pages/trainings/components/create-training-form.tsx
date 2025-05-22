@@ -27,6 +27,8 @@ import {
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { createTrainingSchema } from '../../../components/forms/validations/create-training-schema';
+import { criarTreino } from "@/services/treino";
+
 
 type CreateTrainingSchema = z.infer<typeof createTrainingSchema>;
 
@@ -35,20 +37,16 @@ export function CreateTrainingForm() {
 
   const [trainingTypes] = useState([
     {
-      id: 1,
+      id: 'forca',
       name: 'Treino de força',
     },
     {
-      id: 2,
+      id: 'resistencia',
       name: 'Treino de resistência',
     },
     {
-      id: 3,
-      name: 'Treino de flexibilidade',
-    },
-    {
-      id: 4,
-      name: 'Treino de velocidade',
+      id: 'controle',
+      name: 'Treino de controle',
     },
   ]);
 
@@ -65,7 +63,10 @@ export function CreateTrainingForm() {
     resolver: zodResolver(createTrainingSchema),
   });
 
-  async function createTraining({ type, exercises }: CreateTrainingSchema) {}
+  async function createTraining({ type, exercises }: CreateTrainingSchema) {
+    console.log({type, exercises});
+    await criarTreino({'treino': type,'exercicios': exercisesList});
+  }
 
   return (
     <form
@@ -85,7 +86,7 @@ export function CreateTrainingForm() {
               </SelectTrigger>
               <SelectContent>
                 {trainingTypes.map((training) => (
-                  <SelectItem key={training.id} value={training.name}>
+                  <SelectItem key={training.id} value={training.id}>
                     {training.name}
                   </SelectItem>
                 ))}
