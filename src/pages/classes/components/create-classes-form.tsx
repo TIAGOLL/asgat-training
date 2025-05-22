@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { criarTurma } from '@/services/turmas';
 
 type CreateClassesSchema = z.infer<typeof createClassesSchema>;
 
@@ -31,16 +32,9 @@ export function CreateClassesForm() {
   });
 
   const [classrooms] = useState([
-    { id: '1', name: 'Sala 1' },
-    { id: '2', name: 'Sala 2' },
-    { id: '3', name: 'Sala 3' },
-    { id: '4', name: 'Sala 4' },
-    { id: '5', name: 'Sala 5' },
-    { id: '6', name: 'Sala 6' },
-    { id: '7', name: 'Sala 7' },
-    { id: '8', name: 'Sala 8' },
-    { id: '9', name: 'Sala 9' },
-    { id: '10', name: 'Sala 10' },
+    { id: '1', name: 'CT' },
+    { id: '2', name: 'Visconde' },
+    { id: '3', name: 'Cristo Rei' }
   ]);
   const [trainings] = useState([
     { id: '1', name: 'Treino 1' },
@@ -55,8 +49,42 @@ export function CreateClassesForm() {
     { id: '10', name: 'Treino 10' },
   ]);
 
-  async function createClasses({ classroom }: CreateClassesSchema) {
-    console.log('createClasses', { classroom });
+
+  async function createClasses(data: CreateClassesSchema) {
+    try {
+      
+      console.log("Dados do formulário:", data);
+      
+      // Prepara o objeto de dados para envio
+      const turmaData = {
+        classroom: data.classroom,
+        date: data.date,
+        training: data.training,
+        time: data.time,
+        alunos: [1]
+      };
+      
+      console.log("Enviando para API:", turmaData);
+      
+      // Chamada à API com await para esperar a resposta
+      const response = await criarTurma(turmaData);
+      
+      console.log("Resposta da API:", response);
+      
+      // Notifica o usuário do sucesso
+     
+      
+      // Reseta o formulário após sucesso
+      
+      
+    } catch (error) {
+      console.error("Erro ao criar turma:", error);
+      
+      // Notifica o usuário do erro
+   
+    } finally {
+      console.log('Deu certo');
+    }
   }
 
   return (
