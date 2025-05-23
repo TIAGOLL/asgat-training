@@ -31,23 +31,8 @@ export function CreateClassesForm() {
     resolver: zodResolver(createClassesSchema),
   });
 
-  const [classrooms] = useState([
-    { id: '1', name: 'CT' },
-    { id: '2', name: 'Visconde' },
-    { id: '3', name: 'Cristo Rei' }
-  ]);
-  const [trainings] = useState([
-    { id: '1', name: 'Treino 1' },
-    { id: '2', name: 'Treino 2' },
-    { id: '3', name: 'Treino 3' },
-    { id: '4', name: 'Treino 4' },
-    { id: '5', name: 'Treino 5' },
-    { id: '6', name: 'Treino 6' },
-    { id: '7', name: 'Treino 7' },
-    { id: '8', name: 'Treino 8' },
-    { id: '9', name: 'Treino 9' },
-    { id: '10', name: 'Treino 10' },
-  ]);
+  const [classrooms,setClassrooms] = useState([]);
+  const [trainings,setTrainings] = useState([]);
 
 
   async function createClasses(data: CreateClassesSchema) {
