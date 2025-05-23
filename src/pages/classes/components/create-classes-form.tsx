@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Save } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -17,7 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { criarTurma } from '@/services/turmas';
+import { buscarTurmas } from '@/services/turmas';
+import { buscarTreinos } from '@/services/treino';
+import { criarAula } from '@/services/aulas';
 
 type CreateClassesSchema = z.infer<typeof createClassesSchema>;
 
@@ -34,6 +36,19 @@ export function CreateClassesForm() {
   const [classrooms,setClassrooms] = useState([]);
   const [trainings,setTrainings] = useState([]);
 
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const result = await buscarTurmas();
+      setClassrooms(result);
+      const result2 = await buscarTreinos();
+      setTrainings(result2);
+    }
+
+
+    fetchStudents()
+    console.log(classrooms)
+    console.log(trainings)
+  }, [])
 
   async function createClasses(data: CreateClassesSchema) {
     try {
@@ -42,17 +57,16 @@ export function CreateClassesForm() {
       
       // Prepara o objeto de dados para envio
       const turmaData = {
-        classroom: data.classroom,
-        date: data.date,
-        training: data.training,
-        time: data.time,
-        alunos: [1]
+        turma_id: data.classroom,
+        dia: data.date,
+        treino_id: data.training,
+        hora: data.time,
       };
       
       console.log("Enviando para API:", turmaData);
       
       // Chamada à API com await para esperar a resposta
-      const response = await criarTurma(turmaData);
+      const response = await criarAula(turmaData);
       
       console.log("Resposta da API:", response);
       
@@ -90,7 +104,7 @@ export function CreateClassesForm() {
               <SelectContent>
                 {classrooms.map((classroom) => (
                   <SelectItem key={classroom.id} value={classroom.id}>
-                    {classroom.name}
+                    {classroom.nome}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -106,7 +120,7 @@ export function CreateClassesForm() {
               <SelectContent>
                 {trainings.map((training) => (
                   <SelectItem key={training.id} value={training.id}>
-                    {training.name}
+                    {training.tipo}
                   </SelectItem>
                 ))}
               </SelectContent>

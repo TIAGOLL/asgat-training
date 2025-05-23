@@ -20,8 +20,8 @@ export const finalizarAula = async (aula) => {
   return response.data;
 };
 
-export const buscarAulas = async () => {
-    const response = await api.get('/buscarAulas');
+export const buscarAulas = async (mes) => {
+    const response = await api.get('/buscarAulas?mes=' + mes);
     console.log(response.data);
     return response.data;
 }

@@ -1,105 +1,27 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { Link } from 'react-router-dom';
 
 import { Sidebar } from '@/components/sidebar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { buscarAulas } from '@/services/aulas';
 
 export function Classes() {
-  const [activities] = useState([
-    {
-      id: '3',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T03:00:00.000Z'),
-    },
-    {
-      id: '4',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T04:00:00.000Z'),
-    },
-    {
-      id: '5',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T05:00:00.000Z'),
-    },
-    {
-      id: '6',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T06:00:00.000Z'),
-    },
-    {
-      id: '7',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T07:00:00.000Z'),
-    },
-    {
-      id: '8',
-      classe: 'Turma A',
-      trainingType: 'Cardio',
-      date: new Date('2025-04-01T08:00:00.000Z'),
-    },
-    {
-      id: '4',
-      classe: 'Turma X',
-      trainingType: 'Musculação',
-      date: new Date('2025-04-01T09:00:00.000Z'),
-    },
-    {
-      id: '5',
-      classe: 'Turma Z',
-      trainingType: 'Alongamento',
-      date: new Date('2025-04-01T24:00:00.000Z'),
-    },
-    {
-      id: '9',
-      classe: 'Turma B',
-      trainingType: 'Yoga',
-      date: new Date('2025-04-02T10:00:00.000Z'),
-    },
-    {
-      id: '10',
-      classe: 'Turma C',
-      trainingType: 'Pilates',
-      date: new Date('2025-04-03T11:00:00.000Z'),
-    },
-    {
-      id: '11',
-      classe: 'Turma D',
-      trainingType: 'Zumba',
-      date: new Date('2025-04-04T12:00:00.000Z'),
-    },
-    {
-      id: '12',
-      classe: 'Turma E',
-      trainingType: 'Crossfit',
-      date: new Date('2025-04-05T13:00:00.000Z'),
-    },
-    {
-      id: '13',
-      classe: 'Turma F',
-      trainingType: 'HIIT',
-      date: new Date('2025-04-06T14:00:00.000Z'),
-    },
-    {
-      id: '14',
-      classe: 'Turma G',
-      trainingType: 'Boxe',
-      date: new Date('2025-04-07T15:00:00.000Z'),
-    },
-    {
-      id: '15',
-      classe: 'Turma H',
-      trainingType: 'Dança',
-      date: new Date('2025-04-08T16:00:00.000Z'),
-    },
-  ]);
+  const currentDate = new Date();
+  const [activities,setActivities] = useState([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const result = await buscarAulas(currentDate.getMonth() + 1)
+      setActivities(result)
+    }
+
+
+    fetchStudents()
+    console.log(activities)
+  }, [])
 
   return (
     <div className='flex flex-row'>
@@ -162,20 +84,18 @@ export function Classes() {
                     </div>
                   )}
                   <div className='flex h-full w-[80%] flex-col items-center justify-start space-y-1 overflow-y-auto pt-2 pb-2'>
-                    {activities.map(({ date, id, classe }) => {
+                    {activities.map(({ dia, id, nome , horario }) => {
+                      console.log( dia + '\n' + props.date.toISOString().split('T')[0]);
                       if (
-                        date.getDate() === props.date.getDate() &&
-                        date.getMonth() === props.date.getMonth()
+                        dia === props.date.toISOString().split('T')[0] 
                       ) {
                         return (
                           <Link
                             to={`/classes/${id}`}
                             key={id}
                             className='dark:!bg-primary rounded-lg !bg-zinc-200 px-2 py-0.5 text-sm'>
-                            {classe} -{' '}
-                            {date.getUTCHours() +
-                              ':' +
-                              String(date.getUTCMinutes()).padStart(2, '0')}
+                            {nome} -{' '}
+                            {horario}
                           </Link>
                         );
                       }

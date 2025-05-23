@@ -57,7 +57,7 @@ export function CreateStudentsForm() {
     nome,
     
   }: StudentsSchema) {
-    console.log('criarAluno', { faixa, contato, idade, data_ingresso,  nome});
+    console.log('criarAluno', {faixa, contato, idade, data_ingresso,  nome});
     await criarAluno({faixa, contato, idade, data_ingresso, nome});
   }
 
@@ -128,7 +128,7 @@ export function CreateStudentsForm() {
         <Button
           type='submit'
           className='w-[10rem] gap-2'
-          onClick={() => console.log(errors.idade?.message)}>
+          onClick={() => console.log(errors)}>
           <Save className='size-4' />
           Salvar
         </Button>
