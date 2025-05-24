@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {buscarAula } from '@/services/aulas';
 import {
   Select,
   SelectContent,
@@ -28,7 +29,60 @@ import {
 
 type NotesByStudentSchema = z.infer<typeof notesByStudentSchema>;
 
+
 export function NotesByStudentForm() {
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const [alunos, setAlunos] = useState([]);
+  const [aula, setAula] = useState({});
+  const [dados, setDados] = useState({});
+  const [exercises, setExercises] = useState([]);
+  const [selectedExercise, setSelectedExercise] = useState();
+
+  useEffect(() => {
+    const fetchAulas = async () => {
+      const result = await buscarAula(id);
+      console.log(result.turma);
+      console.log(result.turma.alunos);
+      setAula(result);
+      setExercises(result.treino.exercicios);
+      const aulas = localStorage.getItem('aulas');
+      const aulasOBJ = JSON.parse(aulas)
+      console.log('aulas');
+      console.log(aulasOBJ);
+      setDados(aulasOBJ);      
+
+
+      setAlunos(result.turma.alunos);
+
+/*
+
+*/
+
+    };
+    fetchAulas();
+  }, []);
+
+  useEffect(() => {
+  console.log("dados atualizado:", dados);
+}, [dados]); 
+  
+useEffect(() => {
+  setDados(prevDados => {
+        const updatedDados = { ...prevDados };
+        updatedDados.desempenho = {};
+        exercises.forEach((value) => {
+          console.log('exercicio aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+          console.log(value.id + ' ' + value.nome);
+          updatedDados.desempenho[value.id] = [];
+        });
+        return updatedDados;
+      });
+}, [exercises]); 
+
+
   const {
     handleSubmit,
     formState: { errors },
@@ -38,28 +92,29 @@ export function NotesByStudentForm() {
     resolver: zodResolver(notesByStudentSchema),
   });
 
-  const navigate = useNavigate();
-  const { id } = useParams();
-
-  const [exercises] = useState([
-    { id: '1', name: 'Exercício 1' },
-    { id: '2', name: 'Exercício 2' },
-    { id: '3', name: 'Exercício 3' },
-    { id: '4', name: 'Exercício 4' },
-    { id: '5', name: 'Exercício 5' },
-  ]);
-
-  const students = [
-    { id: '1', name: 'Ana Clara Oliveira', grade: 1 },
-    { id: '2', name: 'Bruno Henrique Silva', grade: 1 },
-    { id: '3', name: 'Carla Maria Santos', grade: 1 },
-    { id: '4', name: 'Diego Ferreira Lima', grade: 1 },
-    { id: '5', name: 'Eduarda Souza Costa', grade: 1 },
-  ];
 
   async function applyNotesToStudents(data: NotesByStudentSchema) {
     console.log('applyNotesToStudents', { data });
     navigate(`/classes/final-notes/${id}`);
+  }
+
+  function updateDados(studentId, exercicioID, nota) {
+    setDados(prevDados => {
+      const updatedDados = { ...prevDados };
+      if(!Array.isArray(updatedDados.desempenho[exercicioID])){
+        updatedDados.desempenho[exercicioID] = [];
+      }
+      
+      const alunoExiste = updatedDados.desempenho[exercicioID].find((p) => p.aluno_id === studentId);
+
+      if (alunoExiste) {
+        alunoExiste.nota = nota;
+      } else {
+        updatedDados.desempenho[exercicioID].push({ aluno_id: studentId, nota });
+      }
+      return updatedDados;
+    });
+    console.log(dados);
   }
 
   return (
@@ -73,14 +128,14 @@ export function NotesByStudentForm() {
         <CardContent className='col-span-6 mt-10 grid grid-cols-6 place-items-center gap-2'>
           <div className='col-span-6 grid gap-2'>
             <Label>Exercício</Label>
-            <Select>
+            <Select value={selectedExercise} onValueChange={setSelectedExercise}>
               <SelectTrigger className='w-[15rem]'>
                 <SelectValue placeholder='Selecione...' />
               </SelectTrigger>
               <SelectContent>
                 {exercises.map((exercise) => (
-                  <SelectItem key={exercise.id} value={exercise.id}>
-                    {exercise.name}
+                  <SelectItem key={exercise.id} value={exercise.id.toString()}>
+                    {exercise.nome}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -96,16 +151,27 @@ export function NotesByStudentForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {students.map((student) => (
-                  <TableRow key={student.id}>
-                    <TableCell>{student.name}</TableCell>
+                {alunos.map((aluno) => (
+                  <TableRow key={aluno.id}>
+                    <TableCell>{aluno.nome}</TableCell>
                     <TableCell>
                       <div className='flex items-center justify-center gap-2'>
-                        <Button variant='outline' size='sm'>
+                        <Button variant='outline' size='sm' onClick={() => {
+                          if(aluno.nota < 1){
+                            return;
+                          }                          
+                          aluno.nota -= 1;updateDados(aluno.id,selectedExercise,aluno.nota-1)                          
+                          }}>
                           -
                         </Button>
-                        <span className='font-semibold'>{student.grade}</span>
-                        <Button variant='outline' size='sm'>
+                        { (!aluno.nota ? aluno.nota = 0 : aluno.nota) }
+                        <span className='font-semibold'>{aluno.nota}</span>
+                        <Button variant='outline' size='sm' onClick={() => {
+                          if(aluno.nota > 9){
+                            return;
+                          }
+                          aluno.nota += 1;updateDados(aluno.id,selectedExercise,aluno.nota+1)
+                          }}>
                           +
                         </Button>
                       </div>
@@ -138,3 +204,62 @@ export function NotesByStudentForm() {
     </form>
   );
 }
+
+
+/*
+
+{
+    "id": 2,
+    "dia": "2025-06-10",
+    "turma_id": 1,
+    "treino_id": 3,
+    "user_id": 1,
+    "created_at": "2025-05-23T02:59:46.000000Z",
+    "updated_at": "2025-05-23T02:59:46.000000Z",
+    "turma": {
+        "id": 1,
+        "nome": "asd",
+        "local": "CETT",
+        "horario": "19:00:00",
+        "dia": "Quarta                                                                                                                                                                        ",
+        "user_id": 1,
+        "created_at": "2025-05-23T02:44:06.000000Z",
+        "updated_at": "2025-05-23T02:44:06.000000Z",
+        "alunos": [
+            {
+                "id": 1,
+                "nome": "Faisca Risonha",
+                "idade": "2001-05-20",
+                "contato": "42999560012",
+                "faixa": "Azul",
+                "data_ingresso": "2025-05-22",
+                "user_id": 1,
+                "created_at": "2025-05-22T03:02:40.000000Z",
+                "updated_at": "2025-05-22T03:02:40.000000Z",
+                "pivot": {
+                    "turma_id": 1,
+                    "aluno_id": 1
+                }
+            }
+        ]
+    },
+    "treino": {
+        "id": 3,
+        "tipo": "resistencia",
+        "user_id": 1,
+        "created_at": "2025-05-22T03:13:27.000000Z",
+        "updated_at": "2025-05-22T03:13:27.000000Z",
+        "exercicios": [
+            {
+                "id": 2,
+                "nome": "Flexoes - 10 rep.",
+                "treino_id": 3,
+                "created_at": "2025-05-22T03:13:27.000000Z",
+                "updated_at": "2025-05-22T03:13:27.000000Z"
+            }
+        ]
+    }
+}
+
+
+*/

@@ -42,6 +42,7 @@ export function AttendanceListForm() {
   const [alunos, setAlunos] = useState([]);
   const [aula, setAula] = useState({});
   const [dados, setDados] = useState({});
+
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
@@ -62,17 +63,19 @@ export function AttendanceListForm() {
     navigate(`/classes/notes/${id}`);
   }
 
-  function updateDados(id, presenca) {
-    const d = dados;
-    const alunoExiste = d.presencas.find((p) => p.aluno_id === id);
+  
+  function updateDados(studentId, presenca) {
+    setDados(prevDados => {
+      const updatedDados = { ...prevDados };
+      const alunoExiste = updatedDados.presencas.find((p) => p.aluno_id === studentId);
 
-    if (alunoExiste) {
-      alunoExiste.presenca = presenca;
-    } else {
-      d.presencas.push({ aluno_id: id, presenca });
-    }
-
-    setDados(d);
+      if (alunoExiste) {
+        alunoExiste.presenca = presenca;
+      } else {
+        updatedDados.presencas.push({ aluno_id: studentId, presenca });
+      }
+      return updatedDados;
+    });
     console.log(dados);
   }
 
@@ -94,42 +97,53 @@ export function AttendanceListForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {alunos?.map((student) => (
-                  <TableRow key={student.id}>
-                    <TableCell className='font-medium'>{student.nome}</TableCell>
-                    <TableCell className='flex gap-2'>
-                      {/* Presente */}
-                      <label
-                        htmlFor={`students.${student.id}.present-true`}
-                        className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${student.present === true ? 'bg-green-600' : 'bg-green-600/30 hover:bg-green-600'}`}>
-                        <Check size={16} />
-                      </label>
-                      <input
-                        onClick={() => updateDados(student.id, true)}
-                        type='radio'
-                        value='true'
-                        checked={dados?.presencas?.find((p) => p.aluno_id === id)?.presenca == true}
-                        id={`students.${student.id}.present-true`}
-                        className='hidden'
-                      />
+                {alunos?.map((student) => {
+                  const isPresent = dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === true;
+                  const isAbsent = dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === false;
+                  
+                  return (
+                    <TableRow key={student.id}>
+                      <TableCell className='font-medium'>{student.nome}</TableCell>
+                      <TableCell className='flex gap-2'>
+                        {/* Presente */}
+                        <label
+                          htmlFor={`students.${student.id}.present-true`}
+                          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
+                            isPresent ? 'bg-green-600' : 'bg-green-600/30 hover:bg-green-600'
+                          }`}>
+                          <Check size={16} />
+                        </label>
+                        <input
+                          onClick={() => updateDados(student.id, true)}
+                          type='radio'
+                          name={`student-${student.id}`} 
+                          value='true'
+                          checked={isPresent}
+                          id={`students.${student.id}.present-true`}
+                          className='hidden'
+                        />
 
-                      {/* Ausente */}
-                      <label
-                        htmlFor={`students.${student.id}.present-false`}
-                        className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${student.present === false ? 'bg-red-600' : 'bg-red-600/30 hover:bg-red-600'}`}>
-                        <X size={16} />
-                      </label>
-                      <input
-                        onClick={() => updateDados(student.id, false)}
-                        type='radio'
-                        value='false'
-                        checked={dados?.presencas?.find((p) => p.aluno_id === id)?.presenca == false}
-                        id={`students.${student.id}.present-false`}
-                        className='hidden'
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        {/* Ausente */}
+                        <label
+                          htmlFor={`students.${student.id}.present-false`}
+                          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
+                            isAbsent ? 'bg-red-600' : 'bg-red-600/30 hover:bg-red-600'
+                          }`}>
+                          <X size={16} />
+                        </label>
+                        <input
+                          onClick={() => updateDados(student.id, false)}
+                          type='radio'
+                          name={`student-${student.id}`} 
+                          value='false'
+                          checked={isAbsent}
+                          id={`students.${student.id}.present-false`}
+                          className='hidden'
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
@@ -145,7 +159,10 @@ export function AttendanceListForm() {
         <Button
           type='submit'
           className='w-[10rem] justify-between'
-          onClick={() => navigate(`/classes/notes/${id}`)}>
+          onClick={() => {
+            localStorage.setItem('aulas',JSON.stringify(dados));
+            navigate(`/classes/notes/${id}`);
+            }}>
           Próximo
           <ChevronRight className='size-4' />
         </Button>
@@ -153,104 +170,66 @@ export function AttendanceListForm() {
     </form>
   );
 }
-
 /*
 
-1
-aula: {
-    aula_id: 0,
-    presencas: [
-        {
-            aluno_id: 0,
-            presenca: true,
-        }  
-          
-    ],
-    desempenho: {
-        ex1: [
-                {
-                    aluno_id: 0,
-                    nota: 5
-                },
-                {
-                    aluno_id: 0,
-                    nota: 5
-                }
-            ],
-        ex2: [
-                {
-                    aluno_id: 0,
-                    nota: 5
-                },
-                {
-                    aluno_id: 0,
-                    nota: 5
-                }
-            ],
-    }
-}
-
-
-
 {
-    "id": 1,
-    "dia": "2020-10-10",
-    "turma_id": 1,
-    "treino_id": 1,
-    "user_id": 1,
-    "created_at": "2025-05-24T01:59:19.000000Z",
-    "updated_at": "2025-05-24T01:59:19.000000Z",
-    "turma": {
-        "id": 1,
-        "nome": "awdawd",
-        "local": "awdawd",
-        "horario": "10:30:00",
-        "dia": "Segunda                                                                                                                                                                                                                                                        ",
-        "user_id": 1,
-        "created_at": "2025-05-24T00:37:03.000000Z",
-        "updated_at": "2025-05-24T00:37:03.000000Z",
-        "alunos": [
-            {
-                "id": 1,
-                "nome": "Tiago Emanuel de Lima",
-                "idade": "2020-10-10",
-                "contato": "42984066420",
-                "faixa": "Amarela",
-                "data_ingresso": "2025-05-24",
-                "user_id": 1,
-                "created_at": "2025-05-24T17:23:18.000000Z",
-                "updated_at": "2025-05-24T17:23:18.000000Z",
-                "pivot": {
-                    "turma_id": 1,
-                    "aluno_id": 1
-                }
-            },
-            {
-                "id": 2,
-                "nome": "Luiz",
-                "idade": "2020-10-10",
-                "contato": "42984066420",
-                "faixa": "Amarela",
-                "data_ingresso": "2025-05-24",
-                "user_id": 1,
-                "created_at": "2025-05-24T17:23:25.000000Z",
-                "updated_at": "2025-05-24T17:23:25.000000Z",
-                "pivot": {
-                    "turma_id": 1,
-                    "aluno_id": 2
-                }
-            }
-        ]
-    },
-    "treino": {
-        "id": 1,
-        "tipo": "forca",
-        "user_id": 1,
-        "created_at": "2025-05-24T00:37:21.000000Z",
-        "updated_at": "2025-05-24T00:37:21.000000Z"
-    }
+  "id": 1,
+  "dia": "2020-10-10",
+  "turma_id": 1,
+  "treino_id": 1,
+  "user_id": 1,
+  "created_at": "2025-05-24T01:59:19.000000Z",
+  "updated_at": "2025-05-24T01:59:19.000000Z",
+  "turma": {
+      "id": 1,
+      "nome": "awdawd",
+      "local": "awdawd",
+      "horario": "10:30:00",
+      "dia": "Segunda                                                                                                                                                                                                                                                        ",
+      "user_id": 1,
+      "created_at": "2025-05-24T00:37:03.000000Z",
+      "updated_at": "2025-05-24T00:37:03.000000Z",
+      "alunos": [
+          {
+              "id": 1,
+              "nome": "Tiago Emanuel de Lima",
+              "idade": "2020-10-10",
+              "contato": "42984066420",
+              "faixa": "Amarela",
+              "data_ingresso": "2025-05-24",
+              "user_id": 1,
+              "created_at": "2025-05-24T17:23:18.000000Z",
+              "updated_at": "2025-05-24T17:23:18.000000Z",
+              "pivot": {
+                  "turma_id": 1,
+                  "aluno_id": 1
+              }
+          },
+          {
+              "id": 2,
+              "nome": "Luiz",
+              "idade": "2020-10-10",
+              "contato": "42984066420",
+              "faixa": "Amarela",
+              "data_ingresso": "2025-05-24",
+              "user_id": 1,
+              "created_at": "2025-05-24T17:23:25.000000Z",
+              "updated_at": "2025-05-24T17:23:25.000000Z",
+              "pivot": {
+                  "turma_id": 1,
+                  "aluno_id": 2
+              }
+          }
+      ]
+  },
+  "treino": {
+      "id": 1,
+      "tipo": "forca",
+      "user_id": 1,
+      "created_at": "2025-05-24T00:37:21.000000Z",
+      "updated_at": "2025-05-24T00:37:21.000000Z"
+  }
 }
-
 
 
 */
