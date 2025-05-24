@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Save } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { FormMessageError } from '@/components/form-message-error';
 import { createClassesSchema } from '@/components/forms/validations/create-classes-schema';
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,9 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { buscarTurmas } from '@/services/turmas';
-import { buscarTreinos } from '@/services/treino';
 import { criarAula } from '@/services/aulas';
+import { buscarTreinos } from '@/services/treino';
+import { buscarTurmas } from '@/services/turmas';
 
 type CreateClassesSchema = z.infer<typeof createClassesSchema>;
 
@@ -33,8 +35,9 @@ export function CreateClassesForm() {
     resolver: zodResolver(createClassesSchema),
   });
 
-  const [classrooms,setClassrooms] = useState([]);
-  const [trainings,setTrainings] = useState([]);
+  const [classrooms, setClassrooms] = useState([]);
+  const [trainings, setTrainings] = useState([]);
+  const [loading, setLoading] = useState<boolean>();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -42,47 +45,32 @@ export function CreateClassesForm() {
       setClassrooms(result);
       const result2 = await buscarTreinos();
       setTrainings(result2);
-    }
+    };
 
-
-    fetchStudents()
-    console.log(classrooms)
-    console.log(trainings)
-  }, [])
+    fetchStudents();
+    console.log(classrooms);
+    console.log(trainings);
+  }, []);
 
   async function createClasses(data: CreateClassesSchema) {
+    setLoading(true);
     try {
-      
-      console.log("Dados do formulário:", data);
-      
-      // Prepara o objeto de dados para envio
+      console.log('Dados do formulário:', data);
       const turmaData = {
         turma_id: data.classroom,
         dia: data.date,
         treino_id: data.training,
         hora: data.time,
       };
-      
-      console.log("Enviando para API:", turmaData);
-      
-      // Chamada à API com await para esperar a resposta
+      console.log('Enviando para API:', turmaData);
       const response = await criarAula(turmaData);
-      
-      console.log("Resposta da API:", response);
-      
-      // Notifica o usuário do sucesso
-     
-      
-      // Reseta o formulário após sucesso
-      
-      
+      toast.success(response.message);
     } catch (error) {
-      console.error("Erro ao criar turma:", error);
-      
-      // Notifica o usuário do erro
-   
+      console.log(error);
+      console.error('Erro ao criar turma:', error);
     } finally {
       console.log('Deu certo');
+      setLoading(false);
     }
   }
 
@@ -140,8 +128,9 @@ export function CreateClassesForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 place-items-center gap-4'>
-        <Button type='submit' className='w-[10rem] gap-2'>
-          <Save className='size-4' />
+        <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
+          {loading && <Loader className='size-4' />}
+          {!loading && <Save className='size-4' />}
           Salvar
         </Button>
       </div>

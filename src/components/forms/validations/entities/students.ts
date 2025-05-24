@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const studentSchema = z.object({
-  id: z.number({}),
   nome: z
     .string({ required_error: 'Nome é obrigatório' })
     .min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),

@@ -39,12 +39,20 @@ export function AttendanceListForm() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [students] = useState([]);
-  const [aula, setAula] = useState([]);
+  const [alunos, setAlunos] = useState([]);
+  const [aula, setAula] = useState({});
+  const [dados, setDados] = useState({});
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
+      console.log(result.turma);
+      console.log(result.turma.alunos);
       setAula(result);
+      setDados({
+        aula_id: result.id,
+        presencas: [],
+      });
+      setAlunos(result.turma.alunos);
     };
     fetchAulas();
   }, []);
@@ -52,6 +60,20 @@ export function AttendanceListForm() {
   function handleAttendance(data: AttendanceListSchema) {
     console.log(data);
     navigate(`/classes/notes/${id}`);
+  }
+
+  function updateDados(id, presenca) {
+    const d = dados;
+    const alunoExiste = d.presencas.find((p) => p.aluno_id === id);
+
+    if (alunoExiste) {
+      alunoExiste.presenca = presenca;
+    } else {
+      d.presencas.push({ aluno_id: id, presenca });
+    }
+
+    setDados(d);
+    console.log(dados);
   }
 
   return (
@@ -72,9 +94,9 @@ export function AttendanceListForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {students.map((student) => (
+                {alunos?.map((student) => (
                   <TableRow key={student.id}>
-                    <TableCell className='font-medium'>{student.name}</TableCell>
+                    <TableCell className='font-medium'>{student.nome}</TableCell>
                     <TableCell className='flex gap-2'>
                       {/* Presente */}
                       <label
@@ -83,9 +105,10 @@ export function AttendanceListForm() {
                         <Check size={16} />
                       </label>
                       <input
+                        onClick={() => updateDados(student.id, true)}
                         type='radio'
                         value='true'
-                        checked={student.present === true}
+                        checked={dados?.presencas?.find((p) => p.aluno_id === id)?.presenca == true}
                         id={`students.${student.id}.present-true`}
                         className='hidden'
                       />
@@ -97,9 +120,10 @@ export function AttendanceListForm() {
                         <X size={16} />
                       </label>
                       <input
+                        onClick={() => updateDados(student.id, false)}
                         type='radio'
                         value='false'
-                        checked={student.present === false}
+                        checked={dados?.presencas?.find((p) => p.aluno_id === id)?.presenca == false}
                         id={`students.${student.id}.present-false`}
                         className='hidden'
                       />
@@ -112,7 +136,7 @@ export function AttendanceListForm() {
         </CardContent>
       </Card>
       <div className='flex w-4/12 flex-row place-content-between gap-4'>
-        <Link to={`/classes/${id}`} className='flex items-center gap-2'>
+        <Link to={`/classes`} className='flex items-center gap-2'>
           <Button variant='destructive' className='w-[10rem] justify-between'>
             <ChevronLeft className='size-4' />
             Voltar
@@ -132,6 +156,41 @@ export function AttendanceListForm() {
 
 /*
 
+1
+aula: {
+    aula_id: 0,
+    presencas: [
+        {
+            aluno_id: 0,
+            presenca: true,
+        }  
+          
+    ],
+    desempenho: {
+        ex1: [
+                {
+                    aluno_id: 0,
+                    nota: 5
+                },
+                {
+                    aluno_id: 0,
+                    nota: 5
+                }
+            ],
+        ex2: [
+                {
+                    aluno_id: 0,
+                    nota: 5
+                },
+                {
+                    aluno_id: 0,
+                    nota: 5
+                }
+            ],
+    }
+}
+
+
 
 {
     "id": 1,
@@ -149,7 +208,39 @@ export function AttendanceListForm() {
         "dia": "Segunda                                                                                                                                                                                                                                                        ",
         "user_id": 1,
         "created_at": "2025-05-24T00:37:03.000000Z",
-        "updated_at": "2025-05-24T00:37:03.000000Z"
+        "updated_at": "2025-05-24T00:37:03.000000Z",
+        "alunos": [
+            {
+                "id": 1,
+                "nome": "Tiago Emanuel de Lima",
+                "idade": "2020-10-10",
+                "contato": "42984066420",
+                "faixa": "Amarela",
+                "data_ingresso": "2025-05-24",
+                "user_id": 1,
+                "created_at": "2025-05-24T17:23:18.000000Z",
+                "updated_at": "2025-05-24T17:23:18.000000Z",
+                "pivot": {
+                    "turma_id": 1,
+                    "aluno_id": 1
+                }
+            },
+            {
+                "id": 2,
+                "nome": "Luiz",
+                "idade": "2020-10-10",
+                "contato": "42984066420",
+                "faixa": "Amarela",
+                "data_ingresso": "2025-05-24",
+                "user_id": 1,
+                "created_at": "2025-05-24T17:23:25.000000Z",
+                "updated_at": "2025-05-24T17:23:25.000000Z",
+                "pivot": {
+                    "turma_id": 1,
+                    "aluno_id": 2
+                }
+            }
+        ]
     },
     "treino": {
         "id": 1,
@@ -159,5 +250,7 @@ export function AttendanceListForm() {
         "updated_at": "2025-05-24T00:37:21.000000Z"
     }
 }
+
+
 
 */

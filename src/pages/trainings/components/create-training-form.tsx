@@ -2,8 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircle, Save } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import type { z } from 'zod';
 
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -20,20 +23,19 @@ import {
   TableBody,
   TableCell,
   TableFooter,
-  TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { criarTreino } from '@/services/treino';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { createTrainingSchema } from '../../../components/forms/validations/create-training-schema';
-import { criarTreino } from "@/services/treino";
-
 
 type CreateTrainingSchema = z.infer<typeof createTrainingSchema>;
 
 export function CreateTrainingForm() {
   const [exercisesList, setExercisesList] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const [trainingTypes] = useState([
     {
@@ -51,6 +53,7 @@ export function CreateTrainingForm() {
   ]);
 
   const [exercise, setExercise] = useState('');
+  const [loading, setLoading] = useState<boolean>();
 
   const {
     handleSubmit,
@@ -64,8 +67,12 @@ export function CreateTrainingForm() {
   });
 
   async function createTraining({ type, exercises }: CreateTrainingSchema) {
-    console.log({type, exercises});
-    await criarTreino({'treino': type,'exercicios': exercisesList});
+    console.log({ type, exercises });
+    setLoading(true);
+    const res = await criarTreino({ treino: type, exercicios: exercisesList });
+    toast.success(res);
+    setLoading(false);
+    navigate('/trainings');
   }
 
   return (
@@ -133,11 +140,7 @@ export function CreateTrainingForm() {
           </div>
           <div className='col-span-6 gap-2'>
             <Table className='col-span-6'>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nome do treino</TableHead>
-                </TableRow>
-              </TableHeader>
+              <TableHeader></TableHeader>
               <TableBody>
                 {exercisesList.map((exercise) => (
                   <TableRow key={exercise}>
@@ -156,8 +159,9 @@ export function CreateTrainingForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
-        <Button type='submit' className='w-[10rem] gap-2'>
-          <Save className='size-4' />
+        <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
+          {loading && <Loader className='size-4' />}
+          {!loading && <Save className='size-4' />}
           Salvar
         </Button>
       </div>

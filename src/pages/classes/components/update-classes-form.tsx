@@ -131,7 +131,7 @@ export function UpdateClassesForm() {
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
         <Button type='submit' className='w-[10rem] gap-2'>
           <Save className='size-4' />
-          Próximo
+          Salvar
         </Button>
       </div>
     </form>

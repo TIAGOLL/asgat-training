@@ -2,6 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Calendar, Contact, DoorOpen, Save, User } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { Loader } from '@/components/loader';
@@ -25,6 +27,7 @@ type StudentsSchema = z.infer<typeof studentSchema>;
 
 export function CreateStudentsForm() {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [belts] = useState([
     { id: 1, name: 'Branca' },
@@ -51,17 +54,12 @@ export function CreateStudentsForm() {
     resolver: zodResolver(studentSchema),
   });
 
-  async function criar({
-    faixa,
-    contato,
-    idade,
-    data_ingresso,
-    // id,
-    nome,
-  }: StudentsSchema) {
+  async function criar({ faixa, contato, idade, data_ingresso, nome }: StudentsSchema) {
     setLoading(true);
-    await criarAluno({ faixa, contato, idade, data_ingresso, nome });
+    const res = await criarAluno({ faixa, contato, idade, data_ingresso, nome });
     setLoading(false);
+    toast.success(res.message);
+    navigate('/students');
   }
 
   return (

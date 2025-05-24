@@ -1,9 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, ChevronsUpDown, Save } from 'lucide-react';
-import { useState , useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import type { z } from 'zod';
 
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -34,30 +37,30 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import { buscarAlunos } from '@/services/alunos';
+import { criarTurma } from '@/services/turmas';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { createClasroomSchema } from '../../../components/forms/validations/create-classroom-schema';
 import { studentSchema } from '../../../components/forms/validations/entities/students';
-import { buscarAlunos } from '@/services/alunos';
-import { criarTurma } from '@/services/turmas'
 
 type CreateClasroomSchema = z.infer<typeof createClasroomSchema>;
 type StudentSchema = z.infer<typeof studentSchema>;
 
 export function CreateClassroomForm() {
-
   const [studentsList, setStudents] = useState<StudentSchema[]>([]);
+  const [loading, setLoading] = useState<boolean>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const result = await buscarAlunos()
-      setStudents(result)
-    }
+      const result = await buscarAlunos();
+      setStudents(result);
+    };
 
-
-    fetchStudents()
-    console.log(studentsList)
-  }, [])
+    fetchStudents();
+    console.log(studentsList);
+  }, []);
 
   const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([]);
   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -72,9 +75,17 @@ export function CreateClassroomForm() {
   });
 
   async function createClassroom({ day, local, name, time, students }: CreateClasroomSchema) {
-    console.log(day, local, name, time, students);
-    console.log(errors);
-    await criarTurma({'dia': day, local,'nome': name,'horario': time,'alunos': studentsList });
+    setLoading(true);
+    const res = await criarTurma({
+      dia: day,
+      local,
+      nome: name,
+      horario: time,
+      alunos: studentsList,
+    });
+    toast.success(res);
+    setLoading(false);
+    return navigate('/classrooms');
   }
 
   return (
@@ -198,8 +209,9 @@ export function CreateClassroomForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
-        <Button type='submit' className='w-[10rem] gap-2'>
-          <Save className='size-4' />
+        <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
+          {loading && <Loader className='size-4' />}
+          {!loading && <Save className='size-4' />}
           Salvar
         </Button>
       </div>
