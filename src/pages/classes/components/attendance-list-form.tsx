@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
@@ -16,11 +16,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { buscarAula } from '@/services/aulas';
 
 type AttendanceListSchema = z.infer<typeof attendanceListSchema>;
 
 type Student = {
-  id: string;
+  id: number;
   name: string;
   present: boolean | null;
 };
@@ -38,13 +39,15 @@ export function AttendanceListForm() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [students] = useState([
-    { id: '1', name: 'Leonardo dos Santos Veque', present: null },
-    { id: '2', name: 'Leonardo dos Santos Veque', present: null },
-    { id: '3', name: 'Leonardo dos Santos Veque', present: null },
-    { id: '4', name: 'Leonardo dos Santos Veque', present: null },
-    { id: '5', name: 'Leonardo dos Santos Veque', present: null },
-  ]);
+  const [students] = useState([]);
+  const [aula, setAula] = useState([]);
+  useEffect(() => {
+    const fetchAulas = async () => {
+      const result = await buscarAula(id);
+      setAula(result);
+    };
+    fetchAulas();
+  }, []);
 
   function handleAttendance(data: AttendanceListSchema) {
     console.log(data);
@@ -126,3 +129,35 @@ export function AttendanceListForm() {
     </form>
   );
 }
+
+/*
+
+
+{
+    "id": 1,
+    "dia": "2020-10-10",
+    "turma_id": 1,
+    "treino_id": 1,
+    "user_id": 1,
+    "created_at": "2025-05-24T01:59:19.000000Z",
+    "updated_at": "2025-05-24T01:59:19.000000Z",
+    "turma": {
+        "id": 1,
+        "nome": "awdawd",
+        "local": "awdawd",
+        "horario": "10:30:00",
+        "dia": "Segunda                                                                                                                                                                                                                                                        ",
+        "user_id": 1,
+        "created_at": "2025-05-24T00:37:03.000000Z",
+        "updated_at": "2025-05-24T00:37:03.000000Z"
+    },
+    "treino": {
+        "id": 1,
+        "tipo": "forca",
+        "user_id": 1,
+        "created_at": "2025-05-24T00:37:21.000000Z",
+        "updated_at": "2025-05-24T00:37:21.000000Z"
+    }
+}
+
+*/

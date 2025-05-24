@@ -77,7 +77,7 @@ export function SignInWithEmailAndPasswordForm() {
           id='email'
           {...register('email')}
           autoComplete='off'
-          defaultValue='john.doe@acme.com'
+          defaultValue='admin@admin.com'
         />
         <FormMessageError error={errors.email?.message} />
       </div>

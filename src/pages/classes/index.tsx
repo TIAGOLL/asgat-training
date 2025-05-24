@@ -1,128 +1,110 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { DayPicker } from 'react-day-picker';
-import { Link } from 'react-router-dom';
+import { CalendarDays, Clock, LogIn, Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // React Router DOM
 
+import { Loader } from '@/components/loader';
 import { Sidebar } from '@/components/sidebar';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { buscarAulas } from '@/services/aulas';
 
 export function Classes() {
+  const navigate = useNavigate();
   const currentDate = new Date();
-  const [activities,setActivities] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [monthFilter, setMonthFilter] = useState((currentDate.getMonth() + 1).toString());
+  const [yearFilter, setYearFilter] = useState(currentDate.getFullYear().toString());
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      const result = await buscarAulas(currentDate.getMonth() + 1)
-      setActivities(result)
-    }
-
-
-    fetchStudents()
-    console.log(activities)
-  }, [])
+    setLoading(true);
+    const fetchAulas = async () => {
+      const result = await buscarAulas(parseInt(monthFilter));
+      setActivities(result);
+      setLoading(false);
+    };
+    fetchAulas();
+  }, []);
 
   return (
-    <div className='flex flex-row'>
+    <div className='flex'>
       <Sidebar />
-      <div className='overflow-x-auto md:min-w-[900px] lg:min-w-full'>
-        <DayPicker
-          className={cn(
-            'mt-10 flex min-w-[1200px] items-center justify-center p-3 md:max-w-[90vw] lg:min-w-[100px]',
-          )}
-          classNames={{
-            month: 'space-y-4',
-            caption: 'flex justify-center pt-1 relative items-center',
-            caption_label: 'text-xl font-medium mb-5',
-            nav: 'space-x-1 flex items-center',
-            nav_button: cn(
-              buttonVariants({ variant: 'outline' }),
-              'size-12 bg-transparent p-0 opacity-50 hover:opacity-100',
-            ),
-            nav_button_previous: 'absolute left-1',
-            nav_button_next: 'absolute right-1',
-            head: 'flex w-full mt-2',
-            row: 'flex w-full mt-2 gap-2',
-            cell: cn(
-              '[&:has([aria-selected])]:rounded-md w-[11.29vw] h-[calc(14vh)] min-w-[150px] relative p-0 text-center text-xl focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md',
-            ),
-          }}
-          components={{
-            IconLeft(props) {
-              return (
-                <Button
-                  variant='ghost'
-                  {...props}
-                  className={cn('flex size-10 items-center justify-center', props.className)}>
-                  <ChevronLeft aria-label='Mês anterior' className='size-6' />
+
+      <main className='flex-1 px-6 py-8'>
+        <Card className='mb-6'>
+          <CardContent className='place-items-center space-y-4 py-6'>
+            <h2 className='text-lg font-semibold'>Filtrar Aulas</h2>
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-6'>
+              <div className='col-span-2 flex flex-col gap-2'>
+                <Label>Mês</Label>
+                <Input value={monthFilter} onChange={(e) => setMonthFilter(e.target.value)} />
+              </div>
+              <div className='col-span-2 flex flex-col gap-2'>
+                <Label>Ano</Label>
+                <Input value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} />
+              </div>
+              <div className='col-span-2 flex items-end'>
+                <Button className='w-full gap-2'>
+                  <Search className='size-4' />
+                  Pesquisar
                 </Button>
-              );
-            },
-            IconRight(props) {
-              return (
-                <Button
-                  variant='ghost'
-                  {...props}
-                  className={cn('flex size-10 items-center justify-center', props.className)}>
-                  <ChevronRight aria-label='Próximo mês' className='size-6' />
-                </Button>
-              );
-            },
-            Day(props) {
-              return (
-                <div className='hover:bg-accent hover:text-accent-foreground flex h-full w-full items-center justify-end rounded-3xl border-1 font-normal'>
-                  {/* Verifica se o dia no calendário é hoje, se for aplica um background no dia */}
-                  {props.date.getDate() === new Date().getDate() &&
-                  props.date.getMonth() === new Date().getMonth() ? (
-                    <div className='absolute top-3 left-3 flex h-10 w-[6vw] items-center justify-center rounded-2xl bg-zinc-200 text-[#213046]'>
-                      {props.date.getDate()}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className='border-muted flex flex-wrap place-items-center gap-5 py-6 pl-6'>
+            {loading && (
+              <div className='flex w-full items-center justify-center'>
+                <Loader className='size-10' />
+              </div>
+            )}
+
+            {!loading && activities.length === 0 && (
+              <p className='text-muted-foreground'>Nenhuma aula encontrada.</p>
+            )}
+
+            {!loading &&
+              activities.map((event, index) => {
+                const date = new Date(event.dia);
+                const dateString = `${date.getDate().toString()}/${date.getMonth().toString()}/${date.getFullYear().toString()}`;
+
+                return (
+                  <div key={index} className='relative mb-10 rounded-lg border p-5'>
+                    <p className={`text-sm font-medium ${event.active ? 'text-primary' : ''}`}>
+                      {dateString}
+                    </p>
+                    <p
+                      className={`text-base font-semibold ${event.active ? 'text-primary' : 'text-foreground'}`}>
+                      {event.title}
+                    </p>
+                    <div className='text-muted-foreground mb-2 text-sm'>
+                      <div className='flex items-center gap-1'>
+                        <CalendarDays className='h-4 w-4' />
+                        {dateString}
+                      </div>
+                      <div className='flex items-center gap-1'>
+                        <Clock className='h-4 w-4' />
+                        {event.horario}
+                      </div>
                     </div>
-                  ) : (
-                    <div className='flex h-full w-[20%] items-start justify-start pt-4 pl-4'>
-                      {props.date.getDate()}
-                    </div>
-                  )}
-                  <div className='flex h-full w-[80%] flex-col items-center justify-start space-y-1 overflow-y-auto pt-2 pb-2'>
-                    {activities.map(({ dia, id, nome , horario }) => {
-                      console.log( dia + '\n' + props.date.toISOString().split('T')[0]);
-                      if (
-                        dia === props.date.toISOString().split('T')[0] 
-                      ) {
-                        return (
-                          <Link
-                            to={`/classes/${id}`}
-                            key={id}
-                            className='dark:!bg-primary rounded-lg !bg-zinc-200 px-2 py-0.5 text-sm'>
-                            {nome} -{' '}
-                            {horario}
-                          </Link>
-                        );
-                      }
-                      return null;
-                    })}
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => navigate(`/classes/attendance-list/${event.id}`)}
+                      className='gap-1'>
+                      <LogIn className='h-4 w-4' />
+                      Entrar na aula
+                    </Button>
                   </div>
-                </div>
-              );
-            },
-            HeadRow() {
-              const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-              return (
-                <div className='mb-2 flex w-full justify-between'>
-                  {weekDays.map((day) => (
-                    <div
-                      key={day}
-                      className='text-muted-foreground w-[11.29vw] min-w-[150px] text-center text-xl font-normal'>
-                      {day}
-                    </div>
-                  ))}
-                </div>
-              );
-            },
-          }}
-          mode='single'
-        />
-      </div>
+                );
+              })}
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }

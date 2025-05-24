@@ -21,7 +21,13 @@ export const finalizarAula = async (aula) => {
 };
 
 export const buscarAulas = async (mes) => {
-    const response = await api.get('/buscarAulas?mes=' + mes);
-    console.log(response.data);
-    return response.data;
-}
+  const response = await api.get('/buscarAulas?mes=' + mes);
+  console.log(response.data);
+  return response.data;
+};
+
+export const buscarAula = async (id) => {
+  const response = await api.get('/buscarAula?aula_id=' + id);
+  console.log(response.data);
+  return response.data;
+};

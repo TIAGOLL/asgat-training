@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Loader } from '@/components/loader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -14,15 +15,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { criarAluno } from '@/services/alunos';
 
 import { FormMessageError } from '../../../components/form-message-error';
 import { studentSchema } from '../../../components/forms/validations/entities/students';
 import { Input } from '../../../components/ui/input';
-import { criarAluno } from '@/services/alunos';
 
 type StudentsSchema = z.infer<typeof studentSchema>;
 
 export function CreateStudentsForm() {
+  const [loading, setLoading] = useState(false);
+
   const [belts] = useState([
     { id: 1, name: 'Branca' },
     { id: 2, name: 'Branca com amarela' },
@@ -53,12 +56,12 @@ export function CreateStudentsForm() {
     contato,
     idade,
     data_ingresso,
-    //id,
+    // id,
     nome,
-    
   }: StudentsSchema) {
-    console.log('criarAluno', {faixa, contato, idade, data_ingresso,  nome});
-    await criarAluno({faixa, contato, idade, data_ingresso, nome});
+    setLoading(true);
+    await criarAluno({ faixa, contato, idade, data_ingresso, nome });
+    setLoading(false);
   }
 
   return (
@@ -83,11 +86,7 @@ export function CreateStudentsForm() {
               <Calendar className='size-4' />
               Data de nascimento
             </Label>
-            <Input
-              id='idade'
-              {...register('idade', { valueAsDate: true })}
-              type='date'
-            />
+            <Input id='idade' {...register('idade', { valueAsDate: true })} type='date' />
             <FormMessageError error={errors.idade?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
@@ -125,11 +124,9 @@ export function CreateStudentsForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
-        <Button
-          type='submit'
-          className='w-[10rem] gap-2'
-          onClick={() => console.log(errors)}>
-          <Save className='size-4' />
+        <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
+          {loading && <Loader className='size-4' />}
+          {!loading && <Save className='size-4' />}
           Salvar
         </Button>
       </div>
