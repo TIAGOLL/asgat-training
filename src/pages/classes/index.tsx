@@ -2,12 +2,12 @@ import { CalendarDays, Clock, Edit2, LogIn, NotebookTabs, Search } from 'lucide-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // React Router DOM
 
-import { Loader } from '@/components/loader';
 import { Sidebar } from '@/components/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import { buscarAulas } from '@/services/aulas';
 
 export function Classes() {
@@ -32,9 +32,9 @@ export function Classes() {
     <div className='flex'>
       <Sidebar />
 
-      <main className='flex-1 px-6 py-8'>
+      <main className='mx-6 flex-1 py-8'>
         <Card className='mb-6'>
-          <CardContent className='place-items-center space-y-4 py-6'>
+          <CardContent className='place-items-center space-y-4'>
             <h2 className='text-lg font-semibold'>Filtrar Aulas</h2>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-6'>
               <div className='col-span-2 flex flex-col gap-2'>
@@ -55,18 +55,32 @@ export function Classes() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className='border-muted flex flex-wrap place-items-center gap-5 py-6 pl-6'>
-            {loading && (
-              <div className='flex w-full items-center justify-center'>
-                <Loader className='size-10' />
-              </div>
-            )}
-
-            {!loading && activities.length === 0 && (
-              <p className='text-muted-foreground'>Nenhuma aula encontrada.</p>
-            )}
-
+        <Card className='border-0 md:border-1'>
+          <CardContent className='border-muted flex flex-wrap items-center justify-center p-0 md:gap-5'>
+            {loading &&
+              Array.from({ length: 4 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-2/9'>
+                  <div className='flex items-center gap-1 font-bold'>
+                    <Skeleton className='h-4 w-4 rounded-full' />
+                    <Skeleton className='h-4 w-24' />
+                  </div>
+                  <Skeleton className='h-6 w-32 rounded' />
+                  <div className='text-muted-foreground mb-2 flex flex-col gap-2 text-sm'>
+                    <div className='flex items-center gap-1'>
+                      <Skeleton className='h-4 w-4 rounded-full' />
+                      <Skeleton className='h-4 w-20' />
+                    </div>
+                    <div className='flex items-center gap-1'>
+                      <Skeleton className='h-4 w-4 rounded-full' />
+                      <Skeleton className='h-4 w-16' />
+                    </div>
+                  </div>
+                  <Skeleton className='h-8 w-full rounded md:w-48' />
+                  <Skeleton className='h-8 w-full rounded md:w-48' />
+                </div>
+              ))}
             {!loading &&
               activities.map((event, index) => {
                 const date = new Date(event.dia);
@@ -75,7 +89,7 @@ export function Classes() {
                 return (
                   <div
                     key={index}
-                    className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-1/4'>
+                    className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-2/9'>
                     <div className='flex items-center gap-1 font-bold'>
                       <CalendarDays className='h-4 w-4' />
                       {dateString}
@@ -98,7 +112,7 @@ export function Classes() {
                       variant='secondary'
                       size='sm'
                       onClick={() => navigate(`/classes/attendance-list/${event.id}`)}
-                      className='w-full gap-2 md:w-48'>
+                      className='w-full max-w-full gap-2 md:w-48'>
                       <LogIn className='h-4 w-4' />
                       Entrar na aula
                     </Button>

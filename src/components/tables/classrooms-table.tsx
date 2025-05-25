@@ -25,9 +25,10 @@ import {
 } from '../ui/alert-dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Skeleton } from '../ui/skeleton';
 export function DataTableClassrooms() {
   const [clasrooms, setClasrooms] = useState([]);
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const {
     handleSubmit,
@@ -37,8 +38,10 @@ export function DataTableClassrooms() {
   } = useForm({});
 
   useEffect(() => {
+    setLoading(true);
     const fetchStudents = async () => {
       const result = await buscarTurmas();
+      setLoading(false);
       setClasrooms(result);
     };
 
@@ -62,64 +65,82 @@ export function DataTableClassrooms() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clasrooms.map((classroom) => (
-            <TableRow key={classroom.name}>
-              <TableCell className='font-medium'>{classroom.nome}</TableCell>
-              <TableCell className='font-medium'>{classroom.dia}</TableCell>
-              <TableCell className='font-medium'>{classroom.horario}</TableCell>
-              <TableCell className='font-medium'>
-                <TooltipProvider>
-                  <Tooltip delayDuration={0}>
-                    <TooltipTrigger asChild>
-                      <span className='pt-3'>
-                        <AlertDialog>
-                          <AlertDialogTrigger className='m-0 rounded-md bg-green-300 p-1'>
-                            <Edit className='h-4 w-4 dark:text-black' />
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <form
-                              onSubmit={handleSubmit(updateClassroom)}
-                              className='flex flex-col gap-6'>
-                              <AlertDialogTitle>Editar senha</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Digite a nova senha para o usuário:{' '}
-                                <span className='font-bold'></span>
-                              </AlertDialogDescription>
-                              <div className='grid grid-cols-2 gap-3'>
-                                <div className='col-span-2 grid w-8/12 gap-1'>
-                                  <Label htmlFor='email'>Email</Label>
-                                  <Input type='email' {...register('email')} readOnly />
-                                </div>
-                                <div className='col-span-2 grid w-8/12 gap-1'>
-                                  <Label htmlFor='password'>Senha</Label>
-                                  <Input type='password' {...register('password')} />
-                                  {errors.password && (
-                                    <span className='text-sm text-red-500'></span>
-                                  )}
-                                </div>
-                                <AlertDialogFooter className='col-span-2'>
-                                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                  <AlertDialogAction type='submit'>
-                                    {loading ? (
-                                      <LoaderIcon className='mr-2 h-4 w-4 animate-spin dark:text-black' />
-                                    ) : (
-                                      <Save className='mr-2 h-4 w-4 dark:text-black' />
+          {loading &&
+            [...Array(5)].map((_, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <Skeleton className='h-6' />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className='h-6' />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className='h-6' />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className='h-6' />
+                </TableCell>
+              </TableRow>
+            ))}
+          {!loading &&
+            clasrooms.map((classroom) => (
+              <TableRow key={classroom.name}>
+                <TableCell className='font-medium'>{classroom.nome}</TableCell>
+                <TableCell className='font-medium'>{classroom.dia}</TableCell>
+                <TableCell className='font-medium'>{classroom.horario}</TableCell>
+                <TableCell className='font-medium'>
+                  <TooltipProvider>
+                    <Tooltip delayDuration={0}>
+                      <TooltipTrigger asChild>
+                        <span className='pt-3'>
+                          <AlertDialog>
+                            <AlertDialogTrigger className='m-0 rounded-md bg-green-300 p-1'>
+                              <Edit className='h-4 w-4 dark:text-black' />
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <form
+                                onSubmit={handleSubmit(updateClassroom)}
+                                className='flex flex-col gap-6'>
+                                <AlertDialogTitle>Editar senha</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Digite a nova senha para o usuário:{' '}
+                                  <span className='font-bold'></span>
+                                </AlertDialogDescription>
+                                <div className='grid grid-cols-2 gap-3'>
+                                  <div className='col-span-2 grid w-8/12 gap-1'>
+                                    <Label htmlFor='email'>Email</Label>
+                                    <Input type='email' {...register('email')} readOnly />
+                                  </div>
+                                  <div className='col-span-2 grid w-8/12 gap-1'>
+                                    <Label htmlFor='password'>Senha</Label>
+                                    <Input type='password' {...register('password')} />
+                                    {errors.password && (
+                                      <span className='text-sm text-red-500'></span>
                                     )}
-                                    Salvar
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </div>
-                            </form>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>Mudar senha</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </TableCell>
-            </TableRow>
-          ))}
+                                  </div>
+                                  <AlertDialogFooter className='col-span-2'>
+                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                    <AlertDialogAction type='submit'>
+                                      {loading ? (
+                                        <LoaderIcon className='mr-2 h-4 w-4 animate-spin dark:text-black' />
+                                      ) : (
+                                        <Save className='mr-2 h-4 w-4 dark:text-black' />
+                                      )}
+                                      Salvar
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </div>
+                              </form>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>Mudar senha</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>
