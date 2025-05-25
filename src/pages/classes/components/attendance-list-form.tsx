@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { attendanceListSchema } from '@/components/forms/validations/attendance-list-schema';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -39,6 +40,7 @@ export function AttendanceListForm() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
   const [alunos, setAlunos] = useState([]);
   const [aula, setAula] = useState({});
   const [dados, setDados] = useState({});
@@ -51,6 +53,7 @@ export function AttendanceListForm() {
         aula_id: result.id,
         presencas: [],
       });
+      setLoading(false);
       setAlunos(result.turma.alunos);
     };
     fetchAulas();
@@ -92,55 +95,70 @@ export function AttendanceListForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {alunos?.map((student) => {
-                  const isPresent =
-                    dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === true;
-                  const isAbsent =
-                    dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === false;
-
-                  return (
-                    <TableRow key={student.id}>
-                      <TableCell className='font-medium'>{student.nome}</TableCell>
-                      <TableCell className='flex gap-2'>
-                        {/* Presente */}
-                        <label
-                          htmlFor={`students.${student.id}.present-true`}
-                          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                            isPresent ? 'bg-green-600' : 'bg-green-600/0 hover:bg-green-600'
-                          }`}>
-                          <Check size={16} />
-                        </label>
-                        <input
-                          onClick={() => updateDados(student.id, true)}
-                          type='radio'
-                          name={`student-${student.id}`}
-                          value='true'
-                          checked={isPresent}
-                          id={`students.${student.id}.present-true`}
-                          className='hidden'
-                        />
-
-                        {/* Ausente */}
-                        <label
-                          htmlFor={`students.${student.id}.present-false`}
-                          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                            isAbsent ? 'bg-red-600' : 'bg-red-600/0 hover:bg-red-600'
-                          }`}>
-                          <X size={16} />
-                        </label>
-                        <input
-                          onClick={() => updateDados(student.id, false)}
-                          type='radio'
-                          name={`student-${student.id}`}
-                          value='false'
-                          checked={isAbsent}
-                          id={`students.${student.id}.present-false`}
-                          className='hidden'
-                        />
+                {loading &&
+                  [...Array(5)].map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <Skeleton className='h-6' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-6' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-6' />
                       </TableCell>
                     </TableRow>
-                  );
-                })}
+                  ))}
+                {!loading &&
+                  alunos?.map((student) => {
+                    const isPresent =
+                      dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === true;
+                    const isAbsent =
+                      dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === false;
+
+                    return (
+                      <TableRow key={student.id}>
+                        <TableCell className='font-medium'>{student.nome}</TableCell>
+                        <TableCell className='flex gap-2'>
+                          {/* Presente */}
+                          <label
+                            htmlFor={`students.${student.id}.present-true`}
+                            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
+                              isPresent ? 'bg-green-600' : 'bg-green-600/0 hover:bg-green-600'
+                            }`}>
+                            <Check size={16} />
+                          </label>
+                          <input
+                            onClick={() => updateDados(student.id, true)}
+                            type='radio'
+                            name={`student-${student.id}`}
+                            value='true'
+                            checked={isPresent}
+                            id={`students.${student.id}.present-true`}
+                            className='hidden'
+                          />
+
+                          {/* Ausente */}
+                          <label
+                            htmlFor={`students.${student.id}.present-false`}
+                            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
+                              isAbsent ? 'bg-red-600' : 'bg-red-600/0 hover:bg-red-600'
+                            }`}>
+                            <X size={16} />
+                          </label>
+                          <input
+                            onClick={() => updateDados(student.id, false)}
+                            type='radio'
+                            name={`student-${student.id}`}
+                            value='false'
+                            checked={isAbsent}
+                            id={`students.${student.id}.present-false`}
+                            className='hidden'
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </div>

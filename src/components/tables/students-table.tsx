@@ -64,9 +64,7 @@ export function DataTableStudents() {
     fetchStudents();
   }, []);
 
-  async function updateStudent(data) {
-    // setTimeout(() => setLoading(false), 2000);
-  }
+  async function updateStudent(data) {}
 
   return (
     <div className='w-full !rounded-lg border'>
