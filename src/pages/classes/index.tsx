@@ -1,4 +1,4 @@
-import { CalendarDays, Clock, LogIn, Search } from 'lucide-react';
+import { CalendarDays, Clock, Edit2, LogIn, NotebookTabs, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // React Router DOM
 
@@ -70,21 +70,24 @@ export function Classes() {
             {!loading &&
               activities.map((event, index) => {
                 const date = new Date(event.dia);
-                const dateString = `${date.getDate().toString()}/${date.getMonth().toString()}/${date.getFullYear().toString()}`;
+                const dateString = `${date.getDate().toString().padStart(2, '0')}/${date.getMonth().toString().padStart(2, '0')}/${date.getFullYear().toString()}`;
 
                 return (
-                  <div key={index} className='relative mb-10 rounded-lg border p-5'>
-                    <p className={`text-sm font-medium ${event.active ? 'text-primary' : ''}`}>
+                  <div
+                    key={index}
+                    className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-1/4'>
+                    <div className='flex items-center gap-1 font-bold'>
+                      <CalendarDays className='h-4 w-4' />
                       {dateString}
-                    </p>
+                    </div>
                     <p
                       className={`text-base font-semibold ${event.active ? 'text-primary' : 'text-foreground'}`}>
                       {event.title}
                     </p>
-                    <div className='text-muted-foreground mb-2 text-sm'>
+                    <div className='text-muted-foreground mb-2 flex flex-col gap-2 text-sm'>
                       <div className='flex items-center gap-1'>
-                        <CalendarDays className='h-4 w-4' />
-                        {dateString}
+                        <NotebookTabs className='h-4 w-4' />
+                        {event.nome}
                       </div>
                       <div className='flex items-center gap-1'>
                         <Clock className='h-4 w-4' />
@@ -92,12 +95,16 @@ export function Classes() {
                       </div>
                     </div>
                     <Button
-                      variant='outline'
+                      variant='secondary'
                       size='sm'
                       onClick={() => navigate(`/classes/attendance-list/${event.id}`)}
-                      className='gap-1'>
+                      className='w-full gap-2 md:w-48'>
                       <LogIn className='h-4 w-4' />
                       Entrar na aula
+                    </Button>
+                    <Button variant='outline' size='sm' className='w-full gap-2 md:w-48'>
+                      <Edit2 className='h-4 w-4' />
+                      Editar aula
                     </Button>
                   </div>
                 );

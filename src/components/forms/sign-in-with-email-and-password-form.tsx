@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { HTTPError } from 'ky';
-import { KeyRound, LogIn, Mail, ShieldCheck, ShieldX } from 'lucide-react';
+import { KeyRound, LogIn, Mail, ShieldCheck } from 'lucide-react';
 import nookies from 'nookies';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,13 +32,8 @@ export function SignInWithEmailAndPasswordForm() {
   async function signInWithEmailAndPassword({ email, password }: SignInWithEmailAndPasswordSchema) {
     setLoading(true);
     try {
-      /* const { token, message } = await SignInWithEmailAndPasswordService({
-        email,
-        password,
-      }); */
-
       const token = await login({ email, password });
-      const message = '';
+      const message = 'Bem vindo de volta!';
 
       if (token) {
         nookies.set(null, 'token', token, { maxAge: 60 * 60 * 24, path: '/' });
@@ -47,19 +41,9 @@ export function SignInWithEmailAndPasswordForm() {
           icon: ShieldCheck,
         });
         navigate('/classes');
-      } else {
-        return toast.error('login ou senha incorretos', {
-          icon: ShieldX,
-        });
       }
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const { message } = await error.response.json();
-
-        return toast.error(message, {
-          icon: ShieldX,
-        });
-      }
+    } catch (e) {
+      return toast.error('Senha ou usuários incorretos');
     } finally {
       setLoading(false);
     }
@@ -101,9 +85,6 @@ export function SignInWithEmailAndPasswordForm() {
         Logar
         {loading && <Loader className='size-4 animate-spin' />}
         {!loading && <LogIn className='size-4' />}
-      </Button>
-      <Button className='w-full' onClick={() => navigate('/classes')} disabled={loading}>
-        teste
       </Button>
     </form>
   );

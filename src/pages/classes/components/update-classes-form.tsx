@@ -71,7 +71,6 @@ export function UpdateClassesForm() {
   ]);
 
   async function updateClasses({ classroom, date, time, training }: UpdateClassesSchema) {
-    console.log('updateClasses', { classroom, date, time, training });
     return navigate(`/classes/attendance-list/${id}`);
   }
 

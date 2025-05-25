@@ -59,7 +59,6 @@ export function CreateClassroomForm() {
     };
 
     fetchStudents();
-    console.log(studentsList);
   }, []);
 
   const [selectedStudents, setSelectedStudents] = useState<StudentSchema[]>([]);

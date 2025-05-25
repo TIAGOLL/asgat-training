@@ -43,7 +43,6 @@ export function DataTableClassrooms() {
     };
 
     fetchStudents();
-    console.log(clasrooms);
   }, []);
 
   async function updateClassroom(data) {

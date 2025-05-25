@@ -67,7 +67,6 @@ export function CreateTrainingForm() {
   });
 
   async function createTraining({ type, exercises }: CreateTrainingSchema) {
-    console.log({ type, exercises });
     setLoading(true);
     const res = await criarTreino({ treino: type, exercicios: exercisesList });
     toast.success(res);

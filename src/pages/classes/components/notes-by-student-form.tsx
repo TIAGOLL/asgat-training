@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { notesByStudentSchema } from '@/components/forms/validations/notes-by-student-schema';
@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {buscarAula } from '@/services/aulas';
 import {
   Select,
   SelectContent,
@@ -26,15 +25,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { buscarAula } from '@/services/aulas';
 
 type NotesByStudentSchema = z.infer<typeof notesByStudentSchema>;
 
-
 export function NotesByStudentForm() {
-
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [alunos, setAlunos] = useState([]);
   const [aula, setAula] = useState({});
   const [dados, setDados] = useState({});
@@ -44,44 +42,29 @@ export function NotesByStudentForm() {
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
-      console.log(result.turma);
-      console.log(result.turma.alunos);
       setAula(result);
       setExercises(result.treino.exercicios);
       const aulas = localStorage.getItem('aulas');
-      const aulasOBJ = JSON.parse(aulas)
-      console.log('aulas');
-      console.log(aulasOBJ);
-      setDados(aulasOBJ);      
-
+      const aulasOBJ = JSON.parse(aulas);
+      setDados(aulasOBJ);
 
       setAlunos(result.turma.alunos);
-
-/*
-
-*/
-
     };
     fetchAulas();
   }, []);
 
-  useEffect(() => {
-  console.log("dados atualizado:", dados);
-}, [dados]); 
-  
-useEffect(() => {
-  setDados(prevDados => {
-        const updatedDados = { ...prevDados };
-        updatedDados.desempenho = {};
-        exercises.forEach((value) => {
-          console.log('exercicio aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
-          console.log(value.id + ' ' + value.nome);
-          updatedDados.desempenho[value.id] = [];
-        });
-        return updatedDados;
-      });
-}, [exercises]); 
+  useEffect(() => {}, [dados]);
 
+  useEffect(() => {
+    setDados((prevDados) => {
+      const updatedDados = { ...prevDados };
+      updatedDados.desempenho = {};
+      exercises.forEach((value) => {
+        updatedDados.desempenho[value.id] = [];
+      });
+      return updatedDados;
+    });
+  }, [exercises]);
 
   const {
     handleSubmit,
@@ -92,20 +75,18 @@ useEffect(() => {
     resolver: zodResolver(notesByStudentSchema),
   });
 
-
-  async function applyNotesToStudents(data: NotesByStudentSchema) {
-    console.log('applyNotesToStudents', { data });
-    navigate(`/classes/final-notes/${id}`);
-  }
+  async function applyNotesToStudents(data: NotesByStudentSchema) {}
 
   function updateDados(studentId, exercicioID, nota) {
-    setDados(prevDados => {
+    setDados((prevDados) => {
       const updatedDados = { ...prevDados };
-      if(!Array.isArray(updatedDados.desempenho[exercicioID])){
+      if (!Array.isArray(updatedDados.desempenho[exercicioID])) {
         updatedDados.desempenho[exercicioID] = [];
       }
-      
-      const alunoExiste = updatedDados.desempenho[exercicioID].find((p) => p.aluno_id === studentId);
+
+      const alunoExiste = updatedDados.desempenho[exercicioID].find(
+        (p) => p.aluno_id === studentId,
+      );
 
       if (alunoExiste) {
         alunoExiste.nota = nota;
@@ -156,21 +137,28 @@ useEffect(() => {
                     <TableCell>{aluno.nome}</TableCell>
                     <TableCell>
                       <div className='flex items-center justify-center gap-2'>
-                        <Button variant='outline' size='sm' onClick={() => {
-                          if(aluno.nota < 1){
-                            return;
-                          }                          
-                          aluno.nota -= 1;updateDados(aluno.id,selectedExercise,aluno.nota-1)                          
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() => {
+                            if (aluno.nota < 1) {
+                              return;
+                            }
+                            aluno.nota -= 1;
+                            updateDados(aluno.id, selectedExercise, aluno.nota - 1);
                           }}>
                           -
                         </Button>
-                        { (!aluno.nota ? aluno.nota = 0 : aluno.nota) }
-                        <span className='font-semibold'>{aluno.nota}</span>
-                        <Button variant='outline' size='sm' onClick={() => {
-                          if(aluno.nota > 9){
-                            return;
-                          }
-                          aluno.nota += 1;updateDados(aluno.id,selectedExercise,aluno.nota+1)
+                        {!aluno.nota ? (aluno.nota = 0) : aluno.nota}
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() => {
+                            if (aluno.nota > 9) {
+                              return;
+                            }
+                            aluno.nota += 1;
+                            updateDados(aluno.id, selectedExercise, aluno.nota + 1);
                           }}>
                           +
                         </Button>
@@ -187,16 +175,23 @@ useEffect(() => {
         </CardContent>
       </Card>
       <div className='flex w-4/12 flex-row place-content-between gap-4'>
-        <Link to={`/classes/attendance-list/${id}`} className='flex items-center gap-2'>
-          <Button variant='destructive' className='w-[10rem] justify-between'>
-            <ChevronLeft className='size-4' />
-            Voltar
-          </Button>
-        </Link>
+        <Button
+          variant='destructive'
+          className='w-[10rem] justify-between'
+          onClick={() => {
+            localStorage.setItem('aulas', JSON.stringify(dados));
+            navigate(`/classes/attendance-list/${id}`);
+          }}>
+          <ChevronLeft className='size-4' />
+          Voltar
+        </Button>
         <Button
           type='submit'
           className='w-[10rem] justify-between'
-          onClick={() => navigate(`/classes/final-notes/${id}`)}>
+          onClick={() => {
+            localStorage.setItem('aulas', JSON.stringify(dados));
+            navigate(`/classes/final-notes/${id}`);
+          }}>
           Próximo
           <ChevronRight className='size-4' />
         </Button>
@@ -204,7 +199,6 @@ useEffect(() => {
     </form>
   );
 }
-
 
 /*
 

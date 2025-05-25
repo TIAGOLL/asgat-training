@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
@@ -30,11 +31,12 @@ export function CreateClassesForm() {
     handleSubmit,
     formState: { errors },
     register,
+    watch,
     setValue,
   } = useForm<CreateClassesSchema>({
     resolver: zodResolver(createClassesSchema),
   });
-
+  const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState([]);
   const [trainings, setTrainings] = useState([]);
   const [loading, setLoading] = useState<boolean>();
@@ -48,28 +50,23 @@ export function CreateClassesForm() {
     };
 
     fetchStudents();
-    console.log(classrooms);
-    console.log(trainings);
   }, []);
 
   async function createClasses(data: CreateClassesSchema) {
     setLoading(true);
     try {
-      console.log('Dados do formulário:', data);
       const turmaData = {
         turma_id: data.classroom,
         dia: data.date,
         treino_id: data.training,
         hora: data.time,
       };
-      console.log('Enviando para API:', turmaData);
       const response = await criarAula(turmaData);
       toast.success(response.message);
+      navigate('/classes');
     } catch (error) {
-      console.log(error);
       console.error('Erro ao criar turma:', error);
     } finally {
-      console.log('Deu certo');
       setLoading(false);
     }
   }
@@ -87,7 +84,10 @@ export function CreateClassesForm() {
             <Label>Turma</Label>
             <Select onValueChange={(value) => setValue('classroom', value)}>
               <SelectTrigger {...register('classroom')} className='w-full'>
-                <SelectValue placeholder='Selecione...' />
+                {!watch('classroom') && <SelectValue placeholder='Selecione...' />}
+                {watch('classroom') &&
+                  classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
+                    ?.nome}
               </SelectTrigger>
               <SelectContent>
                 {classrooms.map((classroom) => (
@@ -103,7 +103,9 @@ export function CreateClassesForm() {
             <Label>Treino</Label>
             <Select onValueChange={(value) => setValue('training', value)}>
               <SelectTrigger {...register('training')} className='w-full'>
-                <SelectValue placeholder='Selecione...' />
+                {!watch('training') && <SelectValue placeholder='Selecione...' />}
+                {watch('training') &&
+                  trainings.find((training) => training.id === parseInt(watch('training')))?.tipo}
               </SelectTrigger>
               <SelectContent>
                 {trainings.map((training) => (

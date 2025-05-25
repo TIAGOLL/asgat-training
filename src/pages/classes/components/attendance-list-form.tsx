@@ -46,8 +46,6 @@ export function AttendanceListForm() {
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
-      console.log(result.turma);
-      console.log(result.turma.alunos);
       setAula(result);
       setDados({
         aula_id: result.id,
@@ -59,13 +57,11 @@ export function AttendanceListForm() {
   }, []);
 
   function handleAttendance(data: AttendanceListSchema) {
-    console.log(data);
     navigate(`/classes/notes/${id}`);
   }
 
-  
   function updateDados(studentId, presenca) {
-    setDados(prevDados => {
+    setDados((prevDados) => {
       const updatedDados = { ...prevDados };
       const alunoExiste = updatedDados.presencas.find((p) => p.aluno_id === studentId);
 
@@ -76,7 +72,6 @@ export function AttendanceListForm() {
       }
       return updatedDados;
     });
-    console.log(dados);
   }
 
   return (
@@ -98,9 +93,11 @@ export function AttendanceListForm() {
               </TableHeader>
               <TableBody>
                 {alunos?.map((student) => {
-                  const isPresent = dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === true;
-                  const isAbsent = dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === false;
-                  
+                  const isPresent =
+                    dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === true;
+                  const isAbsent =
+                    dados?.presencas?.find((p) => p.aluno_id === student.id)?.presenca === false;
+
                   return (
                     <TableRow key={student.id}>
                       <TableCell className='font-medium'>{student.nome}</TableCell>
@@ -109,14 +106,14 @@ export function AttendanceListForm() {
                         <label
                           htmlFor={`students.${student.id}.present-true`}
                           className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                            isPresent ? 'bg-green-600' : 'bg-green-600/30 hover:bg-green-600'
+                            isPresent ? 'bg-green-600' : 'bg-green-600/0 hover:bg-green-600'
                           }`}>
                           <Check size={16} />
                         </label>
                         <input
                           onClick={() => updateDados(student.id, true)}
                           type='radio'
-                          name={`student-${student.id}`} 
+                          name={`student-${student.id}`}
                           value='true'
                           checked={isPresent}
                           id={`students.${student.id}.present-true`}
@@ -127,14 +124,14 @@ export function AttendanceListForm() {
                         <label
                           htmlFor={`students.${student.id}.present-false`}
                           className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                            isAbsent ? 'bg-red-600' : 'bg-red-600/30 hover:bg-red-600'
+                            isAbsent ? 'bg-red-600' : 'bg-red-600/0 hover:bg-red-600'
                           }`}>
                           <X size={16} />
                         </label>
                         <input
                           onClick={() => updateDados(student.id, false)}
                           type='radio'
-                          name={`student-${student.id}`} 
+                          name={`student-${student.id}`}
                           value='false'
                           checked={isAbsent}
                           id={`students.${student.id}.present-false`}
@@ -160,9 +157,9 @@ export function AttendanceListForm() {
           type='submit'
           className='w-[10rem] justify-between'
           onClick={() => {
-            localStorage.setItem('aulas',JSON.stringify(dados));
+            localStorage.setItem('aulas', JSON.stringify(dados));
             navigate(`/classes/notes/${id}`);
-            }}>
+          }}>
           Próximo
           <ChevronRight className='size-4' />
         </Button>

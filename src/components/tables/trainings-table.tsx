@@ -10,20 +10,17 @@ import {
 } from '@/components/ui/table';
 import { buscarTreinos } from '@/services/treino';
 
-
 export function DataTableTrainings() {
-  const [trainings,setTrainings] = useState([]);
+  const [trainings, setTrainings] = useState([]);
 
   useEffect(() => {
     const fetchTreinos = async () => {
-      const result = await buscarTreinos()
-      setTrainings(result)
-    }
+      const result = await buscarTreinos();
+      setTrainings(result);
+    };
 
-
-    fetchTreinos()
-    console.log(trainings)
-  }, [])
+    fetchTreinos();
+  }, []);
 
   return (
     <div className='w-full !rounded-lg border'>

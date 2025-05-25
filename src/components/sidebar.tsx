@@ -1,6 +1,6 @@
 import { Circle, Clipboard, Dumbbell, GraduationCap, Menu, Power, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import {
   Accordion,
@@ -111,15 +111,17 @@ export function Sidebar() {
             );
           })}
         </Accordion>
-        <Link rel='stylesheet' to='/'>
-          <Button
-            variant='destructive'
-            type='button'
-            className='flex w-[10rem] place-items-center space-x-2 hover:cursor-pointer'>
-            <Power />
-            Sair
-          </Button>
-        </Link>
+        <Button
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+          }}
+          variant='destructive'
+          type='button'
+          className='flex w-[10rem] place-items-center space-x-2 hover:cursor-pointer'>
+          <Power />
+          Sair
+        </Button>
       </nav>
     </div>
   );

@@ -1,24 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, Save } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { finishClassSchema } from '@/components/forms/validations/finish-class-schema';
+import { Loader } from '@/components/loader';
 import { Sidebar } from '@/components/sidebar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
 import {
   Table,
   TableBody,
@@ -27,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { buscarAula, finalizarAula } from '@/services/aulas';
 
 type FinishClassSchema = z.infer<typeof finishClassSchema>;
 
@@ -43,24 +38,32 @@ export function FinalNotes() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [exercises] = useState([
-    { id: '1', name: 'Exercício 1' },
-    { id: '2', name: 'Exercício 2' },
-    { id: '3', name: 'Exercício 3' },
-    { id: '4', name: 'Exercício 4' },
-    { id: '5', name: 'Exercício 5' },
-  ]);
+  const [alunos, setAlunos] = useState([]);
+  const [loading, setLoading] = useState<boolean>();
+  const [aula, setAula] = useState({});
+  const [dados, setDados] = useState({});
+  const [exercises, setExercises] = useState([]);
 
-  const students = [
-    { id: '1', name: 'Carlos Silva', grade: 1 },
-    { id: '2', name: 'Ana Oliveira', grade: 1 },
-    { id: '3', name: 'Mariana Costa', grade: 1 },
-    { id: '4', name: 'João Pereira', grade: 1 },
-    { id: '5', name: 'Fernanda Souza', grade: 1 },
-  ];
+  useEffect(() => {
+    const fetchAulas = async () => {
+      const result = await buscarAula(id);
+      setAula(result);
+      setExercises(result.treino.exercicios);
+      const aulas = localStorage.getItem('aulas');
+      const aulasOBJ = JSON.parse(aulas);
+      setDados(aulasOBJ);
 
-  async function finishClass(data: FinishClassSchema) {
-    console.log('finishClass', { data });
+      setAlunos(result.turma.alunos);
+    };
+    fetchAulas();
+  }, []);
+
+  async function finishClass() {
+    setLoading(true);
+    const res = await finalizarAula(dados);
+    toast.success(res);
+    setLoading(false);
+    navigate('/classes');
   }
 
   return (
@@ -88,28 +91,11 @@ export function FinalNotes() {
                     <Input type='time' defaultValue='19:30' className='col-span-1' />
                   </div>
                 </div>
-
-                <div className='col-span-6 grid gap-2'>
-                  <Label>Exercício</Label>
-                  <Select>
-                    <SelectTrigger className='w-[15rem]'>
-                      <SelectValue placeholder='Selecione...' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {exercises.map((exercise) => (
-                        <SelectItem key={exercise.id} value={exercise.id}>
-                          {exercise.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
 
-              <Separator className='col-span-6 h-[2px] w-11/12' />
-
               {/* Tabela */}
-              <div className='col-span-6 mt-4 w-full overflow-x-auto'>
+              <div className='col-span-6 mt-4 flex w-full flex-col gap-4 overflow-x-auto'>
+                <Label>Médias:</Label>
                 <Table className='min-w-[500px] rounded-md border'>
                   <TableHeader>
                     <TableRow>
@@ -118,9 +104,9 @@ export function FinalNotes() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {students.map((student) => (
+                    {alunos.map((student) => (
                       <TableRow key={student.id}>
-                        <TableCell>{student.name}</TableCell>
+                        <TableCell>{student.nome}</TableCell>
                         <TableCell className='text-center font-bold text-green-600'>
                           {student.grade}
                         </TableCell>
@@ -138,8 +124,9 @@ export function FinalNotes() {
                 Voltar
               </Button>
             </Link>
-            <Button type='submit' className='w-[10rem] justify-between'>
-              <Save className='size-4' />
+            <Button type='submit' className='w-[10rem] justify-between' disabled={loading}>
+              {loading && <Loader className='size-4' />}
+              {!loading && <Save className='size-4' />}
               Finalizar aula
             </Button>
           </div>
