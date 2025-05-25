@@ -107,7 +107,7 @@ export function DataTableStudents() {
                       <TooltipTrigger asChild>
                         <span className='pt-3'>
                           <AlertDialog>
-                            <AlertDialogTrigger className='m-0 rounded-md bg-green-300 p-1'>
+                            <AlertDialogTrigger className='m-0 cursor-pointer rounded-md bg-green-300 p-1'>
                               <Edit className='h-4 w-4 dark:text-black' />
                             </AlertDialogTrigger>
                             <AlertDialogContent>

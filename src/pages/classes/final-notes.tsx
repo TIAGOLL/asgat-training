@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -39,7 +40,7 @@ export function FinalNotes() {
   const { id } = useParams();
 
   const [alunos, setAlunos] = useState([]);
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(true);
   const [aula, setAula] = useState({});
   const [dados, setDados] = useState({});
   const [exercises, setExercises] = useState([]);
@@ -52,7 +53,7 @@ export function FinalNotes() {
       const aulas = localStorage.getItem('aulas');
       const aulasOBJ = JSON.parse(aulas);
       setDados(aulasOBJ);
-
+      setLoading(false);
       setAlunos(result.turma.alunos);
     };
     fetchAulas();
@@ -104,14 +105,29 @@ export function FinalNotes() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {alunos.map((student) => (
-                      <TableRow key={student.id}>
-                        <TableCell>{student.nome}</TableCell>
-                        <TableCell className='text-center font-bold text-green-600'>
-                          {student.grade}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {loading &&
+                      [...Array(5)].map((_, i) => (
+                        <TableRow key={i}>
+                          <TableCell>
+                            <Skeleton className='h-6' />
+                          </TableCell>
+                          <TableCell>
+                            <Skeleton className='h-6' />
+                          </TableCell>
+                          <TableCell>
+                            <Skeleton className='h-6' />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    {!loading &&
+                      alunos.map((student) => (
+                        <TableRow key={student.id}>
+                          <TableCell>{student.nome}</TableCell>
+                          <TableCell className='text-center font-bold text-green-600'>
+                            {student.grade}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </div>

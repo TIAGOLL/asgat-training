@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -34,6 +35,7 @@ export function NotesByStudentForm() {
   const navigate = useNavigate();
 
   const [alunos, setAlunos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [aula, setAula] = useState({});
   const [dados, setDados] = useState({});
   const [exercises, setExercises] = useState([]);
@@ -47,6 +49,7 @@ export function NotesByStudentForm() {
       const aulas = localStorage.getItem('aulas');
       const aulasOBJ = JSON.parse(aulas);
       setDados(aulasOBJ);
+      setLoading(false);
 
       setAlunos(result.turma.alunos);
     };
@@ -132,43 +135,58 @@ export function NotesByStudentForm() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {alunos.map((aluno) => (
-                  <TableRow key={aluno.id}>
-                    <TableCell>{aluno.nome}</TableCell>
-                    <TableCell>
-                      <div className='flex items-center justify-center gap-2'>
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={() => {
-                            if (aluno.nota < 1) {
-                              return;
-                            }
-                            aluno.nota -= 1;
-                            updateDados(aluno.id, selectedExercise, aluno.nota - 1);
-                          }}>
-                          -
-                        </Button>
-                        {!aluno.nota ? (aluno.nota = 0) : aluno.nota}
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={() => {
-                            if (aluno.nota > 9) {
-                              return;
-                            }
-                            aluno.nota += 1;
-                            updateDados(aluno.id, selectedExercise, aluno.nota + 1);
-                          }}>
-                          +
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Input />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {loading &&
+                  [...Array(5)].map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <Skeleton className='h-6' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-6' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-6' />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                {!loading &&
+                  alunos.map((aluno) => (
+                    <TableRow key={aluno.id}>
+                      <TableCell>{aluno.nome}</TableCell>
+                      <TableCell>
+                        <div className='flex items-center justify-center gap-2'>
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => {
+                              if (aluno.nota < 1) {
+                                return;
+                              }
+                              aluno.nota -= 1;
+                              updateDados(aluno.id, selectedExercise, aluno.nota - 1);
+                            }}>
+                            -
+                          </Button>
+                          {!aluno.nota ? (aluno.nota = 0) : aluno.nota}
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => {
+                              if (aluno.nota > 9) {
+                                return;
+                              }
+                              aluno.nota += 1;
+                              updateDados(aluno.id, selectedExercise, aluno.nota + 1);
+                            }}>
+                            +
+                          </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Input />
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>
