@@ -84,7 +84,8 @@ export function Classes() {
             {!loading &&
               activities.map((event, index) => {
                 const date = new Date(event.dia);
-                const dateString = `${(date.getDate() + 1).toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString()}`;
+                date.setDate(date.getDate() + 1);
+                const dateString = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
 
                 return (
                   <div
