@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite start"
+    "start": "vite start",
+    "cy:open": "cypress open --e2e --browser electron",
+    "cy:run": "cypress run --e2e --browser electron"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
