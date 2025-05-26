@@ -32,7 +32,7 @@ export function Classes() {
     <div className='flex'>
       <Sidebar />
 
-      <main className='mx-6 flex-1 py-8'>
+      <main className='mx-6 mt-5 flex-1 py-8'>
         <Card className='mb-6'>
           <CardContent className='place-items-center space-y-4'>
             <h2 className='text-lg font-semibold'>Filtrar Aulas</h2>
@@ -84,7 +84,7 @@ export function Classes() {
             {!loading &&
               activities.map((event, index) => {
                 const date = new Date(event.dia);
-                const dateString = `${date.getDate().toString().padStart(2, '0')}/${date.getMonth().toString().padStart(2, '0')}/${date.getFullYear().toString()}`;
+                const dateString = `${(date.getDate() + 1).toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString()}`;
 
                 return (
                   <div
