@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Classes } from '@/pages/classes';
+import { Reports } from '@/pages/reports';
 import { AttendanceList } from '@/pages/classes/attendance-list';
 import { CreateClasses } from '@/pages/classes/create-classes';
 import { FinalNotes } from '@/pages/classes/final-notes';
@@ -38,6 +39,8 @@ function RoutesApp() {
 
           <Route path='/students' element={<Students />} />
           <Route path='/students/create' element={<CreateStudents />} />
+
+          <Route path='/reports' element={<Reports />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -48,11 +48,27 @@ export function AttendanceListForm() {
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
+
+      const dadosSalvos = localStorage.getItem('aulas');
+      let dadosIniciais = {
+        aula_id: result.id,
+        presencas: [],
+      };
+  
+      if (dadosSalvos) {
+        const parsed = JSON.parse(dadosSalvos);
+        if (parsed.aula_id === result.id) {
+          dadosIniciais = parsed;
+        }
+      }
+  
       setAula(result);
+
       setDados({
         aula_id: result.id,
         presencas: [],
       });
+
       setLoading(false);
       setAlunos(result.turma.alunos);
     };
@@ -185,8 +201,9 @@ export function AttendanceListForm() {
     </form>
   );
 }
-/*
 
+
+/*
 {
   "id": 1,
   "dia": "2020-10-10",

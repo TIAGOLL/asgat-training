@@ -1,4 +1,4 @@
-import { Circle, Clipboard, Dumbbell, GraduationCap, Menu, Power, Users } from 'lucide-react';
+import { Circle, Clipboard, Dumbbell, GraduationCap, Menu, Power, Users, ScrollText } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -55,6 +55,13 @@ export function Sidebar() {
         { name: 'Cadastrar treino', to: '/trainings/create' },
       ],
     },
+    {
+      name: 'Relatórios',
+      icon: ScrollText,
+      links: [
+        { name: 'Emitir', to: '/reports' },
+      ],
+    },
   ];
 
   const [isMobile, setIsMobile] = useState(false);
@@ -62,7 +69,7 @@ export function Sidebar() {
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // inicial
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
