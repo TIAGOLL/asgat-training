@@ -1,7 +1,7 @@
-import { Edit, LoaderIcon, Save } from 'lucide-react';
+import { Edit, LoaderIcon, Save, ScrollText } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { toast } from 'react-toastify';
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { buscarAlunos } from '@/services/alunos';
+import { buscarAlunos, atualizarAluno } from '@/services/alunos';
 
 import { FormMessageError } from '../form-message-error';
 import {
@@ -23,48 +23,67 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Skeleton } from '../ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import z from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
 
+const studentSchema = z.object({
+  id: z.number().optional(),
+  nome: z.string().optional(),
+  contato: z.string().optional(),
+  faixa: z.string().optional()
+});
+
+
+type StudentsSchema = z.infer<typeof studentSchema>;
+
+const belts = [
+  { id: 1, name: 'Branca' },
+  { id: 2, name: 'Branca com amarela' },
+  { id: 3, name: 'Amarela' },
+  { id: 4, name: 'Verde' },
+  { id: 5, name: 'Verde com azul' },
+  { id: 6, name: 'Azul' },
+  { id: 7, name: 'Azul com vermelha' },
+  { id: 8, name: 'Vermelha' },
+  { id: 10, name: 'Vermelha com preta' },
+  { id: 11, name: 'Preta' },
+];
 export function DataTableStudents() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [belts] = useState([
-    { id: 1, name: 'Branca' },
-    { id: 2, name: 'Branca com amarela' },
-    { id: 3, name: 'Amarela' },
-    { id: 4, name: 'Verde' },
-    { id: 5, name: 'Verde com azul' },
-    { id: 6, name: 'Azul' },
-    { id: 7, name: 'Azul com vermelha' },
-    { id: 8, name: 'Vermelha' },
-    { id: 10, name: 'Vermelha com preta' },
-    { id: 11, name: 'Preta' },
-  ]);
 
   const {
     handleSubmit,
     register,
     formState: { errors },
     setValue,
-  } = useForm({});
+    getValues,
+  } = useForm({
+    resolver: zodResolver<StudentsSchema>(studentSchema),
+  });
 
+  const fetchStudents = async () => {
+    const result = await buscarAlunos();
+    setLoading(false);
+    setStudents(result);
+  };
   useEffect(() => {
     setLoading(true);
-    const fetchStudents = async () => {
-      const result = await buscarAlunos();
-      setLoading(false);
-      setStudents(result);
-    };
-
     fetchStudents();
   }, []);
 
-  async function updateStudent(data) {}
+  async function updateStudent(data) {
+    const res = await atualizarAluno(data);
+    toast.success(res);
+    await fetchStudents();
+  }
 
   return (
     <div className='w-full !rounded-lg border'>
@@ -97,18 +116,27 @@ export function DataTableStudents() {
             ))}
           {!loading &&
             students?.map((student) => (
-              <TableRow key={student?.email}>
+              <TableRow key={student.id}>
                 <TableCell className='font-medium'>{student?.nome}</TableCell>
                 <TableCell>{student?.contato}</TableCell>
                 <TableCell>{student?.faixa}</TableCell>
-                <TableCell className='font-medium'>
+                <TableCell className='font-medium space-x-2'>
                   <TooltipProvider>
                     <Tooltip delayDuration={0}>
                       <TooltipTrigger asChild>
                         <span className='pt-3'>
                           <AlertDialog>
-                            <AlertDialogTrigger className='m-0 cursor-pointer rounded-md bg-green-300 p-1'>
+                            <AlertDialogTrigger className='m-0 cursor-pointer rounded-md bg-green-300 p-1' asChild>
+                              <button
+                              className='m-0 cursor-pointer rounded-md bg-green-300 p-1'
+                              onClick={() => {
+                                setValue('id', student.id);
+                                setValue('nome', student.nome || '');
+                                setValue('contato', student.contato || '');
+                                setValue('faixa', student.faixa || '');
+                              }}>
                               <Edit className='h-4 w-4 dark:text-black' />
+                            </button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <form
@@ -152,12 +180,18 @@ export function DataTableStudents() {
                                         ))}
                                       </SelectContent>
                                     </Select>
-
                                     <FormMessageError error={errors.faixa?.message} />
                                   </div>
                                   <AlertDialogFooter className='col-span-2'>
                                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                    <AlertDialogAction type='submit'>
+                                    <AlertDialogAction type='submit' onClick={() => {
+                                      setValue("id", student.id)
+                                      const faixa = getValues('faixa');
+                                      if(!faixa){
+                                        setValue('faixa',student.faixa);
+                                      }
+                                      console.log(errors)
+                                    }}>
                                       {loading ? (
                                         <LoaderIcon className='mr-2 h-4 w-4 animate-spin dark:text-black' />
                                       ) : (
@@ -173,6 +207,18 @@ export function DataTableStudents() {
                         </span>
                       </TooltipTrigger>
                       <TooltipContent>Editar aluno</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip delayDuration={0}>
+                      <TooltipTrigger asChild>
+                        <a href={`/reports?id=${student.id}`}>
+                          <Button className='cursor-pointer rounded-md bg-orange-300 p-1 w-4 h-6 dark:hover:bg-orange-200'>
+                            <ScrollText className='h-4 w-4 dark:text-black' />
+                          </Button>
+                        </a>
+                      </TooltipTrigger>
+                      <TooltipContent>Ver relatório</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </TableCell>
