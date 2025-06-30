@@ -5,10 +5,12 @@ import { studentSchema } from './entities/students';
 export const createClasroomSchema = z.object({
   name: z
     .string({ required_error: 'Nome é obrigatório' })
-    .min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
+    .min(3, { message: 'Nome deve ter pelo menos 3 caracteres' })
+    .max(30,{ message: 'Nome deve ter pelo no maximo 30 caracteres' }),
   local: z
     .string({ required_error: 'Local é obrigatório' })
-    .min(3, { message: 'Local deve ter pelo menos 3 caracteres' }),
+    .min(3, { message: 'Local deve ter pelo menos 3 caracteres' })
+    .max(30,{ message: 'Local deve ter pelo menos 30 caracteres' }),
   time: z
     .string({ required_error: 'Horário é obrigatório' })
     .min(1, { message: 'Horário é obrigatório' }),

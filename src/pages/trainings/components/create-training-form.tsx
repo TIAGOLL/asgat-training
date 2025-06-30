@@ -124,7 +124,14 @@ export function CreateTrainingForm() {
                   });
                 }
 
-                if (exercise.length >= 3) {
+                if (exercise.length > 30) {
+                  return setError('exercises', {
+                    message: 'O treino não pode ter mais que 30 caracteres',
+                    type: 'minLength',
+                  });
+                }
+
+                if (exercise.length >= 3 && exercise.length <= 30) {
                   clearErrors('exercises');
                   setExercisesList((prev) => {
                     return [...prev, exercise];

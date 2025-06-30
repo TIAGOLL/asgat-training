@@ -76,7 +76,10 @@ export function CreateStudentsForm() {
               <User className='size-4' />
               Nome completo
             </Label>
-            <Input id='name' {...register('nome')} />
+            <Input
+              id="name"
+              {...register("nome")}
+            />
             <FormMessageError error={errors.nome?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
@@ -92,8 +95,9 @@ export function CreateStudentsForm() {
               <Contact className='size-4' />
               Contato
             </Label>
-            <Input id='contato' {...register('contato', { valueAsNumber: true })} />
-            <FormMessageError error={errors.contato?.message} />
+            <Input id="contato" {...register('contato', )}
+          />
+          <FormMessageError error={errors.contato?.message} />
           </div>
           <div className='col-span-6 grid gap-2'>
             <Label>Faixa</Label>
