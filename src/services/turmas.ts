@@ -10,7 +10,11 @@ export const buscarTurmas = async () => {
   return response.data;
 };
 
-export const buscarTurma = async (turmaId) => {
-  const response = await api.get('/buscarTurma', turmaId);
+export const buscarTurma = async (turma_id) => {
+  const response = await api.get('/buscarTurma?turma_id=' + turma_id);
   return response.data;
+};
+
+export const atualizarTurma = async (turma) => {
+ const response = await api.post('/atualizarTurma', turma);
 };
