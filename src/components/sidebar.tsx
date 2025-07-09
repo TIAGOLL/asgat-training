@@ -55,13 +55,6 @@ export function Sidebar() {
         { name: 'Cadastrar treino', to: '/trainings/create' },
       ],
     },
-    {
-      name: 'Relatórios',
-      icon: ScrollText,
-      links: [
-        { name: 'Emitir', to: '/reports' },
-      ],
-    },
   ];
 
   const [isMobile, setIsMobile] = useState(false);

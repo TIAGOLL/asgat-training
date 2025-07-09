@@ -6,7 +6,7 @@ export const criarAluno = async (aluno) => {
 };
 
 export const atualizarAluno = async (aluno) => {
-  const response = await api.post('/atualizarAluno', aluno);
+  const response = await api.post('/atualizarAluno', { aluno });
   return response.data;
 };
 

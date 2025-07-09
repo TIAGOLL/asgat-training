@@ -48,13 +48,31 @@ export function FinalNotes() {
   useEffect(() => {
     const fetchAulas = async () => {
       const result = await buscarAula(id);
-      setAula(result);
-      setExercises(result.treino.exercicios);
       const aulas = localStorage.getItem('aulas');
       const aulasOBJ = JSON.parse(aulas);
+
+      const alunosComNotas = result.turma.alunos.map((aluno) => {
+        const notas = Object.values(aulasOBJ.desempenho || {})
+          .flat()
+          .filter((n) => n.aluno_id === aluno.id)
+          .map((n) => n.nota);
+  
+        const media =
+          notas.length > 0
+            ? (notas.reduce((acc, val) => acc + val, 0) / notas.length).toFixed(1)
+            : null;
+  
+        return {
+          ...aluno,
+          grade: media,
+        };
+      });
+  
+      setAula(result);
+      setExercises(result.treino.exercicios);
       setDados(aulasOBJ);
+      setAlunos(alunosComNotas);
       setLoading(false);
-      setAlunos(result.turma.alunos);
     };
     fetchAulas();
   }, []);

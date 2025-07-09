@@ -63,11 +63,12 @@ export function AttendanceListForm() {
       }
   
       setAula(result);
-
+      setDados(dadosIniciais);
+      /*
       setDados({
         aula_id: result.id,
         presencas: [],
-      });
+      });*/
 
       setLoading(false);
       setAlunos(result.turma.alunos);
@@ -145,7 +146,7 @@ export function AttendanceListForm() {
                             <Check size={16} />
                           </label>
                           <input
-                            onClick={() => updateDados(student.id, true)}
+                            onChange={() => updateDados(student.id, true)}
                             type='radio'
                             name={`student-${student.id}`}
                             value='true'
@@ -163,7 +164,7 @@ export function AttendanceListForm() {
                             <X size={16} />
                           </label>
                           <input
-                            onClick={() => updateDados(student.id, false)}
+                            onChange={() => updateDados(student.id, false)}
                             type='radio'
                             name={`student-${student.id}`}
                             value='false'

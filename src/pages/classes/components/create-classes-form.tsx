@@ -86,13 +86,21 @@ export function CreateClassesForm() {
               <SelectTrigger {...register('classroom')} className='w-full'>
                 {!watch('classroom') && <SelectValue placeholder='Selecione...' />}
                 {watch('classroom') &&
-                  classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
-                    ?.nome}
+                  `${
+                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
+                      ?.nome
+                  } - ${
+                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
+                      ?.dia
+                  } - ${
+                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
+                      ?.horario
+                  }`}
               </SelectTrigger>
               <SelectContent>
                 {classrooms.map((classroom) => (
                   <SelectItem key={classroom.id} value={classroom.id}>
-                    {classroom.nome}
+                    {`${classroom.nome} - ${classroom.dia} - ${classroom.horario}`}
                   </SelectItem>
                 ))}
               </SelectContent>
