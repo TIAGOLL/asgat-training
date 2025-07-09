@@ -10,8 +10,10 @@ export const finalizarAula = async (aula) => {
   return response.data;
 };
 
-export const buscarAulas = async (mes) => {
-  const response = await api.get('/buscarAulas?mes=' + mes);
+export const buscarAulas = async (mes, ano, showFinished) => {
+  const response = await api.get(
+    '/buscarAulas?mes=' + mes + '&ano=' + ano + '&mostraFinalizada=' + showFinished,
+  );
   return response.data;
 };
 

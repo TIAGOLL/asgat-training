@@ -1,10 +1,10 @@
-import { CalendarDays, Clock, Edit2, LogIn, NotebookTabs, Search } from 'lucide-react';
+import { CalendarDays, Clock, Edit2, LogIn, NotebookTabs } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // React Router DOM
 
 import { Sidebar } from '@/components/sidebar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,16 +17,30 @@ export function Classes() {
   const [monthFilter, setMonthFilter] = useState((currentDate.getMonth() + 1).toString());
   const [yearFilter, setYearFilter] = useState(currentDate.getFullYear().toString());
   const [loading, setLoading] = useState(true);
+  const [showFinished, setShowFinished] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(showFinished);
     setLoading(true);
+    if (
+      !monthFilter ||
+      !yearFilter ||
+      isNaN(parseInt(monthFilter)) ||
+      isNaN(parseInt(yearFilter)) ||
+      parseInt(monthFilter) < 0 ||
+      parseInt(monthFilter) > 12 ||
+      yearFilter.length !== 4
+    ) {
+      setLoading(false);
+      return;
+    }
     const fetchAulas = async () => {
-      const result = await buscarAulas(parseInt(monthFilter));
+      const result = await buscarAulas(parseInt(monthFilter), parseInt(yearFilter), showFinished);
       setActivities(result);
       setLoading(false);
     };
     fetchAulas();
-  }, []);
+  }, [monthFilter, yearFilter, showFinished]);
 
   return (
     <div className='flex'>
@@ -35,21 +49,47 @@ export function Classes() {
       <main className='mx-6 mt-5 flex-1 py-8'>
         <Card className='mb-6'>
           <CardContent className='place-items-center space-y-4'>
-            <h2 className='text-lg font-semibold'>Filtrar Aulas</h2>
-            <div className='grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-6'>
-              <div className='col-span-2 flex flex-col gap-2'>
+            <CardTitle className='text-lg font-semibold'>Filtrar Aulas</CardTitle>
+            <CardDescription className='text-muted-foreground text-sm'>
+              Para filtrar somente pelo ano, deixe o campo do mês em branco.
+            </CardDescription>
+            <div className='grid grid-cols-5 gap-4'>
+              <div className='col-span-2 grid gap-2'>
                 <Label>Mês</Label>
-                <Input value={monthFilter} onChange={(e) => setMonthFilter(e.target.value)} />
+                <Input
+                  value={monthFilter}
+                  onChange={(e) => setMonthFilter(e.target.value)}
+                  maxLength={2}
+                />
+                {!monthFilter ? (
+                  <p className='text-sm text-red-500'>Por favor, insira um mês válido.</p>
+                ) : isNaN(parseInt(monthFilter)) ||
+                  parseInt(monthFilter) < 0 ||
+                  parseInt(monthFilter) > 12 ? (
+                  <p className='text-sm text-red-500'>Mês inválido. Deve ser entre 1 e 12.</p>
+                ) : null}
               </div>
-              <div className='col-span-2 flex flex-col gap-2'>
-                <Label>Ano</Label>
-                <Input value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} />
+              <div className='col-span-2 grid gap-2'>
+                <Label>Ano (AAAA)</Label>
+                <Input
+                  value={yearFilter}
+                  onChange={(e) => setYearFilter(e.target.value)}
+                  placeholder='AAAA'
+                  maxLength={4}
+                />
+                {!yearFilter || yearFilter.length === 0 ? (
+                  <p className='text-sm text-red-500'>Por favor, insira um ano válido.</p>
+                ) : yearFilter.length !== 4 || isNaN(parseInt(yearFilter)) ? (
+                  <p className='text-sm text-red-500'>Ano inválido. Deve ter 4 dígitos.</p>
+                ) : null}
               </div>
-              <div className='col-span-2 flex items-end'>
-                <Button className='w-full gap-2'>
-                  <Search className='size-4' />
-                  Pesquisar
-                </Button>
+              <div className='col-span-2 flex gap-2'>
+                <Input
+                  className='size-10 sm:size-6 md:size-6'
+                  onChange={(e) => setShowFinished(e.target.checked)}
+                  type='checkbox'
+                />
+                <Label>Mostrar somente aulas finalizadas</Label>
               </div>
             </div>
           </CardContent>
