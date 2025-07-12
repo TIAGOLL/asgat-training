@@ -45,7 +45,6 @@ export function Classes() {
   return (
     <div className='flex'>
       <Sidebar />
-
       <main className='mx-6 mt-5 flex-1 py-8'>
         <Card className='mb-6'>
           <CardContent className='place-items-center space-y-4'>
