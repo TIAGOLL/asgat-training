@@ -85,6 +85,11 @@ export function CreateTrainingForm() {
         </CardHeader>
         <CardContent className='mt-10 grid grid-cols-6 space-y-7'>
           <div className='col-span-6 grid gap-2'>
+            <Label>Nome</Label>
+            <Input type='text' {...register('name')} />
+            <FormMessageError error={errors.type?.message} />
+          </div>
+          <div className='col-span-6 grid gap-2'>
             <Label>Tipo de treino</Label>
             <Select onValueChange={(value) => setValue('type', value)}>
               <SelectTrigger {...register('type')} className='w-full'>
@@ -165,7 +170,11 @@ export function CreateTrainingForm() {
         </CardContent>
       </Card>
       <div className='col-span-6 mt-6 grid place-items-center gap-4'>
-        <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
+        <Button
+          type='submit'
+          className='w-[10rem] gap-2'
+          disabled={loading}
+          onClick={() => console.log(errors)}>
           {loading && <Loader className='size-4' />}
           {!loading && <Save className='size-4' />}
           Salvar
