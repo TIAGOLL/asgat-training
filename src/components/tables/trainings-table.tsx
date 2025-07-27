@@ -86,7 +86,7 @@ export function DataTableTrainings() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='font-bold'>ID</TableHead>
+            <TableHead className='font-bold'>Nome</TableHead>
             <TableHead className='font-bold'>Tipo</TableHead>
           </TableRow>
         </TableHeader>
@@ -111,7 +111,7 @@ export function DataTableTrainings() {
           {!loading &&
             trainings.map((training) => (
               <TableRow key={training.id}>
-                <TableCell className='font-medium'>{training.id}</TableCell>
+                <TableCell className='font-medium'>{training.nome}</TableCell>
                 <TableCell className='font-medium'>{training.tipo}</TableCell>
                 <TableCell className='space-x-2 font-medium'>
                   <TooltipProvider>

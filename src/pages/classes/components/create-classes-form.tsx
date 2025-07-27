@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
 import { criarAula } from '@/services/aulas';
 import { buscarTreinos } from '@/services/treino';
 import { buscarTurmas } from '@/services/turmas';
@@ -36,21 +37,30 @@ export function CreateClassesForm() {
   } = useForm<CreateClassesSchema>({
     resolver: zodResolver(createClassesSchema),
   });
+
+ 
+
   const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState([]);
   const [trainings, setTrainings] = useState([]);
   const [loading, setLoading] = useState<boolean>();
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      const result = await buscarTurmas();
-      setClassrooms(result);
-      const result2 = await buscarTreinos();
-      setTrainings(result2);
+    const fetchData = async () => {
+      const turmas = await buscarTurmas();
+      setClassrooms(turmas);
+      const treinos = await buscarTreinos();
+      setTrainings(treinos);
     };
-
-    fetchStudents();
+    fetchData();
   }, []);
+
+  const classroomTime = useMemo(() => {
+    const selected = classrooms.find(
+      (c) => c.id === parseInt(watch('classroom'))
+    );
+    return selected?.horario || '';
+  }, [watch('classroom'), classrooms]);
 
   async function createClasses(data: CreateClassesSchema) {
     setLoading(true);
@@ -59,17 +69,32 @@ export function CreateClassesForm() {
         turma_id: data.classroom,
         dia: data.date,
         treino_id: data.training,
-        hora: data.time,
+        hora: classroomTime,
       };
       const response = await criarAula(turmaData);
       toast.success(response.message);
       navigate('/classes');
     } catch (error) {
-      console.error('Erro ao criar turma:', error);
+      console.error('Erro ao criar aula:', error);
     } finally {
       setLoading(false);
     }
   }
+
+   const diaMap: Record<string, number> = {
+    'domingo': 0,
+    'segunda-feira': 1,
+    'terça-feira': 2,
+    'quarta-feira': 3,
+    'quinta-feira': 4,
+    'sexta-feira': 5,
+    'sábado': 6,
+  };
+  
+  const classroomDayNumber = useMemo(() => {
+    const dia = classrooms.find((c) => c.id === parseInt(watch('classroom')))?.dia.toLowerCase();
+    return diaMap[dia] ?? null;
+  }, [watch('classroom'), classrooms]);
 
   return (
     <form
@@ -85,17 +110,13 @@ export function CreateClassesForm() {
             <Select onValueChange={(value) => setValue('classroom', value)}>
               <SelectTrigger {...register('classroom')} className='w-full'>
                 {!watch('classroom') && <SelectValue placeholder='Selecione...' />}
-                {watch('classroom') &&
-                  `${
-                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
-                      ?.nome
-                  } - ${
-                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
-                      ?.dia
-                  } - ${
-                    classrooms.find((classroom) => classroom.id === parseInt(watch('classroom')))
-                      ?.horario
-                  }`}
+                {watch('classroom') && (
+                  <>
+                    {classrooms.find((c) => c.id === parseInt(watch('classroom')))?.nome} -{' '}
+                    {classrooms.find((c) => c.id === parseInt(watch('classroom')))?.dia} -{' '}
+                    {classroomTime}
+                  </>
+                )}
               </SelectTrigger>
               <SelectContent>
                 {classrooms.map((classroom) => (
@@ -107,13 +128,15 @@ export function CreateClassesForm() {
             </Select>
             <FormMessageError error={errors.classroom?.message} />
           </div>
+
           <div className='col-span-6 grid gap-2'>
             <Label>Treino</Label>
             <Select onValueChange={(value) => setValue('training', value)}>
               <SelectTrigger {...register('training')} className='w-full'>
                 {!watch('training') && <SelectValue placeholder='Selecione...' />}
-                {watch('training') &&
-                  trainings.find((training) => training.id === parseInt(watch('training')))?.tipo}
+                {watch('training') && (
+                  trainings.find((t) => t.id === parseInt(watch('training')))?.tipo
+                )}
               </SelectTrigger>
               <SelectContent>
                 {trainings.map((training) => (
@@ -125,18 +148,25 @@ export function CreateClassesForm() {
             </Select>
             <FormMessageError error={errors.training?.message} />
           </div>
+
           <div className='col-span-6 grid gap-2'>
             <Label htmlFor='date'>Data</Label>
             <Input id='date' type='date' {...register('date')} />
             <FormMessageError error={errors.date?.message} />
           </div>
+
           <div className='col-span-6 grid gap-2'>
             <Label htmlFor='time'>Horário</Label>
-            <Input id='time' {...register('time')} type='time' />
-            <FormMessageError error={errors.time?.message} />
+            <Input
+              id='time'
+              type='text'
+              readOnly
+              value={classroomTime}
+            />
           </div>
         </CardContent>
       </Card>
+
       <div className='col-span-6 mt-6 place-items-center gap-4'>
         <Button type='submit' className='w-[10rem] gap-2' disabled={loading}>
           {loading && <Loader className='size-4' />}
