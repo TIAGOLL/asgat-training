@@ -129,7 +129,7 @@ export function Classes() {
                 return (
                   <div
                     key={index}
-                    className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-2/9'>
+                    className='relative mb-10 flex w-full flex-col gap-2 rounded-lg border p-5 md:w-3/9'>
                     <div className='flex items-center gap-1 font-bold'>
                       <CalendarDays className='h-4 w-4' />
                       {dateString}
@@ -156,7 +156,7 @@ export function Classes() {
                       <LogIn className='h-4 w-4' />
                       Entrar na aula
                     </Button>
-                    <Button variant='outline' size='sm' className='w-full gap-2 md:w-48'>
+                    <Button variant='outline' size='sm' className='w-full max-w-full gap-2 md:w-48'>
                       <Edit2 className='h-4 w-4' />
                       Editar aula
                     </Button>

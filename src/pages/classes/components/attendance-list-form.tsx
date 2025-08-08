@@ -141,7 +141,7 @@ export function AttendanceListForm() {
                           <label
                             htmlFor={`students.${student.id}.present-true`}
                             className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                              isPresent ? 'bg-green-600' : 'bg-green-600/0 hover:bg-green-600'
+                              isPresent ? 'bg-green-600' : 'bg-green-600/20 hover:bg-green-600'
                             }`}>
                             <Check size={16} />
                           </label>
@@ -159,7 +159,7 @@ export function AttendanceListForm() {
                           <label
                             htmlFor={`students.${student.id}.present-false`}
                             className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded text-white ${
-                              isAbsent ? 'bg-red-600' : 'bg-red-600/0 hover:bg-red-600'
+                              isAbsent ? 'bg-red-600' : 'bg-red-600/20 hover:bg-red-600'
                             }`}>
                             <X size={16} />
                           </label>

@@ -56,18 +56,18 @@ export function FinalNotes() {
           .flat()
           .filter((n) => n.aluno_id === aluno.id)
           .map((n) => n.nota);
-  
+
         const media =
           notas.length > 0
             ? (notas.reduce((acc, val) => acc + val, 0) / notas.length).toFixed(1)
             : null;
-  
+
         return {
           ...aluno,
           grade: media,
         };
       });
-  
+
       setAula(result);
       setExercises(result.treino.exercicios);
       setDados(aulasOBJ);
@@ -138,14 +138,22 @@ export function FinalNotes() {
                         </TableRow>
                       ))}
                     {!loading &&
-                      alunos.map((student) => (
-                        <TableRow key={student.id}>
-                          <TableCell>{student.nome}</TableCell>
-                          <TableCell className='text-center font-bold text-green-600'>
-                            {student.grade}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      alunos.map((student) => {
+                        if (
+                          dados?.presencas?.find((a) => a.aluno_id === student.id)?.presenca ===
+                          false
+                        ) {
+                          return null;
+                        }
+                        return (
+                          <TableRow key={student.id}>
+                            <TableCell>{student.nome}</TableCell>
+                            <TableCell className='text-center font-bold text-green-600'>
+                              {student.grade}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                   </TableBody>
                 </Table>
               </div>

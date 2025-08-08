@@ -8,7 +8,6 @@ import { z } from 'zod';
 import { notesByStudentSchema } from '@/components/forms/validations/notes-by-student-schema';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -46,6 +45,7 @@ export function NotesByStudentForm() {
       const result = await buscarAula(id);
       setAula(result);
       setExercises(result.treino.exercicios);
+      setSelectedExercise(result.treino.exercicios[0]?.id?.toString());
       const aulas = localStorage.getItem('aulas');
       const aulasOBJ = JSON.parse(aulas);
       setDados(aulasOBJ);
@@ -56,23 +56,12 @@ export function NotesByStudentForm() {
     fetchAulas();
   }, []);
 
-  useEffect(() => { }, [dados]);
-  /*
- useEffect(() => {
-   setDados((prevDados) => {
-     const updatedDados = { ...prevDados };
-     updatedDados.desempenho = {};
-     exercises.forEach((value) => {
-       updatedDados.desempenho[value.id] = [];
-     });
-     return updatedDados;
-   });
- }, [exercises]);*/
+  useEffect(() => {}, [dados]);
 
   useEffect(() => {
     setDados((prevDados) => {
       if (prevDados.desempenho && Object.keys(prevDados.desempenho).length > 0) {
-        return prevDados; // já tem dados, não sobrescreve
+        return prevDados;
       }
 
       const updatedDados = { ...prevDados, desempenho: {} };
@@ -92,7 +81,7 @@ export function NotesByStudentForm() {
     resolver: zodResolver(notesByStudentSchema),
   });
 
-  async function applyNotesToStudents(data: NotesByStudentSchema) { }
+  async function applyNotesToStudents(data: NotesByStudentSchema) {}
 
   function updateDados(studentId, exercicioID, nota) {
     setDados((prevDados) => {
@@ -126,9 +115,12 @@ export function NotesByStudentForm() {
         <CardContent className='col-span-6 mt-10 grid grid-cols-6 place-items-center gap-2'>
           <div className='col-span-6 grid gap-2'>
             <Label>Exercício</Label>
-            <Select value={selectedExercise} onValueChange={setSelectedExercise}>
+            <Select
+              value={selectedExercise}
+              onValueChange={setSelectedExercise}
+              defaultValue={exercises[0]?.id?.toString()}>
               <SelectTrigger className='w-[15rem]'>
-                <SelectValue placeholder='Selecione...' />
+                <SelectValue placeholder={exercises[0]?.nome?.toString()} />
               </SelectTrigger>
               <SelectContent>
                 {exercises.map((exercise) => (
@@ -163,45 +155,53 @@ export function NotesByStudentForm() {
                     </TableRow>
                   ))}
                 {!loading &&
-                  alunos.map((aluno) => (
-                    <TableRow key={aluno.id}>
-                      <TableCell>{aluno.nome}</TableCell>
-                      <TableCell>
-                        <div className='flex items-center justify-center gap-2'>
-                          <Button
-                            variant='outline'
-                            size='sm'
-                            onClick={() => {
-                              const notaAtual = dados?.desempenho?.[selectedExercise]?.find(
-                                (p) => p.aluno_id === aluno.id
-                              )?.nota || 0;
-                              if (notaAtual < 1) {
-                                return;
-                              }
-                              updateDados(aluno.id, selectedExercise, notaAtual - 1);
-                            }}>
-                            -
-                          </Button>
-                          {dados?.desempenho?.[selectedExercise]?.find((p) => p.aluno_id === aluno.id)?.nota || 0}
-                          <Button
-                            variant='outline'
-                            size='sm'
-                            onClick={() => {
-                              const notaAtual = dados?.desempenho?.[selectedExercise]?.find(
-                                (p) => p.aluno_id === aluno.id
-                              )?.nota || 0;
-                              if (notaAtual > 9) {
-                                return;
-                              }
-                              updateDados(aluno.id, selectedExercise, notaAtual + 1);
-                            }}>
-                            +
-                          </Button>
-                        </div>
-                      </TableCell>
-
-                    </TableRow>
-                  ))}
+                  alunos.map((aluno) => {
+                    if (dados?.presencas?.find((a) => a.aluno_id == aluno.id).presenca === false) {
+                      return null;
+                    }
+                    return (
+                      <TableRow key={aluno.id}>
+                        <TableCell>{aluno.nome}</TableCell>
+                        <TableCell>
+                          <div className='flex items-center justify-center gap-2'>
+                            <Button
+                              variant='outline'
+                              size='sm'
+                              onClick={() => {
+                                const notaAtual =
+                                  dados?.desempenho?.[selectedExercise]?.find(
+                                    (p) => p.aluno_id === aluno.id,
+                                  )?.nota || 0;
+                                if (notaAtual < 1) {
+                                  return;
+                                }
+                                updateDados(aluno.id, selectedExercise, notaAtual - 1);
+                              }}>
+                              -
+                            </Button>
+                            {dados?.desempenho?.[selectedExercise]?.find(
+                              (p) => p.aluno_id === aluno.id,
+                            )?.nota || 0}
+                            <Button
+                              variant='outline'
+                              size='sm'
+                              onClick={() => {
+                                const notaAtual =
+                                  dados?.desempenho?.[selectedExercise]?.find(
+                                    (p) => p.aluno_id === aluno.id,
+                                  )?.nota || 0;
+                                if (notaAtual > 9) {
+                                  return;
+                                }
+                                updateDados(aluno.id, selectedExercise, notaAtual + 1);
+                              }}>
+                              +
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </div>

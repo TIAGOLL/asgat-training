@@ -66,9 +66,9 @@ export function CreateTrainingForm() {
     resolver: zodResolver(createTrainingSchema),
   });
 
-  async function createTraining({ type, exercises }: CreateTrainingSchema) {
+  async function createTraining({ name, type, exercises }: CreateTrainingSchema) {
     setLoading(true);
-    const res = await criarTreino({ treino: type, exercicios: exercisesList });
+    const res = await criarTreino({ nome: name, treino: type, exercicios: exercisesList });
     toast.success(res);
     setLoading(false);
     navigate('/trainings');
